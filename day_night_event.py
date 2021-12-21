@@ -29,18 +29,18 @@ while timer:
         todt = timeOfDayT(World.getTimeOfDay())
         if todt >= 13000 and not wasNight:
             wasNight = True
-            Chat.log("night;todt >= 13000 and todt < 13006")
             GlobalVars.putBoolean('is_night', True)
             # profile.triggerEvent("NIGHT_START")
             Chat.toast("Good night", "Zzzzz")
             task(wasNight)
+            sleep(5)
         elif todt < 13000 and wasNight:
             wasNight = False
-            Chat.log("day;todt >= 23000 and todt < 23006")
             GlobalVars.putBoolean('is_night', False)
             # profile.triggerEvent("DAY_START")
             Chat.log("Good morning", "")
             task(wasNight)
+            sleep(5)
         sleep(1)
     except Exception as e:
         Chat.log(f"Error: {e}")
