@@ -1,11 +1,8 @@
 if __name__ == "": from JsMacrosAC import *
-Chat.log(f"Executing {file.getName()}")
+GlobalVars.putString("server", event.address)
 
-import sys
 from random import choice
 
-if file.getParent() not in sys.path:
-    sys.path.append(file.getParent())
 
 server = event.address.split("/")
 hostname = server[0]
@@ -16,11 +13,13 @@ Chat.say(".t Nuker off")
 Chat.say(".t NukerLegit off")
 Chat.say(".t AutoMine off")
 
+Chat.log(f"[JsMacros] Joined server {hostname} ({':'.join(address)})")
 match hostname.lower():
     case "play.tasmantismc.com":
-        Chat.log("ANARCHY!")
+        GlobalVars.putString("task_night", "@goto 8958 71 -12434")
+        Chat.log(f"Set task_night to {GlobalVars.getString('task_night')}")
     case _:
-        Chat.log(f"[JsMacros] Joined server {hostname} ({':'.join(address)})")
+        pass
 
 players = World.getPlayers()
 player_count = len(players)

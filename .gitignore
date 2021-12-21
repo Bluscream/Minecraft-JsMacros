@@ -3,3 +3,4 @@ logger/logs/*
 logs/
 tmp/
 config/
+/data.sqlite
