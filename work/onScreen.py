@@ -1,7 +1,7 @@
 if __name__ == "": from JsMacrosAC import *
 if event.screenName is not None and event.screenName != "unknown":
     Chat.getLogger().info(f"EventOpenScreen {event.screenName}")
-    # Chat.toast("EventOpenScreen", screenName)
+    # Chat.toast("EventOpenScreen", event.screenName)
 
     def sleep(sec: float=0): Client.waitTick(sec * 20)
 
@@ -17,3 +17,6 @@ if event.screenName is not None and event.screenName != "unknown":
             event.screen.getTextFields()[0].setText("play.tasmantismc.com") # set address
             sleep(1)
             event.screen.getButtonWidgets()[0].click(True)  # click connect
+        case "Saving World": # fudge.notenoughcrashes.gui.CrashScreen
+            sleep(1)
+            event.screen.getButtonWidgets()[0].click(True)

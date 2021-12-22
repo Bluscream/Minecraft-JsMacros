@@ -36,6 +36,7 @@ def var(name: str):
 message = copy(event.message)
 if message.startswith(prefix):
     event.message = ""
+    Chat.log(f"> {message}")
     try:
         copy2clip(message)
         command = message[1:].split(" ")
@@ -98,14 +99,21 @@ if message.startswith(prefix):
                 Respond(f"{arg_str}: {var(arg_str)} ({GlobalVars.getType(arg_str)})")
             case "set":
                 GlobalVars.putString(args[0], ' '.join(args[1:]))
+            case "gamemode"|"gm":
+                if len(args) == 0: Respond(f"Current Gamemode: {Player.getGameMode()}")
+                else: Chat.say(f".gm {args[0]}")
             case "time":
                 Respond(f"getTime: {World.getTime()}")
                 tod = World.getTimeOfDay()
                 Respond(f"getTimeOfDay: {tod}")
                 from math import floor
-
                 Respond(f"getDayTimeT: {round(((tod / 24000) - floor(tod / 24000)) * 24000)}")
                 Respond(f"is_night: {GlobalVars.getBoolean('is_night')}")
+                Respond(f"task_night: {GlobalVars.getString('task_night')}")
+                Respond(f"task_day: {GlobalVars.getString('task_day')}")
+            case "baritone"|"bt"|"altoclef"|"ac":
+                Respond(f"last_baritone_task: {GlobalVars.getString('last_baritone_task')}")
+                Respond(f"last_altoclef_task: {GlobalVars.getString('last_altoclef_task')}")
             case _:
                 Respond("Unknown command")
     except Exception as e:
