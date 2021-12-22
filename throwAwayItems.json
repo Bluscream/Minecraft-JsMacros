@@ -1,5 +1,5 @@
 {
-  "throwawayItems" : [
+  "throwawayItems": [
     "acacia_leaves",
     "air",
     "air",
@@ -105,7 +105,7 @@
     "wheat",
     "white_tulip"
   ],
-  "importantItems" : [
+  "importantItems": [
     "furnace",
     "crafting_table",
     "stick",
