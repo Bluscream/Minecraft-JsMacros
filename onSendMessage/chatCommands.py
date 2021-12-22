@@ -53,11 +53,14 @@ if message.startswith(prefix):
                 Respond(f"{prefix}disconnect - Disconnects from the current server")
                 Respond(f"{prefix}exit|quit - Closes the client")
                 Respond(f"{prefix}players - Lists all players on the server")
+                Respond(f"{prefix}coords - Converts overworld coords to nether and vice versa")
                 Respond(f"{prefix}exec - Executes a chain of commands (separated by ;). Use /sleep for delays")
                 Respond(f"{prefix}os - Executes commands on the OS level")
                 Respond(f"{prefix}eval - Executes python code")
+                Respond(f"{prefix}echo|print - duh")
                 Respond(f"{prefix}get - Get the value of a global variable")
                 Respond(f"{prefix}set - Set the value of a global variable")
+                Respond(f"{prefix}gamemode|gm - Gets or sets gamemode")
             case "about":
                 Respond(f"""JsMacros:
     OS: {platform.system()} {platform.release()}
@@ -80,6 +83,20 @@ if message.startswith(prefix):
                 Respond(f"{len(players)} players:")
                 for num, player in enumerate(players, start=1):
                     Chat.log(f"#{num:02} {player.getName()} ({player.getUUID()})")
+            case "coords":
+                dim = World.getDimension().split(":")[-1]
+                pos = Player.getPlayer().getPos()
+                if len(args) == 4: dim = args[3]
+                if len(args) > 2: pos.x = int(args[0]); pos.y = int(args[1]); pos.z = int(args[2])
+                elif len(args) == 2: pos.x = int(args[0]);pos.y = 0; pos.z = int(args[1])
+                pos.x = round(pos.x, 2); pos.y = round(pos.y, 2); pos.z = round(pos.z, 2)
+                match dim:
+                    case "nether":
+                        Respond(f"[{c}5Nether{c}r] X: {pos.x} Y: {pos.y} Z: {pos.z}")
+                        Respond(f"[Overworld] X: {pos.x/8} Y: {pos.y} Z: {pos.z/8}")
+                    case _:
+                        Respond(f"[Overworld] X: {pos.x} Y: {pos.y} Z: {pos.z}")
+                        Respond(f"[{c}5Nether{c}r] X: {pos.x*8} Y: {pos.y} Z: {pos.z*8}")
             case "exec":
                 for command in arg_str.split(";"):
                     Respond(f"Executing {command}")
@@ -98,10 +115,17 @@ if message.startswith(prefix):
             case "get":
                 Respond(f"{arg_str}: {var(arg_str)} ({GlobalVars.getType(arg_str)})")
             case "set":
+                old = var(args[0])
                 GlobalVars.putString(args[0], ' '.join(args[1:]))
+                Respond(f"{args[0]}: {old} -> {var(args[0])}")
             case "gamemode"|"gm":
                 if len(args) == 0: Respond(f"Current Gamemode: {Player.getGameMode()}")
-                else: Chat.say(f".gm {args[0]}")
+                else:
+                    if (args[0] == "0" or args[0].lower() == "s"): args[0] = "survival"
+                    elif (args[0] == "1" or args[0].lower() == "c"): args[0] = "creative"
+                    elif (args[0] == "2" or args[0].lower() == "ss"): args[0] = "spectator"
+                    elif (args[0] == "3" or args[0].lower() == "a"): args[0] = "adventure"
+                    Chat.say(f"/gamemode {args[0]}")
             case "time":
                 Respond(f"getTime: {World.getTime()}")
                 tod = World.getTimeOfDay()
@@ -111,6 +135,10 @@ if message.startswith(prefix):
                 Respond(f"is_night: {GlobalVars.getBoolean('is_night')}")
                 Respond(f"task_night: {GlobalVars.getString('task_night')}")
                 Respond(f"task_day: {GlobalVars.getString('task_day')}")
+            case "cleartasks"|"ct":
+                GlobalVars.putString("task_day", '')
+                GlobalVars.putString("task_night", '')
+                Respond("Cleared tasks")
             case "baritone"|"bt"|"altoclef"|"ac":
                 Respond(f"last_baritone_task: {GlobalVars.getString('last_baritone_task')}")
                 Respond(f"last_altoclef_task: {GlobalVars.getString('last_altoclef_task')}")
