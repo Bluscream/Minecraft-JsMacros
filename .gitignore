@@ -4,3 +4,7 @@ logs/
 tmp/
 config/
 /data.sqlite
+.idea/
+db/data.sqlite
+onSendMessage/altoclef_settings.json
+work/altoclef_settings.json
