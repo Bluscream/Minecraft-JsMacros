@@ -121,10 +121,10 @@ if message.startswith(prefix):
             case "gamemode"|"gm":
                 if len(args) == 0: Respond(f"Current Gamemode: {Player.getGameMode()}")
                 else:
-                    if (args[0] == "0" or args[0].lower() == "s"): args[0] = "survival"
-                    elif (args[0] == "1" or args[0].lower() == "c"): args[0] = "creative"
-                    elif (args[0] == "2" or args[0].lower() == "ss"): args[0] = "spectator"
-                    elif (args[0] == "3" or args[0].lower() == "a"): args[0] = "adventure"
+                    if args[0] == "0" or args[0].lower() == "s": args[0] = "survival"
+                    elif args[0] == "1" or args[0].lower() == "c": args[0] = "creative"
+                    elif args[0] == "2" or args[0].lower() == "ss": args[0] = "spectator"
+                    elif args[0] == "3" or args[0].lower() == "a": args[0] = "adventure"
                     Chat.say(f"/gamemode {args[0]}")
             case "time":
                 Respond(f"getTime: {World.getTime()}")

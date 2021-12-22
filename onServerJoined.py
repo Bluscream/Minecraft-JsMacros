@@ -18,6 +18,7 @@ Chat.say(".t AutoMine off")
 Chat.log(f"[JsMacros] Joined server {hostname} ({':'.join(address)})")
 match hostname.lower():
     case "play.tasmantismc.com":
+        JsMacros.runScript("wurst_altoclef.py")
         Chat.say("#set censorCoordinates true")
         Chat.say("#set renderCachedChunks true")
         # goal = "8958 71 -12434"

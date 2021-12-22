@@ -5,12 +5,14 @@ sleep(2)
 
 cheat = False
 
+# sJsMacros.runScript("workDirFix.py")
 import json
-altoclef_settings_file = r"S:\multimc\instances\Fabric 1.18.1\minecraft\config\jsMacros\Macros\work\altoclef_settings.json"
-ac = {}
-with open(altoclef_settings_file, "r") as f:
-    ac = json.load(f)
+altoclef_settings_file = r"S:\multimc\instances\Fabric 1.18.1\minecraft\altoclef_settings.json"
+f = open(altoclef_settings_file, "r")
+ac = json.load(f)
+f.close()
 
+ac["bluscream"] = True
 
 ac["speedHack"] = 1.5 if cheat else 0.0
 
@@ -19,7 +21,7 @@ Chat.say(".enabledhax load-profile blu")
 Chat.say(".t multiaura on")
 Chat.say(".t criticals on")
 Chat.say(".t autoarmor on")
-Chat.say(f".t nofall {cheat}")
+Chat.say(f'.t nofall {"on" if cheat else "off"}')
 Chat.say(".t creativeflight on")
 
 Chat.say("#set antiCheatCompatibility false")
@@ -63,7 +65,7 @@ Chat.say("#set assumeWalkOnLava true")
 Chat.say("#set assumeWalkOnWater true")
 
 with open(altoclef_settings_file, "w") as f:
-    json.dump(altoclef_settings_file, ac)
+    json.dump(ac, f, indent=4)
 JsMacros.runScript("workDirFix.py")
 Chat.say("@reload_settings")
 
