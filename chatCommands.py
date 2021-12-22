@@ -87,8 +87,8 @@ if message.startswith(prefix):
                 dim = World.getDimension().split(":")[-1]
                 pos = Player.getPlayer().getPos()
                 if len(args) == 4: dim = args[3]
-                if len(args) > 2: pos.x = int(args[0]); pos.y = int(args[1]); pos.z = int(args[2])
-                elif len(args) == 2: pos.x = int(args[0]);pos.y = 0; pos.z = int(args[1])
+                if len(args) > 2: pos.x = float(args[0]); pos.y = float(args[1]); pos.z = float(args[2])
+                elif len(args) == 2: pos.x = float(args[0]);pos.y = 0; pos.z = float(args[1])
                 pos.x = round(pos.x, 2); pos.y = round(pos.y, 2); pos.z = round(pos.z, 2)
                 match dim:
                     case "nether":

@@ -5,9 +5,12 @@ sleep(2)
 
 cheat = False
 
-altoclef_settings_file = open(r"S:\multimc\instances\Fabric 1.18.1\minecraft\config\jsMacros\Macros\work\altoclef_settings.json", "rw")
 import json
-ac = json.load(altoclef_settings_file)
+altoclef_settings_file = r"S:\multimc\instances\Fabric 1.18.1\minecraft\config\jsMacros\Macros\work\altoclef_settings.json"
+ac = {}
+with open(altoclef_settings_file, "r") as f:
+    ac = json.load(f)
+
 
 ac["speedHack"] = 1.5 if cheat else 0.0
 
@@ -58,7 +61,9 @@ Chat.say("#set assumeStep true")
 Chat.say(".t jesus on")
 Chat.say("#set assumeWalkOnLava true")
 Chat.say("#set assumeWalkOnWater true")
-json.dump(altoclef_settings_file, ac)
-altoclef_settings_file.close()
+
+with open(altoclef_settings_file, "w") as f:
+    json.dump(altoclef_settings_file, ac)
+JsMacros.runScript("workDirFix.py")
 Chat.say("@reload_settings")
 
