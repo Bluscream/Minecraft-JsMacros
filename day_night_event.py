@@ -13,11 +13,12 @@ if not GlobalVars.getBoolean("day_night_event.py"):
         task = GlobalVars.getString(type)
         if not task: return
         for cmd in task.split(";"):
-            Chat.log(f"[{type}] Executing {cmd}")
-            if (cmd.startswith("/sleep ")):
-                slp_time = cmd.replace("/sleep ", "")
-                sleep(int(slp_time))
-            else: Chat.say(cmd)
+            if cmd and cmd != "":
+                Chat.log(f"[{type}] Executing {cmd}")
+                if (cmd.startswith("/sleep ")):
+                    slp_time = cmd.replace("/sleep ", "")
+                    sleep(int(slp_time))
+                else: Chat.say(cmd)
 
     # profile = JsMacros.getProfile()
     # profile.getRegistry().addEvent("DAY_START")

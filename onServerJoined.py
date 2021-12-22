@@ -21,15 +21,15 @@ match hostname.lower():
         JsMacros.runScript("wurst_altoclef.py")
         Chat.say("#set censorCoordinates true")
         Chat.say("#set renderCachedChunks true")
-        # goal = "8958 71 -12434"
-        # GlobalVars.putString("task_night", f"#set allowBreak false;#set allowPlace false;#set disconnectOnArrival false;@goto {goal};")
-        # Chat.log(f"Set task_night to {GlobalVars.getString('task_night')}")
-        # GlobalVars.putString("task_day", "#set allowBreak true;#set allowPlace true")
-        # Chat.log(f"Set task_day to {GlobalVars.getString('task_day')}")
         if GlobalVars.getString("crashed"):
             Chat.getLogger().warn(f"Was crashed: {GlobalVars.getString('crashed')}")
             GlobalVars.remove("crashed")
-        else: Chat.say("@gamer")
+        else:
+            # Chat.say("@gamer")
+            GlobalVars.putString("task_night", "#set allowBreak false;#set allowPlace false;#set disconnectOnArrival false;@goto 8958 71 -12434")
+            Chat.log(f"Set task_night to {GlobalVars.getString('task_night')}")
+            GlobalVars.putString("task_day", "#set allowBreak true;#set allowPlace true")
+            Chat.log(f"Set task_day to {GlobalVars.getString('task_day')}")
         pass
     case _:
         pass
