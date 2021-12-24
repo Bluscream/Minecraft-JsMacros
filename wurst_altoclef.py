@@ -3,7 +3,7 @@ if __name__ == "": from JsMacrosAC import *
 def sleep(sec: int): Client.waitTick(sec * 20)
 sleep(2)
 
-cheat = False
+cheat = True
 
 # sJsMacros.runScript("workDirFix.py")
 import json
@@ -21,7 +21,10 @@ Chat.say(".enabledhax load-profile blu")
 Chat.say(".t multiaura on")
 Chat.say(".t criticals on")
 Chat.say(".t autoarmor on")
-Chat.say(f'.t nofall {"on" if cheat else "off"}')
+Chat.say(".t fullbright on")
+Chat.say(".t AutoLeave off")
+# Chat.say(f'.t nofall {"on" if cheat else "off"}')
+# if not cheat: Chat.toast(f"Cheat is off!", "!!! NOFALL DISABLED !!!")
 Chat.say(".t creativeflight on")
 
 Chat.say("#set antiCheatCompatibility false")
@@ -46,23 +49,26 @@ Chat.say(".t autosprint off")
 Chat.say("#set allowSprint true")
 Chat.say("#set sprintInWater true")
 
-Chat.say(".t autotool on")
+Chat.say(".t autotool off")
 Chat.say(".setcheckbox autotool switch_back off")
-Chat.say(".t autosword on")
-Chat.say("#set disableAutoTool true")
-Chat.say("#set assumeExternalAutoTool true")
+Chat.say(".t autosword off")
+Chat.say("#set disableAutoTool false")
+Chat.say("#set assumeExternalAutoTool false")
 
 Chat.say(".t safewalk off")
 Chat.say("#set assumeSafeWalk false")
 
-Chat.say(".t step on")
-Chat.say(".setmode step mode simple")
-Chat.say(".setslider step height 1")
-Chat.say("#set assumeStep true")
+# Chat.say(".t step on")
+# Chat.say(".setmode step mode simple")
+# Chat.say(".setslider step height 1")
+# Chat.say("#set assumeStep true")
 
 Chat.say(".t jesus on")
 Chat.say("#set assumeWalkOnLava true")
 Chat.say("#set assumeWalkOnWater true")
+
+home = GlobalVars.getString("home")
+if home: ac["homeBasePosition"] = home.replace(" ", ",")
 
 with open(altoclef_settings_file, "w") as f:
     json.dump(ac, f, indent=4)

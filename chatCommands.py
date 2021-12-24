@@ -33,6 +33,16 @@ def var(name: str):
         case "boolean": return GlobalVars.getBoolean(name)
         case _: return GlobalVars.getObject(name)
 
+def task(task: str):
+    if not task: return
+    for cmd in task.split(";"):
+        if cmd and cmd != "":
+            Chat.log(f"[{type}] Executing {cmd}")
+            if (cmd.startswith("/sleep ")):
+                slp_time = cmd.replace("/sleep ", "")
+                sleep(int(slp_time))
+            else: Chat.say(cmd)
+
 message = copy(event.message)
 if message.startswith(prefix):
     event.message = ""
@@ -77,7 +87,7 @@ if message.startswith(prefix):
             case "disconnect":
                 Client.disconnect()
             case "quit" | "exit":
-                exit()
+                Client.shutdown() # exit()
             case "players":
                 players = World.getPlayers()
                 Respond(f"{len(players)} players:")
@@ -126,6 +136,10 @@ if message.startswith(prefix):
                     elif args[0] == "2" or args[0].lower() == "ss": args[0] = "spectator"
                     elif args[0] == "3" or args[0].lower() == "a": args[0] = "adventure"
                     Chat.say(f"/gamemode {args[0]}")
+            case "screen"|"gui"|"ui":
+                Hud.openScreen(arg_str)
+            case "fps": Respond(f"FPS: {Client.getFPS()}")
+            case "tps": Respond(f"TPS: {World.getServerTPS()}")
             case "time":
                 Respond(f"getTime: {World.getTime()}")
                 tod = World.getTimeOfDay()
@@ -142,6 +156,8 @@ if message.startswith(prefix):
             case "baritone"|"bt"|"altoclef"|"ac":
                 Respond(f"last_baritone_task: {GlobalVars.getString('last_baritone_task')}")
                 Respond(f"last_altoclef_task: {GlobalVars.getString('last_altoclef_task')}")
+            case "gohome"|"home"|"night": task(GlobalVars.getString("task_night"))
+            case "dotask"|"task"|"day":task(GlobalVars.getString("task_day"))
             case _:
                 Respond("Unknown command")
     except Exception as e:
