@@ -15,4 +15,5 @@ match event_name:
             hostname = World.getCurrentServerAddress().split("/")[0]
             match hostname.lower():
                 case "play.tasmantismc.com":
-                    pass # Chat.say(choice(["Hello, %s", "Hi, %s", "Hey, %s", "Greetings, %s"]) % event.player.getName())
+                    from random import choice
+                    Chat.say(choice(["Hello, %s", "Hi, %s", "Hey, %s", "Greetings, %s"]) % event.player.getName())

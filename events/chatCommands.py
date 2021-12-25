@@ -26,16 +26,16 @@ match event_name:
             return check_call('echo '+txt.strip()+'|clip', shell=True)
 
         def var(name: str):
-            type = GlobalVars.getType(name)
-            if type is None:
-                Respond(f"{c}4Variable {c}r{name} {c}4does not exist{c}r")
-                return
-            match type.lower():
-                case "int": return GlobalVars.getInt(name)
-                case "float": return GlobalVars.getFloat(name)
-                case "string": return GlobalVars.getString(name)
-                case "boolean": return GlobalVars.getBoolean(name)
-                case _: return GlobalVars.getObject(name)
+            type_ = GlobalVars.getType(name)
+            if type_ is str:
+                match type_.lower():
+                    case "int": return GlobalVars.getInt(name)
+                    case "float": return GlobalVars.getFloat(name)
+                    case "string": return GlobalVars.getString(name)
+                    case "boolean": return GlobalVars.getBoolean(name)
+                    case None: return None
+                    case _: return GlobalVars.getObject(name)
+            return None
 
         def task(task: str):
             if not task: return
@@ -134,7 +134,9 @@ match event_name:
                     case "echo" | "print":
                         Respond(f"{arg_str}")
                     case "get":
-                        Respond(f"{arg_str}: {var(arg_str)} ({GlobalVars.getType(arg_str)})")
+                        var_ = var(arg_str)
+                        if var_ is not None: Respond(f"{arg_str}: {var_} ({GlobalVars.getType(arg_str)})")
+                        else: Respond(f"{c}4Variable {c}r{arg_str} {c}4does not exist{c}r")
                     case "set":
                         old = var(args[0])
                         GlobalVars.putString(args[0], ' '.join(args[1:]))

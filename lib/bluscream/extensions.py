@@ -11,9 +11,12 @@ class Server:
     address: ip_address
     port: int = 25565
 
-class Utils(str):
-    def getServer(self, server: str) -> Server:
-        server_ = server.split("/")
-        address = server_[1].split(":")
-        return Server(hostname=server_[0], address=ip_address(address[0]), port=int(address[1]))
+    def __init__(self, server: str):
+        server = server.split("/")
+        self.hostname = server[0]
+        address = server[1].split(":")
+        self.address = address[0]
+        if len(address) > 1: self.port = int(address[1])
 # endregion
+
+# class Utils():

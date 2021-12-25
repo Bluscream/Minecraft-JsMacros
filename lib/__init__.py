@@ -1,1 +1,1 @@
-load("lib/bluscream/init.py")
+from bluscream import *
