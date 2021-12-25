@@ -46,6 +46,10 @@ def task(task: str):
 message = copy(event.message)
 if message.startswith(prefix):
     event.message = ""
+    # history = Chat.getHistory()
+    # history.insertRecvText(message)
+    # history.refreshVisible()
+
     Chat.log(f"> {message}")
     try:
         copy2clip(message)
@@ -71,6 +75,9 @@ if message.startswith(prefix):
                 Respond(f"{prefix}get - Get the value of a global variable")
                 Respond(f"{prefix}set - Set the value of a global variable")
                 Respond(f"{prefix}gamemode|gm - Gets or sets gamemode")
+                # Respond(f"{prefix}screen|gui|ui - Opens")
+                Respond(f"{prefix}fps - Gets client frames per second")
+                Respond(f"{prefix}tps - Gets server ticks per second")
             case "about":
                 Respond(f"""JsMacros:
     OS: {platform.system()} {platform.release()}
@@ -149,15 +156,19 @@ if message.startswith(prefix):
                 Respond(f"is_night: {GlobalVars.getBoolean('is_night')}")
                 Respond(f"task_night: {GlobalVars.getString('task_night')}")
                 Respond(f"task_day: {GlobalVars.getString('task_day')}")
+            case "baritone"|"bt"|"altoclef"|"ac":
+                Respond(f"last_baritone_task: {GlobalVars.getString('last_baritone_task')}")
+                Respond(f"last_altoclef_task: {GlobalVars.getString('last_altoclef_task')}")
+            case "gohome"|"home"|"night":
+                if len(args) > 0: GlobalVars.putString("task_night", ' '.join(args))
+                else: task(GlobalVars.getString("task_night"))
+            case "dotask"|"task"|"day":
+                if len(args) > 0: GlobalVars.putString("task_day", ' '.join(args))
+                else: task(GlobalVars.getString("task_day"))
             case "cleartasks"|"ct":
                 GlobalVars.putString("task_day", '')
                 GlobalVars.putString("task_night", '')
                 Respond("Cleared tasks")
-            case "baritone"|"bt"|"altoclef"|"ac":
-                Respond(f"last_baritone_task: {GlobalVars.getString('last_baritone_task')}")
-                Respond(f"last_altoclef_task: {GlobalVars.getString('last_altoclef_task')}")
-            case "gohome"|"home"|"night": task(GlobalVars.getString("task_night"))
-            case "dotask"|"task"|"day":task(GlobalVars.getString("task_day"))
             case _:
                 Respond("Unknown command")
     except Exception as e:
