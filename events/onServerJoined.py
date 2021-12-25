@@ -4,7 +4,7 @@ event_name = event.getEventName()
 # Chat.getLogger().debug(f"Executing {file.getName()} on event {event_name}")
 match event_name:
     case "JoinServer":
-
+        GlobalVars.putBoolean("server_joining", True)
         GlobalVars.putString("server", event.address)
 
         def sleep(sec: int): Client.waitTick(sec * 20)
@@ -65,3 +65,4 @@ match event_name:
 
 
         # Chat.toast("onServerJoined", "Server Joined")
+        GlobalVars.putBoolean("server_joining", False)
