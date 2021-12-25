@@ -1,11 +1,15 @@
-if __name__ == "": from JsMacrosAC import *
-Chat.log(f"Executing {file.getName()}")
+# coding=utf8
+if __name__ == "": from JsMacrosAC import *  # Autocomplete, not necessary
+event_name = event.getEventName()
+# Chat.getLogger().debug(f"Executing {file.getName()} on event {event_name}")
+match event_name:
+    case _:
+        Client.waitTick()
 
-Client.waitTick()
+        # from shutil import copyfile
 
-# from shutil import copyfile
-
-FS.copy(r'S:\multimc\instances\Fabric 1.18.1\minecraft\altoclef_settings.json', r'S:\multimc\instances\Fabric 1.18.1\minecraft\config\jsMacros\Macros\altoclef_settings.json')
-Chat.say("@reload_settings")
-# copyfile(r'S:\multimc\instances\Fabric 1.18.1\minecraft\altoclef_settings.json', r'S:\multimc\instances\Fabric 1.18.1\minecraft\config\jsMacros\Macros\config\sodium-extra-options.json')
-# copyfile(r'S:\multimc\instances\Fabric 1.18.1\minecraft\altoclef_settings.json', r'S:\multimc\instances\Fabric 1.18.1\minecraft\config\jsMacros\Macros\work\config\sodium-extra-options.json')
+        FS.copy(r'S:\multimc\instances\Fabric 1.18.1\minecraft\altoclef_settings.json', r'S:\multimc\instances\Fabric 1.18.1\minecraft\config\jsMacros\Macros\altoclef_settings.json')
+        FS.copy(r'S:\multimc\instances\Fabric 1.18.1\minecraft\altoclef_settings.json', r'S:\multimc\instances\Fabric 1.18.1\minecraft\config\jsMacros\Macros\events\altoclef_settings.json')
+        Chat.say("@reload_settings")
+        # copyfile(r'S:\multimc\instances\Fabric 1.18.1\minecraft\altoclef_settings.json', r'S:\multimc\instances\Fabric 1.18.1\minecraft\config\jsMacros\Macros\config\sodium-extra-options.json')
+        # copyfile(r'S:\multimc\instances\Fabric 1.18.1\minecraft\altoclef_settings.json', r'S:\multimc\instances\Fabric 1.18.1\minecraft\config\jsMacros\Macros\work\config\sodium-extra-options.json')

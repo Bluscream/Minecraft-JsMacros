@@ -1,4 +1,7 @@
+# coding=utf8
 if __name__ == "": from JsMacrosAC import *  # Autocomplete, not necessary
-
-if event.getEventName() == "Key":
-    Hud.getOpenScreen().close()
+event_name = event.getEventName()
+# Chat.getLogger().debug(f"Executing {file.getName()} on event {event_name}")
+match event_name:
+    case "Key":
+        Hud.getOpenScreen().close()
