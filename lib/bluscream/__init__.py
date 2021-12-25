@@ -1,2 +1,2 @@
-from lib.bluscream.enums import *
-from lib.bluscream.extensions import *
+load("lib/bluscream/enums.py")
+load("lib/bluscream/extensions.py")
