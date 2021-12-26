@@ -1,7 +1,6 @@
 # coding=utf8
 if __name__ == "": from JsMacrosAC import *  # Autocomplete, not necessary
 logger = Chat.getLogger()
-from lib import *
 event_name = event.getEventName()
 logger.info(f"Executing {file.getName()} on event {event_name}")
 match event_name:
@@ -11,6 +10,7 @@ match event_name:
         Chat.toast("Bed End","Bed End")
     case "Key":
         Chat.log("Key: " + event_name)
+        from lib import *
         server = Server(World.getCurrentServerAddress())
         Chat.log(f"Port: {server.port}")
 

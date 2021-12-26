@@ -82,6 +82,10 @@ match event_name:
                         # Respond(f"{prefix}screen|gui|ui - Opens")
                         Respond(f"{prefix}fps - Gets client frames per second")
                         Respond(f"{prefix}tps - Gets server ticks per second")
+                        Respond(f"{prefix}baritone|bt|altoclef|ac")
+                        Respond(f"{prefix}gohome|home|night")
+                        Respond(f"{prefix}dotask|task|day")
+                        Respond(f"{prefix}cleartasks|ct")
                     case "about":
                         Respond(f"""JsMacros:
             OS: {platform.system()} {platform.release()}
