@@ -43,13 +43,13 @@ match event_name:
                     todt = timeOfDayT(World.getTimeOfDay())
                     wasBedTime = GlobalVars.getBoolean("is_bed_time")
                     if 12542 <= todt <= 12642 and not wasBedTime:
-                        GlobalVars.putBoolean('is_bed_time', True)
+                        GlobalVars.putBoolean("is_bed_time", True)
                         events["BED_START"].trigger()
                         task("task_bed_start")
                     elif 23460 <= todt <= 23500 and wasBedTime:
-                        GlobalVars.putBoolean('is_bed_time', False)
+                        GlobalVars.putBoolean("is_bed_time", False)
                         events["BED_END"].trigger()
-                        task("tast_bed_end")
+                        task("task_bed_end")
                     wasMonsterSpawnTime = GlobalVars.getBoolean("is_monster_spawn_time")
                     if 12869 <= todt <= 13069 and not wasMonsterSpawnTime:
                         GlobalVars.putBoolean('is_monster_spawn_time', True)

@@ -8,7 +8,7 @@ cheat = True
 
 # sJsMacros.runScript("workDirFix.py")
 import json
-altoclef_settings_file = r"S:\multimc\instances\Fabric 1.18.1\minecraft\altoclef_settings.json"
+altoclef_settings_file = r"C:\tools\multimc\instances\Fabric 1.18.1\minecraft\altoclef_settings.json"
 f = open(altoclef_settings_file, "r")
 ac = json.load(f)
 f.close()

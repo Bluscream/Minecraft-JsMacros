@@ -48,10 +48,10 @@ match event_name:
                     Chat.getLogger().warn(f"Was crashed: {GlobalVars.getString('crashed')}")
                     GlobalVars.remove("crashed")
                 else:
-                    # Chat.say("@gamer")
-                    GlobalVars.putString("task_bed_start", "#set disconnectOnArrival false;@test bed") # f"#set allowBreak false;#set allowPlace false;@goto {GlobalVars.getString('home')}"
+                    # Chat.say("@gamer") #
+                    GlobalVars.putString("task_bed_start", "@stop;#set disconnectOnArrival false;@test bed") # f"#set allowBreak false;#set allowPlace false;@goto {GlobalVars.getString('home')}"
                     Chat.log(f"Set task_bed_start to {GlobalVars.getString('task_bed_start')}")
-                    GlobalVars.putString("task_day", "#set allowBreak true;#set allowPlace true;@test stacked")
+                    GlobalVars.putString("task_day", "@stop;#set allowBreak true;#set allowPlace true;@test stacked")
                     Chat.log(f"Set task_day to {GlobalVars.getString('task_day')}")
                     # sleep(10)
                     # if GlobalVars.getBoolean('is_night'): task(GlobalVars.getString('task_night'))

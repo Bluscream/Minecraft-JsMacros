@@ -8,3 +8,4 @@ config/
 db/data.sqlite
 *.json
 */**/*.json
+*/**/*.pyc
