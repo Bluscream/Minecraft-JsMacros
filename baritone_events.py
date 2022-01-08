@@ -1,4 +1,4 @@
-# coding=utf8
+
 if __name__ == "": from JsMacrosAC import *  # Autocomplete, not necessary
 # Chat.getLogger().debug(f"Executing {file.getName()}")
 if event.getEventName() == "Key":

@@ -1,25 +1,29 @@
-# coding=utf8
 if __name__ == "": from JsMacrosAC import *  # Autocomplete, not necessary
 # Chat.getLogger().debug(f"Executing {file.getName()} on event {event_name}")
 def sleep(sec: int): Client.waitTick(sec * 20)
 sleep(2)
 
 cheat = True
+speed = 2
 
 # sJsMacros.runScript("workDirFix.py")
 import json
-altoclef_settings_file = r"C:\tools\multimc\instances\Fabric 1.18.1\minecraft\altoclef_settings.json"
+altoclef_settings_file = r"C:\tools\multimc\instances\Fabric 1.18.1\.minecraft\altoclef_settings.json"
 f = open(altoclef_settings_file, "r")
 ac = json.load(f)
 f.close()
 
 ac["bluscream"] = True
-
-# ac["speedHack"] = 1.5 if cheat else 0.0
-
 Chat.say(".enabledhax load-profile blu")
 
-# Chat.say(".t multiaura on")
+ac["speedHack"] = speed
+if speed:
+    Chat.say(f".setslider timer speed {speed}")
+    Chat.say(".t timer on")
+
+Chat.say(".t multiaura on")
+Chat.say(".setcheckbox autoeat eat_while_walking on")
+Chat.say(".t autoeat on")
 Chat.say(".t criticals on")
 Chat.say(".t autoarmor on")
 Chat.say(".t fullbright on")

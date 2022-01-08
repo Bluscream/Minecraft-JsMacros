@@ -1,9 +1,9 @@
-# coding=utf8
+
 if __name__ == "": from JsMacrosAC import *  # Autocomplete, not necessary
 event_name = event.getEventName()
-# Chat.getLogger().debug(f"Executing {file.getName()} on event {event_name}")
+Chat.getLogger().debug(f"Executing {file.getName()} on event {event_name}")
 match event_name:
-    case "ProfileLoad":
+    case "ProfileLoad"|"Key":
         if not GlobalVars.getBoolean("day_night_event.py"):
             Chat.log(f"Executing {file.getName()}")
             GlobalVars.putBoolean('day_night_event.py', True)

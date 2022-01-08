@@ -1,4 +1,4 @@
-# coding=utf8
+
 if __name__ == "": from JsMacrosAC import *  # Autocomplete, not necessary
 logger = Chat.getLogger()
 event_name = event.getEventName()

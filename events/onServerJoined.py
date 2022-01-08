@@ -1,7 +1,5 @@
-# coding=utf8
-if __name__ == "": from JsMacrosAC import *  # Autocomplete, not necessary
+if __name__ == "": from JsMacrosAC import *
 event_name = event.getEventName()
-# Chat.getLogger().debug(f"Executing {file.getName()} on event {event_name}")
 match event_name:
     case "JoinServer":
         GlobalVars.putBoolean("server_joining", True)
@@ -42,26 +40,20 @@ match event_name:
         match hostname.lower():
             case "play.tasmantismc.com":
                 GlobalVars.putString("home", "9191 63 -12202") # 8958 -12434
+                Chat.log(f"Set home to {GlobalVars.getString('home')}")
                 JsMacros.runScript("wurst_altoclef.py")
                 Chat.say("#set censorCoordinates true")
                 if GlobalVars.getString("crashed"):
                     Chat.getLogger().warn(f"Was crashed: {GlobalVars.getString('crashed')}")
                     GlobalVars.remove("crashed")
                 else:
-                    # Chat.say("@gamer") #
-                    GlobalVars.putString("task_bed_start", "@stop;#set disconnectOnArrival false;@test bed") # f"#set allowBreak false;#set allowPlace false;@goto {GlobalVars.getString('home')}"
+                    sleep(5)
+                    GlobalVars.putString("task_bed_start", "#cancel;@stop;#set disconnectOnArrival false;@test bed") # f"#set allowBreak false;#set allowPlace false;@goto {GlobalVars.getString('home')}"
                     Chat.log(f"Set task_bed_start to {GlobalVars.getString('task_bed_start')}")
-                    GlobalVars.putString("task_day", "@stop;#set allowBreak true;#set allowPlace true;@test stacked")
+                    GlobalVars.putString("task_day", "#cancel;@stop;#set allowBreak true;#set allowPlace true;#explore")
                     Chat.log(f"Set task_day to {GlobalVars.getString('task_day')}")
-                    # sleep(10)
-                    # if GlobalVars.getBoolean('is_night'): task(GlobalVars.getString('task_night'))
-                    # else:
-                    # task(GlobalVars.getString('task_day'))
+                    Chat.say("#explore")
                 pass
             case _:
                 pass
-
-
-
-        # Chat.toast("onServerJoined", "Server Joined")
         GlobalVars.putBoolean("server_joining", False)
