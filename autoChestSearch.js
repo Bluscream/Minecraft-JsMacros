@@ -25,7 +25,7 @@ for (let x = posX - range; x < posX + range; x++) {
         if (double_containers.includes(block_id)) {
           let state = block.getRawBlockState()
           // if (state.get(ChestBlock.ChestType) == ChestType.LEFT) {
-          if (chest_types.includes(state.method_11654(ChestBlock.field_10770))) continue;
+          if (!chest_types.includes(state.method_11654(ChestBlock.field_10770))) continue;
         }
         Chat.log("Interacting with: " + block.toString());
         const yaw = player.getYaw();

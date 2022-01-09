@@ -31,11 +31,11 @@ match event_name:
             if player_count > 2: Chat.say(greeting.replace(", %s", ""))
             else: Chat.say(greeting % choice(players).getName())
 
-        Chat.say(".t SpeedNuker off", true)
-        Chat.say(".t Nuker off", true)
-        Chat.say(".t NukerLegit off", true)
-        Chat.say(".t AutoMine off", true)
-        Chat.say("#set renderCachedChunks false", true)
+        Chat.say(".t SpeedNuker off", True)
+        Chat.say(".t Nuker off", True)
+        Chat.say(".t NukerLegit off", True)
+        Chat.say(".t AutoMine off", True)
+        Chat.say("#set renderCachedChunks false", True)
 
         match hostname.lower():
             case "play.tasmantismc.com":
@@ -43,7 +43,7 @@ match event_name:
                 GlobalVars.putString("home", "8957 71 -12439") # 1148 63 -1525
                 Chat.log(f"Set home to {GlobalVars.getString('home')} {GlobalVars.getString('homedimension')}")
                 JsMacros.runScript("wurst_altoclef.py")
-                Chat.say("#set censorCoordinates true", true)
+                Chat.say("#set censorCoordinates true", True)
                 if GlobalVars.getString("crashed"):
                     Chat.getLogger().warn(f"Was crashed: {GlobalVars.getString('crashed')}")
                     GlobalVars.remove("crashed")
