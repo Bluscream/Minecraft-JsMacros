@@ -6,6 +6,10 @@ config/
 /data.sqlite
 .idea/
 db/data.sqlite
+*/**/*.pyc
+
 *.json
 */**/*.json
-*/**/*.pyc
+
+*/**/altoclef_settings.json
+*/**/sodium-extra-options.json
