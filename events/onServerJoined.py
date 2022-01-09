@@ -14,7 +14,7 @@ match event_name:
                     if (cmd.startswith("/sleep ")):
                         slp_time = cmd.replace("/sleep ", "")
                         sleep(int(slp_time))
-                    else: Chat.say(cmd)
+                    else: Chat.say(cmd, True)
 
         server = event.address.split("/")
         hostname = server[0]

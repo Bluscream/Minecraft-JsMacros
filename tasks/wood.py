@@ -15,14 +15,14 @@ match event_name:
                 # Chat.say("#set allowBreak false", True)
                 # Chat.say("#set allowPlace false", True)
                 # cmd = "@goto 9067 -12398 overworld"
-                # Chat.say(cmd)
+                # Chat.say(cmd, True)
                 # RecvMessage_event = JsMacros.waitForEvent("RecvMessage", JavaWrapper.methodToJava(is_finished)).context.releaseLock()
                 # Client.waitTick(2)
                 # Chat.toast("Altoclef Finished",cmd)
                 # Chat.say("#set allowBreak true", True)
                 # Chat.say("#set allowPlace true", True)
                 # cmd = "@get log 512"
-                # Chat.say(cmd)
+                # Chat.say(cmd, True)
             elif event.key == "key.keyboard.keypad.8":
                 Chat.say("#set disconnectOnArrival false", True)
                 Chat.say("#set allowBreak false", True)

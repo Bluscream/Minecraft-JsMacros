@@ -2,14 +2,23 @@
 if __name__ == "": from JsMacrosAC import *  # Autocomplete, not necessary
 logger = Chat.getLogger()
 event_name = event.getEventName()
-logger.info(f"Executing {file.getName()} on event {event_name}")
+# logger.info(f"Executing {file.getName()} on event {event_name}")
 match event_name:
     case "BED_START":
         Chat.toast("Bed Start","Bed Start")
     case "BED_END":
         Chat.toast("Bed End","Bed End")
-    case "Key":
-        pass
+    case "Key":# "DAY_START"|"":
+        if event.action == 1:
+            def sleep(sec: int): Client.waitTick(sec * 20)
+            def is_finished(RecvMessage_event): return any(x in RecvMessage_event.text.getString() for x in ["§rUser task FINISHED","§rStopped"])
+            if event.key == "key.keyboard.keypad.9":
+                for i in range(1,10):
+                    Chat.say(f"@goto {i} -12398 overworld", True)
+                    RecvMessage_event = JsMacros.waitForEvent("RecvMessage", JavaWrapper.methodToJava(is_finished)).context.releaseLock()
+                    Client.waitTick(2)
+                    Chat.toast("Altoclef Finished",f"@goto {i} -12398 overworld")
+                    sleep(2)
         # def sleep(sec: int): Client.waitTick(sec * 20)
         # def task(task: str):
         #     if not task: return
@@ -19,7 +28,7 @@ match event_name:
         #             if (cmd.startswith("/sleep ")):
         #                 slp_time = cmd.replace("/sleep ", "")
         #                 sleep(int(slp_time))
-        #             else: Chat.say(cmd)
+        #             else: Chat.say(cmd, True)
         # Chat.log("Key: " + event_name)
         # Chat.say("@goto 8957 71 -12448 overworld")
         # def is_finished(RecvMessage_event):
@@ -30,14 +39,12 @@ match event_name:
         
         # GlobalVars.putString("altoclef_tasks", "@goto 8957 71 -12432 overworld;@goto 8957 71 -12448 overworld")
 
-"""
-last = GlobalVars.getBoolean('is_night')
-timer = True
-while timer:
-    is_night = GlobalVars.getBoolean('is_night')
-    if (is_night != last):
-        last = is_night
-        if (is_night): Chat.log("is_night changed to true")
-        else: Chat.log("is_night changed to false")
-    Client.waitTick(20)
-"""
+# last = GlobalVars.getBoolean('is_night')
+# timer = True
+# while timer:
+#     is_night = GlobalVars.getBoolean('is_night')
+#     if (is_night != last):
+#         last = is_night
+#         if (is_night): Chat.log("is_night changed to true")
+#         else: Chat.log("is_night changed to false")
+#     Client.waitTick(20)

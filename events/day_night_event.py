@@ -7,23 +7,29 @@ match event_name:
         if not GlobalVars.getBoolean("day_night_event.py"):
             Chat.log(f"Executing {file.getName()}")
             GlobalVars.putBoolean('day_night_event.py', True)
-            def sleep(sec: int): Client.waitTick(sec * 20)
-
-            from math import floor
-            def timeOfDayT(tod: int): return tod % 24000 #  round(((tod / 24000) - floor(tod / 24000)) * 24000)
-
+            def sleep(sec: float): Client.waitTick(sec * 20.0)
+            def timeOfDayT(tod: int): return tod % 24000
+            def is_altoclef_finished(RecvMessage_event): return any(x in RecvMessage_event.text.getString() for x in ["§rUser task FINISHED","§rStopped"])
+            def is_baritone_finished(RecvMessage_event): return any(x in RecvMessage_event.text.getString() for x in [""])
             def task(task: str):
-                _task = GlobalVars.getString(task)
-                if not _task: return
-                for cmd in _task.split(";"):
+                if not task: return
+                for cmd in task.split(";"):
                     if cmd and cmd != "":
-                        Chat.log(f"[{_task}] Executing {cmd}")
-                        if cmd.startswith("/sleep "):
+                        Chat.log(f"[TASK] Executing {cmd}")
+                        lower = cmd.lower()
+                        if lower.startswith("/sleep "):
                             slp_time = cmd.replace("/sleep ", "")
-                            sleep(int(slp_time))
-                        elif cmd == "@wait":
-                            RecvMessage_event = JsMacros.once("RecvMessage", JavaWrapper.methodToJava(is_finished)).event
-                        else: Chat.say(cmd)
+                            sleep(float(slp_time))
+                        elif lower == "@wait":
+                            JsMacros.waitForEvent("RecvMessage", JavaWrapper.methodToJava(is_altoclef_finished)).context.releaseLock()
+                            context.releaseLock()
+                            Client.waitTick()
+                        elif lower == "#wait":
+                            Chat.log("ERROR: #wait is not implemented")
+                            # JsMacros.waitForEvent("RecvMessage", JavaWrapper.methodToJava(is_baritone_finished)).context.releaseLock()
+                            context.releaseLock()
+                            Client.waitTick()
+                        else: Chat.say(cmd, True)
 
 
             events = {
@@ -49,35 +55,35 @@ match event_name:
                         GlobalVars.putBoolean("is_bed_time", True)
                         events["BED_START"].trigger()
                         Chat.toast("BED_START", f"is_bed_time: {GlobalVars.getBoolean('is_bed_time')}")
-                        task("task_bed_start")
-                    elif 23460 <= todt <= 23500 and wasBedTime:
+                        task(GlobalVars.getString("task_bed_start"))
+                    elif 23460 <= todt <= 23500 and wasBedTime: # 5:30
                         GlobalVars.putBoolean("is_bed_time", False)
                         events["BED_END"].trigger()
                         Chat.toast("BED_END", f"is_bed_time: {GlobalVars.getBoolean('is_bed_time')}")
-                        task("task_bed_end")
+                        task(GlobalVars.getString("task_bed_end"))
                     wasMonsterSpawnTime = GlobalVars.getBoolean("is_monster_spawn_time")
                     if 12869 <= todt <= 13069 and not wasMonsterSpawnTime:
                         GlobalVars.putBoolean('is_monster_spawn_time', True)
                         events["MONSTER_SPAWN_START"].trigger()
                         Chat.toast("MONSTER_SPAWN_START", f"is_monster_spawn_time: {GlobalVars.getBoolean('is_monster_spawn_time')}")
-                        task("task_monster_spawn_start")
+                        task(GlobalVars.getString("task_monster_spawn_start"))
                     elif 22931 <= todt <= 23131 and wasMonsterSpawnTime:
                         GlobalVars.putBoolean('is_monster_spawn_time', False)
                         events["MONSTER_SPAWN_END"].trigger()
                         Chat.toast("MONSTER_SPAWN_END", f"is_monster_spawn_time: {GlobalVars.getBoolean('is_monster_spawn_time')}")
-                        task("task_monster_spawn_end")
+                        task(GlobalVars.getString("task_monster_spawn_end"))
                     wasNight = GlobalVars.getBoolean('is_night')
                     if todt >= 13000 and not wasNight:
                         GlobalVars.putBoolean('is_night', True)
                         events["NIGHT_START"].trigger()
                         Chat.toast("NIGHT_START", f"is_night: {GlobalVars.getBoolean('is_night')}")
-                        task("task_night")
+                        task(GlobalVars.getString("task_night"))
                     elif todt < 13000 and wasNight:
                         GlobalVars.putBoolean('is_night', False)
                         events["DAY_START"].trigger()
                         Chat.toast("DAY_START", f"is_night: {GlobalVars.getBoolean('is_night')}")
-                        task("task_day")
-                    sleep(.5)
+                        task(GlobalVars.getString("task_day"))
+                    sleep(.25)
                 except Exception as e:
                     # Chat.log(f"day_night_event Error: {e}")
                     Chat.getLogger().error(traceback.format_exc())
