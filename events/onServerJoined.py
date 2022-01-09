@@ -40,11 +40,13 @@ match event_name:
                     GlobalVars.remove("crashed")
                 else:
                     sleep(5)
-                    GlobalVars.putString("task_day", f"#set allowBreak true;#set allowPlace true;@goto 8957 71 -12439 overworld;@wait;@get log 2000")
+                    GlobalVars.putString("task_day", f"#set allowBreak true;#set allowPlace true;@goto 9068 -12401 overworld;@wait;@get log 2000")
                     Chat.log(f"Set task_day to {GlobalVars.getString('task_day')}")
-                    GlobalVars.putString("task_bed_start", f"@test bed;@wait;@goto {GlobalVars.getString('home')} {GlobalVars.getString('homedimension')}")
-                    # Chat.log(f"Set task_bed_start to {GlobalVars.getString('task_bed_start')}")
-                    # GlobalVars.putString("task_night", f"@stop;#cancel;#set allowBreak false;#set allowPlace false
+                    homestr = GlobalVars.getString('home').split(" ")
+                    homestr = f"{homestr[0]} {homestr[2]} {GlobalVars.getString('homedimension')}"
+                    GlobalVars.putString("task_bed_start", f"#set allowBreak false;#set allowPlace true;@test bed;@wait;@goto {homestr}")
+                    Chat.log(f"Set task_bed_start to {GlobalVars.getString('task_bed_start')}")
+                    # GlobalVars.putString("task_night", f"@stop;#cancel;
                     Chat.log(f"Set task_night to {GlobalVars.getString('task_night')}")
                     # task(GlobalVars.getString('task_day'))
                 pass

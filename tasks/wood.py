@@ -27,7 +27,7 @@ match event_name:
                 Chat.say("#set disconnectOnArrival false", True)
                 Chat.say("#set allowBreak false", True)
                 Chat.say("#set allowPlace false", True)
-                cmd = f"@goto 8957 71 -12439 overworld" # 9068 -12401
+                cmd = f"@goto 8957 71 -12439 overworld" # 
                 Chat.say(cmd, True)
                 JsMacros.waitForEvent("RecvMessage", JavaWrapper.methodToJava(is_finished)).context.releaseLock()
                 context.releaseLock()
