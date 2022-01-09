@@ -6,11 +6,17 @@ var posY = Math.floor(player.getY()) + 1; //plus 1 to get the head position, use
 var posZ = Math.floor(player.getZ());
 const range = 4; //can technically go up to 7, but 3 to 4 is the vanilla range
 const containers = [
-    "minecraft:chest", "minecraft:trapped_chest" , "minecraft:barrel", "minecraft:chest_minecart"
-    // "minecraft:furnace","minecraft:furnace_minecart","minecraft:blast_furnace"
+  "minecraft:chest",
+  "minecraft:trapped_chest",
+  "minecraft:barrel",
+  "minecraft:chest_minecart",
+  // "minecraft:furnace","minecraft:furnace_minecart","minecraft:blast_furnace"
 ];
-const double_containers = [ "minecraft:chest", "minecraft:trapped_chest" ]
-const chest_types = [ ChestType.field_12569/*single*/, ChestType.field_12574/*left*/]
+const double_containers = ["minecraft:chest", "minecraft:trapped_chest"];
+const chest_types = [
+  ChestType.field_12569 /*single*/,
+  ChestType.field_12574 /*left*/,
+];
 //https://jsmacros.wagyourtail.xyz/?/examples/toggle.html
 //run this loop every time the player position changes or if GlobalVar is false
 // let looking_at = Player.rayTraceBlock(4, false);
@@ -23,15 +29,20 @@ for (let x = posX - range; x < posX + range; x++) {
       let block_id = block.getId();
       if (containers.includes(block_id)) {
         if (double_containers.includes(block_id)) {
-          let state = block.getRawBlockState()
+          let state = block.getRawBlockState();
           // if (state.get(ChestBlock.ChestType) == ChestType.LEFT) {
+<<<<<<< HEAD
           if (!chest_types.includes(state.method_11654(ChestBlock.field_10770))) continue;
+=======
+          if (chest_types.includes(state.method_11654(ChestBlock.field_10770)))
+            continue;
+>>>>>>> b4831a95f55669336e2c010c9b9084480ddb273d
         }
         Chat.log("Interacting with: " + block.toString());
         const yaw = player.getYaw();
         const pitch = player.getPitch();
         //look at
-        player.lookAt(x + .5, y + .5, z + .5);
+        player.lookAt(x + 0.5, y + 0.5, z + 0.5);
         Client.waitTick();
         let looking_at = Player.rayTraceBlock(4, false);
         if (!looking_at) continue;
@@ -67,7 +78,7 @@ for (let x = posX - range; x < posX + range; x++) {
           Client.waitTick();
         }
         //look back
-        player.lookAt(yaw, pitch)
+        player.lookAt(yaw, pitch);
       }
     }
   }
