@@ -1,5 +1,5 @@
-context.releaseLock()
-Client.waitTick(40)
+context.releaseLock();
+Client.waitTick(40);
 
 const ChestType = Java.type("net.minecraft.class_2745");
 const ChestBlock = Java.type("net.minecraft.class_2281");
@@ -19,7 +19,6 @@ const chest_types = [
 ];
 var searchedChests = [];
 
-
 //https://jsmacros.wagyourtail.xyz/?/examples/toggle.html
 //run this loop every time the player position changes or if GlobalVar is false
 // let looking_at = Player.rayTraceBlock(4, false);
@@ -37,7 +36,10 @@ while (true) {
         if (containers.includes(block_id)) {
           if (double_containers.includes(block_id)) {
             let state = block.getRawBlockState();
-            if (!chest_types.includes(state.method_11654(ChestBlock.field_10770))) continue; // state.get(ChestBlock.ChestType)
+            if (
+              !chest_types.includes(state.method_11654(ChestBlock.field_10770))
+            )
+              continue; // state.get(ChestBlock.ChestType)
           }
           let pos_str = x + "," + y + "," + z;
           if (searchedChests.includes(pos_str)) continue;
