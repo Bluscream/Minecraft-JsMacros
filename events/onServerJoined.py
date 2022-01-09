@@ -6,15 +6,6 @@ match event_name:
         GlobalVars.putString("server", event.address)
 
         def sleep(sec: int): Client.waitTick(sec * 20)
-        def task(task: str):
-            if not task: return
-            for cmd in task.split(";"):
-                if cmd and cmd != "":
-                    Chat.log(f"[{type}] Executing {cmd}")
-                    if (cmd.startswith("/sleep ")):
-                        slp_time = cmd.replace("/sleep ", "")
-                        sleep(int(slp_time))
-                    else: Chat.say(cmd, True)
 
         server = event.address.split("/")
         hostname = server[0]
@@ -49,11 +40,11 @@ match event_name:
                     GlobalVars.remove("crashed")
                 else:
                     sleep(5)
-                    # GlobalVars.putString("task_day", f"#set allowBreak true;#set allowPlace true;@get log 2000")
+                    GlobalVars.putString("task_day", f"#set allowBreak true;#set allowPlace true;@goto 8957 71 -12439 overworld;@wait;@get log 2000")
                     Chat.log(f"Set task_day to {GlobalVars.getString('task_day')}")
-                    # GlobalVars.putString("task_bed_start", f"@stop;#cancel;#set disconnectOnArrival false;@test bed;/sleep 10;@stop;#cancel;@goto {GlobalVars.getString("home")};#set disconnectOnArrival true")
+                    GlobalVars.putString("task_bed_start", f"@test bed;@wait;@goto {GlobalVars.getString('home')} {GlobalVars.getString('homedimension')}")
                     # Chat.log(f"Set task_bed_start to {GlobalVars.getString('task_bed_start')}")
-                    # GlobalVars.putString("task_night", f"@stop;#cancel;#set allowBreak false;#set allowPlace false;@goto {GlobalVars.getString('home')} {GlobalVars.getString('homedimension')}")
+                    # GlobalVars.putString("task_night", f"@stop;#cancel;#set allowBreak false;#set allowPlace false
                     Chat.log(f"Set task_night to {GlobalVars.getString('task_night')}")
                     # task(GlobalVars.getString('task_day'))
                 pass

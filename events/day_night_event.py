@@ -83,6 +83,10 @@ match event_name:
                         events["DAY_START"].trigger()
                         Chat.toast("DAY_START", f"is_night: {GlobalVars.getBoolean('is_night')}")
                         task(GlobalVars.getString("task_day"))
+                    taskNow = GlobalVars.getBoolean("task_now")
+                    if taskNow:
+                        GlobalVars.remove("task_now")
+                        task(taskNow)
                     sleep(.25)
                 except Exception as e:
                     # Chat.log(f"day_night_event Error: {e}")
