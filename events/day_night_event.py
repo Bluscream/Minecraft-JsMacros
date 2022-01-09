@@ -7,7 +7,7 @@ match event_name:
         if not GlobalVars.getBoolean("day_night_event.py"):
             Chat.log(f"Executing {file.getName()}")
             GlobalVars.putBoolean('day_night_event.py', True)
-            def sleep(sec: float): Client.waitTick(sec * 20.0)
+            def sleep(sec: float): Client.waitTick(int(sec * 20.0))
             def timeOfDayT(tod: int): return tod % 24000
             def is_altoclef_finished(RecvMessage_event): return any(x in RecvMessage_event.text.getString() for x in ["§rUser task FINISHED","§rStopped"])
             def is_baritone_finished(RecvMessage_event): return any(x in RecvMessage_event.text.getString() for x in [""])
@@ -17,10 +17,11 @@ match event_name:
                     if cmd and cmd != "":
                         Chat.log(f"[TASK] Executing {cmd}")
                         lower = cmd.lower()
+                        Chat.say(f"\"{lower}\"")
                         if lower.startswith("/sleep "):
                             slp_time = cmd.replace("/sleep ", "")
                             sleep(float(slp_time))
-                        elif lower == "@wait":
+                        elif lower == "wait":
                             JsMacros.waitForEvent("RecvMessage", JavaWrapper.methodToJava(is_altoclef_finished)).context.releaseLock()
                             context.releaseLock()
                             Client.waitTick()
@@ -83,7 +84,7 @@ match event_name:
                         events["DAY_START"].trigger()
                         Chat.toast("DAY_START", f"is_night: {GlobalVars.getBoolean('is_night')}")
                         task(GlobalVars.getString("task_day"))
-                    taskNow = GlobalVars.getBoolean("task_now")
+                    taskNow = GlobalVars.getString("task_now")
                     if taskNow:
                         GlobalVars.remove("task_now")
                         task(taskNow)

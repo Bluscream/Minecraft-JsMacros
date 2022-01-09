@@ -37,16 +37,6 @@ match event_name:
                     case _: return GlobalVars.getObject(name)
             return None
 
-        def task(task: str):
-            if not task: return
-            for cmd in task.split(";"):
-                if cmd and cmd != "":
-                    Chat.log(f"[{type}] Executing {cmd}")
-                    if (cmd.startswith("/sleep ")):
-                        slp_time = cmd.replace("/sleep ", "")
-                        sleep(int(slp_time))
-                    else: Chat.say(cmd)
-
         message = copy(event.message)
         if message.startswith(prefix):
             event.message = ""
@@ -171,13 +161,12 @@ match event_name:
                         Respond(f"last_altoclef_task: {GlobalVars.getString('last_altoclef_task')}")
                     case "gohome"|"home"|"night":
                         if len(args) > 0: GlobalVars.putString("task_night", ' '.join(args))
-                        else: task(GlobalVars.getString("task_night"))
+                        else: GlobalVars.putString("task_now", GlobalVars.getString('task_night'))
                     case "dotask"|"task"|"day":
                         if len(args) > 0: GlobalVars.putString("task_day", ' '.join(args))
-                        else: task(GlobalVars.getString("task_day"))
+                        else: GlobalVars.putString("task_now", GlobalVars.getString('task_day'))
                     case "cleartasks"|"ct":
-                        GlobalVars.putString("task_day", '')
-                        GlobalVars.putString("task_night", '')
+                        for t in ["task_day","task_night","task_now","task_bed_start","task_bed_end","task_monster_spawn_start","task_monster_spawn_end"]: GlobalVars.remove(t)
                         Respond("Cleared tasks")
                     case _:
                         Respond("Unknown command")
