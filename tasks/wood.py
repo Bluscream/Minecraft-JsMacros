@@ -1,17 +1,13 @@
 
 if __name__ == "": from JsMacrosAC import *  # Autocomplete, not necessary
-from json import dumps
-from datetime import datetime
-logger = Chat.getLogger()
 event_name = event.getEventName()
-def sleep(sec: int): Client.waitTick(sec * 20)
-def is_finished(RecvMessage_event): return any(x in RecvMessage_event.text.getString() for x in ["§rUser task FINISHED","§rStopped"])
 match event_name:
     case "NIGHT_START":
         Chat.toast("NIGHT_START","")
     case "JoinServer"|"Key":# "DAY_START"|"":
-        Chat.getLogger().info(event)
         if event.action == 1:
+            def sleep(sec: int): Client.waitTick(sec * 20)
+            def is_finished(RecvMessage_event): return any(x in RecvMessage_event.text.getString() for x in ["§rUser task FINISHED","§rStopped"])
             if event.key == "key.keyboard.keypad.7":
                 pass
                 # sleep(6)
@@ -31,15 +27,10 @@ match event_name:
                 Chat.say("#set disconnectOnArrival false", True)
                 Chat.say("#set allowBreak false", True)
                 Chat.say("#set allowPlace false", True)
-                cmd = f"@goto 9068 -12401 overworld"
+                cmd = f"@goto 8957 71 -12439 overworld" # 9068 -12401
                 Chat.say(cmd, True)
-                # context.releaseLock()
-                # JsMacros.waitForEvent("RecvMessage")
-                Chat.say(datetime.now(), True)
                 JsMacros.waitForEvent("RecvMessage", JavaWrapper.methodToJava(is_finished)).context.releaseLock()
-                Chat.say(datetime.now(), True)
                 context.releaseLock()
-                # Client.waitTick()
+                Client.waitTick()
                 Chat.toast("Altoclef Finished",cmd)
                 Chat.say("@test bed", True)
-                Chat.say("geht", True)
