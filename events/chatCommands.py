@@ -118,10 +118,10 @@ match event_name:
                         match dim:
                             case "nether":
                                 Respond(f"[{c}5Nether{c}r] X: {pos.x} Y: {pos.y} Z: {pos.z}")
-                                Respond(f"[Overworld] X: {pos.x/8} Y: {pos.y} Z: {pos.z/8}")
+                                Respond(f"[Overworld] X: {pos.x*8} Y: {pos.y} Z: {pos.z*8}")
                             case _:
                                 Respond(f"[Overworld] X: {pos.x} Y: {pos.y} Z: {pos.z}")
-                                Respond(f"[{c}5Nether{c}r] X: {pos.x*8} Y: {pos.y} Z: {pos.z*8}")
+                                Respond(f"[{c}5Nether{c}r] X: {pos.x/8} Y: {pos.y} Z: {pos.z/8}")
                     case "exec":
                         for command in arg_str.split(";"):
                             Respond(f"Executing {command}")

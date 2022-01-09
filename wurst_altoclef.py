@@ -4,73 +4,81 @@ def sleep(sec: int): Client.waitTick(sec * 20)
 sleep(2)
 
 cheat = True
-speed = 2
+speed = 0
 
 # sJsMacros.runScript("workDirFix.py")
 import json
-altoclef_settings_file = r"C:\tools\multimc\instances\Fabric 1.18.1\.minecraft\altoclef_settings.json"
+altoclef_settings_file = r'G:\OneDrive\Games\Minecraft\altoclef_settings.json'
 f = open(altoclef_settings_file, "r")
 ac = json.load(f)
 f.close()
 
 ac["bluscream"] = True
-Chat.say(".enabledhax load-profile blu")
+Chat.say(".enabledhax load-profile altoclef", true)
 
 ac["speedHack"] = speed
 if speed:
     Chat.say(f".setslider timer speed {speed}")
-    Chat.say(".t timer on")
+    Chat.say(".t timer on", true)
+else: Chat.say(".t timer off", true)
 
-Chat.say(".t multiaura on")
-Chat.say(".setcheckbox autoeat eat_while_walking on")
-Chat.say(".t autoeat on")
-Chat.say(".t criticals on")
-Chat.say(".t autoarmor on")
-Chat.say(".t fullbright on")
-Chat.say(".t AutoLeave off")
+Chat.say(".t autofarm on", true)
+Chat.say(".t multiaura on", true)
+Chat.say(".t snowshoe off", true)
+
+Chat.say(".setslider nuker range 2.1", true)
+Chat.say(".setmode nuker mode multiid", true)
+Chat.say(".t nuker on", true)
+
+Chat.say(".setcheckbox autoeat eat_while_walking on", true)
+Chat.say(".t autoeat on", true)
+Chat.say(".t criticals on", true)
+Chat.say(".t autoarmor on", true)
+Chat.say(".t fullbright on", true)
+Chat.say(".t AutoLeave off", true)
 # Chat.say(f'.t nofall {"on" if cheat else "off"}')
 # if not cheat: Chat.toast(f"Cheat is off!", "!!! NOFALL DISABLED !!!")
-Chat.say(".t creativeflight on")
+Chat.say(".t creativeflight on", true)
 
-Chat.say("#set antiCheatCompatibility false")
+Chat.say("#set antiCheatCompatibility false", true)
 Chat.say(f"#set allowOnlyExposedOres {not cheat}")
-Chat.say("#set allowBreak true")
-Chat.say("#set allowPlace true")
-Chat.say("#set disconnectOnArrival false")
-Chat.say("#set freeLook false")
+Chat.say("#set allowBreak true", true)
+Chat.say("#set allowPlace true", true)
+Chat.say("#set disconnectOnArrival false", true)
+Chat.say("#set freeLook false", true)
 Chat.say(f"#set legitMine {not cheat}")
 Chat.say(f"#set legitMineIncludeDiagonals {not cheat}")
 
-Chat.say(".t autorespawn on")
+Chat.say(".t autorespawn on", true)
 ac["autoRespawn"] = False
 
-Chat.say(".t autoreconnect on")
+Chat.say(".t autoreconnect on", true)
 ac["autoReconnect"] = False
 
-Chat.say(".t autoeat on")
+Chat.say(".t autoeat on", true)
 ac["autoEat"] = True
 
-Chat.say(".t autosprint off")
-Chat.say("#set allowSprint true")
-Chat.say("#set sprintInWater true")
+Chat.say(".t autosprint off", true)
+Chat.say("#set allowSprint true", true)
+Chat.say("#set sprintInWater true", true)
 
-Chat.say(".t autotool off")
-Chat.say(".setcheckbox autotool switch_back off")
-Chat.say(".t autosword off")
-Chat.say("#set disableAutoTool false")
-Chat.say("#set assumeExternalAutoTool false")
+Chat.say(".t autotool on", true)
+Chat.say(".setcheckbox autotool switch_back off", true)
+Chat.say(".t autosword on", true)
+Chat.say("#set disableAutoTool false", true)
+Chat.say("#set assumeExternalAutoTool false", true)
 
-Chat.say(".t safewalk off")
-Chat.say("#set assumeSafeWalk false")
+Chat.say(".t safewalk off", true)
+Chat.say("#set assumeSafeWalk false", true)
 
-# Chat.say(".t step on")
-# Chat.say(".setmode step mode simple")
-# Chat.say(".setslider step height 1")
-# Chat.say("#set assumeStep true")
+# Chat.say(".t step on", true)
+# Chat.say(".setmode step mode simple", true)
+# Chat.say(".setslider step height 1", true)
+# Chat.say("#set assumeStep true", true)
 
-Chat.say(".t jesus on")
-Chat.say("#set assumeWalkOnLava true")
-Chat.say("#set assumeWalkOnWater true")
+Chat.say(".t jesus on", true)
+Chat.say("#set assumeWalkOnLava true", true)
+Chat.say("#set assumeWalkOnWater true", true)
 radius = 17
 ac["areasToProtect"] = [{"start": f"-{radius}, 0, -{radius}", "end": f"{radius}, 255, {radius}"}]
 Chat.log(f"Altoclef protection area set to {radius} blocks around spawn.")
@@ -85,6 +93,5 @@ if home:
 
 with open(altoclef_settings_file, "w") as f:
     json.dump(ac, f, indent=4)
-# JsMacros.runScript("workDirFix.py")
-Chat.say("@reload_settings")
-
+Client.waitTick()
+JsMacros.runScript("workDirFix.py") # Chat.say("@reload_settings", true)

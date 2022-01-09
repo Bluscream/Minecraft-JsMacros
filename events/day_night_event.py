@@ -3,7 +3,7 @@ if __name__ == "": from JsMacrosAC import *  # Autocomplete, not necessary
 event_name = event.getEventName()
 Chat.getLogger().debug(f"Executing {file.getName()} on event {event_name}")
 match event_name:
-    case "ProfileLoad"|"Key":
+    case "ProfileLoad"|"Key"|"JoinServer":
         if not GlobalVars.getBoolean("day_night_event.py"):
             Chat.log(f"Executing {file.getName()}")
             GlobalVars.putBoolean('day_night_event.py', True)
@@ -18,9 +18,11 @@ match event_name:
                 for cmd in _task.split(";"):
                     if cmd and cmd != "":
                         Chat.log(f"[{_task}] Executing {cmd}")
-                        if (cmd.startswith("/sleep ")):
+                        if cmd.startswith("/sleep "):
                             slp_time = cmd.replace("/sleep ", "")
                             sleep(int(slp_time))
+                        elif cmd == "@wait":
+                            RecvMessage_event = JsMacros.once("RecvMessage", JavaWrapper.methodToJava(is_finished)).event
                         else: Chat.say(cmd)
 
 
@@ -38,6 +40,7 @@ match event_name:
                 events[event].registerEvent()
 
             timer = True
+            import traceback
             while timer:
                 try:
                     todt = timeOfDayT(World.getTimeOfDay())
@@ -45,32 +48,37 @@ match event_name:
                     if 12542 <= todt <= 12642 and not wasBedTime:
                         GlobalVars.putBoolean("is_bed_time", True)
                         events["BED_START"].trigger()
+                        Chat.toast("BED_START", f"is_bed_time: {GlobalVars.getBoolean('is_bed_time')}")
                         task("task_bed_start")
                     elif 23460 <= todt <= 23500 and wasBedTime:
                         GlobalVars.putBoolean("is_bed_time", False)
                         events["BED_END"].trigger()
+                        Chat.toast("BED_END", f"is_bed_time: {GlobalVars.getBoolean('is_bed_time')}")
                         task("task_bed_end")
                     wasMonsterSpawnTime = GlobalVars.getBoolean("is_monster_spawn_time")
                     if 12869 <= todt <= 13069 and not wasMonsterSpawnTime:
                         GlobalVars.putBoolean('is_monster_spawn_time', True)
                         events["MONSTER_SPAWN_START"].trigger()
+                        Chat.toast("MONSTER_SPAWN_START", f"is_monster_spawn_time: {GlobalVars.getBoolean('is_monster_spawn_time')}")
                         task("task_monster_spawn_start")
                     elif 22931 <= todt <= 23131 and wasMonsterSpawnTime:
                         GlobalVars.putBoolean('is_monster_spawn_time', False)
                         events["MONSTER_SPAWN_END"].trigger()
+                        Chat.toast("MONSTER_SPAWN_END", f"is_monster_spawn_time: {GlobalVars.getBoolean('is_monster_spawn_time')}")
                         task("task_monster_spawn_end")
                     wasNight = GlobalVars.getBoolean('is_night')
                     if todt >= 13000 and not wasNight:
                         GlobalVars.putBoolean('is_night', True)
                         events["NIGHT_START"].trigger()
-                        Chat.toast("Good night", "Zzzzz")
+                        Chat.toast("NIGHT_START", f"is_night: {GlobalVars.getBoolean('is_night')}")
                         task("task_night")
                     elif todt < 13000 and wasNight:
                         GlobalVars.putBoolean('is_night', False)
                         events["DAY_START"].trigger()
-                        Chat.log("Good morning", "")
+                        Chat.toast("DAY_START", f"is_night: {GlobalVars.getBoolean('is_night')}")
                         task("task_day")
-                    sleep(1)
+                    sleep(.5)
                 except Exception as e:
-                    Chat.log(f"Error: {e}")
+                    # Chat.log(f"day_night_event Error: {e}")
+                    Chat.getLogger().error(traceback.format_exc())
                     sleep(5)

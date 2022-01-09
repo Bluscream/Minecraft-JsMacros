@@ -31,29 +31,32 @@ match event_name:
             if player_count > 2: Chat.say(greeting.replace(", %s", ""))
             else: Chat.say(greeting % choice(players).getName())
 
-        Chat.say(".t SpeedNuker off")
-        Chat.say(".t Nuker off")
-        Chat.say(".t NukerLegit off")
-        Chat.say(".t AutoMine off")
-        Chat.say("#set renderCachedChunks false")
+        Chat.say(".t SpeedNuker off", true)
+        Chat.say(".t Nuker off", true)
+        Chat.say(".t NukerLegit off", true)
+        Chat.say(".t AutoMine off", true)
+        Chat.say("#set renderCachedChunks false", true)
 
         match hostname.lower():
             case "play.tasmantismc.com":
-                GlobalVars.putString("home", "9191 63 -12202") # 8958 -12434
-                Chat.log(f"Set home to {GlobalVars.getString('home')}")
+                GlobalVars.putString("homedimension", "overworld")
+                GlobalVars.putString("home", "8957 71 -12439") # 1148 63 -1525
+                Chat.log(f"Set home to {GlobalVars.getString('home')} {GlobalVars.getString('homedimension')}")
                 JsMacros.runScript("wurst_altoclef.py")
-                Chat.say("#set censorCoordinates true")
+                Chat.say("#set censorCoordinates true", true)
                 if GlobalVars.getString("crashed"):
                     Chat.getLogger().warn(f"Was crashed: {GlobalVars.getString('crashed')}")
                     GlobalVars.remove("crashed")
                 else:
                     sleep(5)
-                    GlobalVars.putString("task_bed_start", "#cancel;@stop;#set disconnectOnArrival false;@test bed") # f"#set allowBreak false;#set allowPlace false;@goto {GlobalVars.getString('home')}"
-                    Chat.log(f"Set task_bed_start to {GlobalVars.getString('task_bed_start')}")
-                    GlobalVars.putString("task_day", "#cancel;@stop;#set allowBreak true;#set allowPlace true;#explore")
+                    # GlobalVars.putString("task_day", f"#set allowBreak true;#set allowPlace true;@get log 2000")
                     Chat.log(f"Set task_day to {GlobalVars.getString('task_day')}")
-                    Chat.say("#explore")
+                    # GlobalVars.putString("task_bed_start", f"@stop;#cancel;#set disconnectOnArrival false;@test bed;/sleep 10;@stop;#cancel;@goto {GlobalVars.getString("home")};#set disconnectOnArrival true")
+                    # Chat.log(f"Set task_bed_start to {GlobalVars.getString('task_bed_start')}")
+                    # GlobalVars.putString("task_night", f"@stop;#cancel;#set allowBreak false;#set allowPlace false;@goto {GlobalVars.getString('home')} {GlobalVars.getString('homedimension')}")
+                    Chat.log(f"Set task_night to {GlobalVars.getString('task_night')}")
+                    # task(GlobalVars.getString('task_day'))
                 pass
             case _:
-                pass
+                pass # @get logs 512;@wait;@test bed
         GlobalVars.putBoolean("server_joining", False)

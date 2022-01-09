@@ -9,10 +9,26 @@ match event_name:
     case "BED_END":
         Chat.toast("Bed End","Bed End")
     case "Key":
-        Chat.log("Key: " + event_name)
-        from lib import *
-        server = Server(World.getCurrentServerAddress())
-        Chat.log(f"Port: {server.port}")
+        pass
+        # def sleep(sec: int): Client.waitTick(sec * 20)
+        # def task(task: str):
+        #     if not task: return
+        #     for cmd in task.split(";"):
+        #         if cmd and cmd != "":
+        #             Chat.log(f"[{type}] Executing {cmd}")
+        #             if (cmd.startswith("/sleep ")):
+        #                 slp_time = cmd.replace("/sleep ", "")
+        #                 sleep(int(slp_time))
+        #             else: Chat.say(cmd)
+        # Chat.log("Key: " + event_name)
+        # Chat.say("@goto 8957 71 -12448 overworld")
+        # def is_finished(RecvMessage_event):
+        #     message = RecvMessage_event.text.getString()
+        #     return "User task FINISHED" in message
+        # RecvMessage_event = JsMacros.waitForEvent("RecvMessage", JavaWrapper.methodToJava(is_finished)).event
+        # Chat.toast("finished","finished")
+        
+        # GlobalVars.putString("altoclef_tasks", "@goto 8957 71 -12432 overworld;@goto 8957 71 -12448 overworld")
 
 """
 last = GlobalVars.getBoolean('is_night')

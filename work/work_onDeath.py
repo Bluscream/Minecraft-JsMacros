@@ -20,3 +20,5 @@ match event_name:
                     else: Chat.say(cmd)
         if GlobalVars.getBoolean('is_bed_time'):
             task("task_bed_start")
+        elif not GlobalVars.getBoolean('is_night'):
+            task("task_day")
