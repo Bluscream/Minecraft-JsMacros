@@ -48,12 +48,18 @@ for (let x = posX - range; x < posX + range; x++) {
         let inv = Player.openInventory();
         //JsMacros.waitForEvent("OpenScreen") //can be problematic if the chest just doesn't open
         let map = inv.getMap().get("container");
-        Chat.log("Opened inventory: " + inv.getContainerTitle() + " (" + map.length +  " slots)");
+        Chat.log(
+          "Opened inventory: " +
+            inv.getContainerTitle() +
+            " (" +
+            map.length +
+            " slots)"
+        );
         for (let i = 0; i < map.length; i++) {
-            let item = inv.getSlot(map[i])
-            if (item.getItemID() !== "minecraft:air") {
-                Chat.log("[" + i.toString() + "] " + item.toString());
-            }
+          let item = inv.getSlot(map[i]);
+          if (item.getItemID() !== "minecraft:air") {
+            Chat.log("[" + i.toString() + "] " + item.toString());
+          }
         }
         Client.waitTick();
         inv.close();
