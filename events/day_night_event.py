@@ -17,7 +17,6 @@ match event_name:
                     if cmd and cmd != "":
                         Chat.log(f"[TASK] Executing {cmd}")
                         lower = cmd.lower()
-                        Chat.say(f"\"{lower}\"")
                         if lower.startswith("/sleep "):
                             slp_time = cmd.replace("/sleep ", "")
                             sleep(float(slp_time))
