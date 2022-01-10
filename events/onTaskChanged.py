@@ -16,6 +16,7 @@ match event_name:
             for task in tasks.strip().strip(";").split(";"):
                 if task and task != "":
                     Chat.log(f"[TASK] Executing {task}")
+                    Chat.getLogger().info(f"[TASK] Executing {task}")
                     GlobalVars.putString('last_task', task)
                     command = task.split(" ")
                     cmd = command[0]
@@ -25,8 +26,7 @@ match event_name:
                         case "/sleep": Client.waitTick(int(args[1]))
                         case "@@wait": wait_for_altoclef()
                         case "@@pickup":
-                            range = int(args[0])
-                            Chat.log("range: " + str(range))
+                            range = int(args[0]) if len(args) > 0 else 0
                             playerPos = Player.getPlayer().getPos()
                             def simplePos(pos): return f"{int(pos.getX())} {int(pos.getY())} {int(pos.getZ())}"
                             items = []
@@ -39,7 +39,7 @@ match event_name:
                                 for item in items:
                                     Chat.say(f"@goto {simplePos(item.getPos())}", True)
                                     wait_for_altoclef()
-                        case _: Chat.say(cmd, True)
+                        case _: Chat.say(task, True)
         task(GlobalVars.getString("task_now"))
         Chat.log("[JSMacros] Task Finished!")
         GlobalVars.remove("task_now")

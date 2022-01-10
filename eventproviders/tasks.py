@@ -24,11 +24,7 @@ match event_name:
                 try:
                     taskNow = GlobalVars.getString("task_now")
                     if taskNow and taskNow != last_task_now:
-                        Chat.log("TASK CHANGED:")
-                        Chat.log(f"OLD: {last_task_now}")
-                        Chat.log(f"NEW: {taskNow}")
                         last_task_now = taskNow
-                        Chat.log("triggering TASK_CHANGED")
                         event.trigger()
                     sleep(1)
                 except Exception as e:
