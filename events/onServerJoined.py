@@ -50,7 +50,7 @@ match event_name:
                     workstr = f"{parsePos(GlobalVars.getString('work').split(' '))} {GlobalVars.getString('workdimension')}"
                     Chat.log(f"Set work to {workstr}")
                     
-                    GlobalVars.putString("task_day", f"#set allowBreak false;#set allowPlace false;@goto {workstr};@@wait;#set allowBreak true;#set allowPlace true;@get log 2000;@@wait;@@pickup")
+                    GlobalVars.putString("task_day", f"#set allowBreak false;#set allowPlace false;@goto {workstr};@@wait;#set allowBreak true;#set allowPlace true;@get log 256;@@wait;@@pickup")
                     Chat.log(f"Set task_day to {GlobalVars.getString('task_day')}")
                     # GlobalVars.putString("task_bed_start", 
                     # Chat.log(f"Set task_bed_start to {GlobalVars.getString('task_bed_start')}")

@@ -23,7 +23,7 @@ match event_name:
             while True:
                 try:
                     taskNow = GlobalVars.getString("task_now")
-                    if taskNow and taskNow != last_task_now:
+                    if taskNow != last_task_now:
                         last_task_now = taskNow
                         event.trigger()
                     sleep(1)
