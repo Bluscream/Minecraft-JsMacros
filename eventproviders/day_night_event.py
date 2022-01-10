@@ -1,11 +1,12 @@
 
 if __name__ == "": from JsMacrosAC import *  # Autocomplete, not necessary
-event_name = event.getEventName()
+event_name = (event.eventName if hasattr(event, 'eventName') else event.getEventName()) if event else "Manual"
 Chat.getLogger().debug(f"Executing {file.getName()} on event {event_name}")
 match event_name:
-    case "ProfileLoad"|"Key"|"JoinServer":
-        if not GlobalVars.getBoolean("day_night_event.py"):
-            GlobalVars.putBoolean('day_night_event.py', True)
+    case "ProfileLoad"|"Key"|"JoinServer"|"Manual":
+        was_run = GlobalVars.getBoolean(file.getName())
+        if not was_run or event_name in ["Key","Manual"]:
+            GlobalVars.putBoolean(file.getName(), True)
             def sleep(sec: float): Client.waitTick(int(sec * 20.0))
             def timeOfDayT(tod: int): return tod % 24000
             events = {
@@ -22,9 +23,9 @@ match event_name:
                 events[event] = JsMacros.createCustomEvent(event)
                 events[event].registerEvent()
 
-            timer = True
             import traceback
-            while timer:
+            while not World.isWorldLoaded(): sleep(5)
+            while True:
                 try:
                     todt = timeOfDayT(World.getTimeOfDay())
                     wasBedTime = GlobalVars.getBoolean("is_bed_time")

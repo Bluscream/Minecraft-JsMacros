@@ -1,5 +1,5 @@
 if __name__ == "": from JsMacrosAC import *
-event_name = event.getEventName()
+event_name = (event.eventName if hasattr(event, 'eventName') else event.getEventName()) if event else "Manual"
 match event_name:
     case "JoinServer":
         GlobalVars.putBoolean("server_joining", True)

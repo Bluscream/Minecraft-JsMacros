@@ -1,6 +1,6 @@
 
 if __name__ == "": from JsMacrosAC import *  # Autocomplete, not necessary
-event_name = event.getEventName()
+event_name = (event.eventName if hasattr(event, 'eventName') else event.getEventName()) if event else "Manual"
 # Chat.getLogger().debug(f"Executing {file.getName()} on event {event_name}")
 match event_name:
     case "SendMessage":
@@ -40,7 +40,8 @@ match event_name:
         message = copy(event.message)
         if message.startswith(prefix):
             event.message = ""
-            # history = Chat.getHistory()
+            history = Chat.getHistory()
+            history.getSent().add(message)
             # history.insertRecvText(message)
             # history.refreshVisible()
 
@@ -168,8 +169,13 @@ match event_name:
                     case "task":
                         if len(args) > 0: GlobalVars.putString("task_now", ' '.join(args))
                         else: Chat.log(GlobalVars.getString('task_now'))
+                    case "repeat":
+                        times = int(args.pop(0))
+                        Chat.log(f"Repeating task {times} times")
+                        Chat.log(' '.join(args))
+                        GlobalVars.putString("task_now", ' '.join(args) * times)
                     case "cleartasks"|"ct":
-                        for t in ["task_day","task_night","task_now","task_bed_start","task_bed_end","task_monster_spawn_start","task_monster_spawn_end"]: GlobalVars.remove(t)
+                        for t in ["task_now","task_day","task_night","task_now","task_bed_start","task_bed_end","task_monster_spawn_start","task_monster_spawn_end"]: GlobalVars.remove(t)
                         Respond("Cleared tasks")
                     case _:
                         Respond("Unknown command")
