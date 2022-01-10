@@ -162,9 +162,12 @@ match event_name:
                     case "gohome"|"home"|"night":
                         if len(args) > 0: GlobalVars.putString("task_night", ' '.join(args))
                         else: GlobalVars.putString("task_now", GlobalVars.getString('task_night'))
-                    case "dotask"|"task"|"day":
+                    case "dotask"|"day":
                         if len(args) > 0: GlobalVars.putString("task_day", ' '.join(args))
                         else: GlobalVars.putString("task_now", GlobalVars.getString('task_day'))
+                    case "task":
+                        if len(args) > 0: GlobalVars.putString("task_now", ' '.join(args))
+                        else: Chat.log(GlobalVars.getString('task_now'))
                     case "cleartasks"|"ct":
                         for t in ["task_day","task_night","task_now","task_bed_start","task_bed_end","task_monster_spawn_start","task_monster_spawn_end"]: GlobalVars.remove(t)
                         Respond("Cleared tasks")

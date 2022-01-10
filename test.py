@@ -10,15 +10,14 @@ match event_name:
         Chat.toast("Bed End","Bed End")
     case "Key":# "DAY_START"|"":
         if event.action == 1:
-            def sleep(sec: int): Client.waitTick(sec * 20)
-            def is_finished(RecvMessage_event): return any(x in RecvMessage_event.text.getString() for x in ["§rUser task FINISHED","§rStopped"])
             if event.key == "key.keyboard.keypad.9":
-                for i in range(1,10):
-                    Chat.say(f"@goto {i} -12398 overworld", True)
-                    RecvMessage_event = JsMacros.waitForEvent("RecvMessage", JavaWrapper.methodToJava(is_finished)).context.releaseLock()
-                    Client.waitTick(2)
-                    Chat.toast("Altoclef Finished",f"@goto {i} -12398 overworld")
-                    sleep(2)
+                Chat.say("@wait")
+                # for i in range(1,10):
+                #     Chat.say(f"@goto {i} -12398 overworld", True)
+                #     RecvMessage_event = JsMacros.waitForEvent("RecvMessage", JavaWrapper.methodToJava(is_finished)).context.releaseLock()
+                #     Client.waitTick(2)
+                #     Chat.toast("Altoclef Finished",f"@goto {i} -12398 overworld")
+                #     sleep(2)
         # def sleep(sec: int): Client.waitTick(sec * 20)
         # def task(task: str):
         #     if not task: return
