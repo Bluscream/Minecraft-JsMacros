@@ -13,4 +13,4 @@ match event_name:
         def AutoMagic(path: str, params = {}): Request.get(f"http://192.168.2.145:1122/{path}?{'&'.join([k+'='+quote_plus(v) for (k,v) in params.items()])}&password={environ.get('AMAPI_PW')}")
         AutoMagic("screen/on")
         Client.waitTick(10)
-        AutoMagic("notification/create", {"title": f"Disconnected from {server}", "bigmessage": str(datetime.now())})
+        AutoMagic("notification/create", {"title": f"Disconnected from {server}", "bigmessage": str(datetime.now()), "icon": "app.icon://com.mojang.minecraftpe"})

@@ -9,8 +9,10 @@ match event_name:
         from os import name as os_name
         from subprocess import check_call, Popen, PIPE
         from copy import copy
+        from re import search
 
         prefix = ","
+        regex = r".*<\d+:\d+> > ,(.*) [\[\d+x\]|\(\d+\)]*"
         c = "\u00A7"
 
         def Respond(msg: str, log: bool = False):
@@ -21,9 +23,10 @@ match event_name:
             for i in range(sec * 20):
                 Client.waitTick()
 
+        from pyperclip import copy as clip_copy
         def copy2clip(txt):
-            if os_name == 'nt': return
-            return check_call('echo '+txt.strip()+'|clip', shell=True)
+            clip_copy(txt)
+            Chat.log(f"[{c}2JsMacros{c}r] Copied {txt} to clipboard")
 
         def var(name: str):
             type_ = GlobalVars.getType(name)
@@ -38,8 +41,12 @@ match event_name:
             return None
 
         message = copy(event.message)
-        if message.startswith(prefix):
+        result = search(regex, message)
+        if message.startswith(prefix) or result:
+        # if message.startswith(prefix):
             event.message = ""
+            if result: message = result.group(1)
+            Chat.log(message)
             history = Chat.getHistory()
             history.getSent().add(message)
             # history.insertRecvText(message)
@@ -47,7 +54,7 @@ match event_name:
 
             Chat.log(f"> {message}")
             try:
-                copy2clip(message)
+                # copy2clip(message)
                 command = message[1:].split(" ")
                 cmd = command[0]
                 args = command[1:]
@@ -102,10 +109,14 @@ match event_name:
                     case "coords":
                         dim = World.getDimension().split(":")[-1]
                         pos = Player.getPlayer().getPos()
-                        if len(args) == 4: dim = args[3]
-                        if len(args) > 2: pos.x = float(args[0]); pos.y = float(args[1]); pos.z = float(args[2])
-                        elif len(args) == 2: pos.x = float(args[0]);pos.y = 0; pos.z = float(args[1])
+                        arg_cnt = len(args)
+                        if arg_cnt > 2:
+                            if arg_cnt == 4: dim = args[3]
+                            pos.x = float(args[0]); pos.y = float(args[1]); pos.z = float(args[2])
+                        elif arg_cnt == 2: pos.x = float(args[0]);pos.y = 0; pos.z = float(args[1])
                         pos.x = round(pos.x, 2); pos.y = round(pos.y, 2); pos.z = round(pos.z, 2)
+                        if arg_cnt == 1:
+                            if args[0].lower() == "copy": copy2clip(f"{pos.x} {pos.y} {pos.z}")
                         match dim:
                             case "nether":
                                 Respond(f"[{c}5Nether{c}r] X: {pos.x} Y: {pos.y} Z: {pos.z}")

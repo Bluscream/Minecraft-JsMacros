@@ -14,31 +14,28 @@ ac = json.load(f)
 f.close()
 
 ac["bluscream"] = True
-Chat.say(".enabledhax load-profile altoclef", True)
+Chat.say(".profiles altoclef load", True)
 
 ac["speedHack"] = speed
 if speed:
-    Chat.say(f".setslider timer speed {speed}")
+    # Chat.say(f".setslider timer speed {speed}")
     Chat.say(".t timer on", True)
 else: Chat.say(".t timer off", True)
 
-Chat.say(".t autofarm on", True)
-Chat.say(".t multiaura on", True)
-Chat.say(".t snowshoe off", True)
+Chat.say(".t kill-aura on", True)
 
 # Chat.say(".setslider nuker range 2.1", True)
 # Chat.say(".setmode nuker mode multiid", True)
 # Chat.say(".t nuker on", True)
 
 Chat.say(".setcheckbox autoeat eat_while_walking on", True)
-Chat.say(".t autoeat on", True)
+Chat.say(".t auto-eat on", True)
 Chat.say(".t criticals on", True)
-Chat.say(".t autoarmor on", True)
+Chat.say(".t auto-armor on", True)
 Chat.say(".t fullbright on", True)
-Chat.say(".t AutoLeave off", True)
-# Chat.say(f'.t nofall {"on" if cheat else "off"}')
+Chat.say(".t auto-log on", True)
+Chat.say(f'.t no-fall {"on" if cheat else "off"}')
 # if not cheat: Chat.toast(f"Cheat is off!", "!!! NOFALL DISABLED !!!")
-Chat.say(".t creativeflight on", True)
 
 Chat.say("#set antiCheatCompatibility false", True)
 Chat.say(f"#set allowOnlyExposedOres {not cheat}")
@@ -49,26 +46,26 @@ Chat.say("#set freeLook false", True)
 Chat.say(f"#set legitMine {not cheat}")
 Chat.say(f"#set legitMineIncludeDiagonals {not cheat}")
 
-Chat.say(".t autorespawn on", True)
+Chat.say(".t auto-respawn on", True)
 ac["autoRespawn"] = False
 
-Chat.say(".t autoreconnect on", True)
+Chat.say(".t auto-reconnect on", True)
 ac["autoReconnect"] = False
 
-Chat.say(".t autoeat on", True)
+Chat.say(".t auto-eat on", True)
 ac["autoEat"] = True
 
-Chat.say(".t autosprint off", True)
+Chat.say(".t sprint off", True)
 Chat.say("#set allowSprint true", True)
 Chat.say("#set sprintInWater true", True)
 
-Chat.say(".t autotool on", True)
-Chat.say(".setcheckbox autotool switch_back off", True)
-Chat.say(".t autosword on", True)
-Chat.say("#set disableAutoTool false", True)
+Chat.say(".t auto-weapon on", True)
+Chat.say(".t auto-tool on", True)
+# Chat.say(".setcheckbox autotool switch_back off", True)
+Chat.say("#set disableAutoTool true", True)
 Chat.say("#set assumeExternalAutoTool false", True)
 
-Chat.say(".t safewalk off", True)
+Chat.say(".t safe-walk off", True)
 Chat.say("#set assumeSafeWalk false", True)
 
 # Chat.say(".t step on", True)

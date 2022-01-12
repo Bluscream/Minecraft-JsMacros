@@ -12,4 +12,4 @@ match event_name:
         Chat.toast("Death", "You died, looser")
         AutoMagic("screen/on")
         Client.waitTick(10)
-        AutoMagic("notification/create", {"title": "Death", "bigmessage": str(datetime.now())})
+        AutoMagic("notification/create", {"title": "Death", "bigmessage": str(datetime.now()), "icon": "app.icon://com.mojang.minecraftpe"})

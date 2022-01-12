@@ -33,7 +33,7 @@ match event_name:
 
         match hostname.lower():
             case "play.tasmantismc.com":
-                JsMacros.runScript("wurst_altoclef.py")
+                JsMacros.runScript("meteor_altoclef.py")
                 Chat.say("#set censorCoordinates true", True)
                 if GlobalVars.getString("crashed"):
                     Chat.getLogger().warn(f"Was crashed: {GlobalVars.getString('crashed')}")
@@ -41,12 +41,12 @@ match event_name:
                 else:
                     sleep(5)
                     GlobalVars.putString("homedimension", "overworld")
-                    GlobalVars.putString("home", "8957 71 -12439") # 1148 63 -1525
+                    GlobalVars.putString("home", "9067 69 -12398") # (1148 63 -1525) (base:8957 71 -12439) (woodbase:9067 69 -12398)
                     homestr = f"{parsePos(GlobalVars.getString('home').split(' '))} {GlobalVars.getString('homedimension')}"
                     Chat.log(f"Set home to {homestr}")
                     
                     GlobalVars.putString("workdimension", "overworld")
-                    GlobalVars.putString("work", "9068 -12401")
+                    GlobalVars.putString("work", "9067 72 -12399")
                     workstr = f"{parsePos(GlobalVars.getString('work').split(' '))} {GlobalVars.getString('workdimension')}"
                     Chat.log(f"Set work to {workstr}")
                     

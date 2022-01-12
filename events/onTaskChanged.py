@@ -55,6 +55,6 @@ match event_name:
             Client.waitTick()
             AutoMagic("screen/on")
             Client.waitTick(10)
-            AutoMagic("notification/create", {"title": f'[JSMacros] {msg}', "bigmessage": str(datetime.now())})
+            AutoMagic("notification/create", {"title": f'[JSMacros] {msg}', "bigmessage": str(datetime.now()), "icon": "app.icon://com.mojang.minecraftpe"})
         task(GlobalVars.getString("task_now"))
         GlobalVars.remove("task_now")
