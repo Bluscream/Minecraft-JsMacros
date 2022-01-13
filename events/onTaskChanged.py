@@ -8,13 +8,15 @@ match event_name:
         from os import environ
         from datetime import datetime
         from urllib.parse import quote_plus
-        def AutoMagic(path: str, params = {}): Request.get(f"http://192.168.2.145:1122/{path}?{'&'.join([k+'='+quote_plus(v) for (k,v) in params.items()])}&password={environ.get('AMAPI_PW')}")
+        def AutoMagic(path: str, params = {}):
+            try: Request.get(f"http://{environ.get('IP_Timo-Tablet')}:1122/{path}?{'&'.join([k+'='+quote_plus(v) for (k,v) in params.items()])}&password={environ.get('AMAPI_PW')}")
+            except Exception as ex: Chat.getLogger().error(f"Could not send AutoMagic request: {ex}")
         Vec3D = Reflection.getClass("xyz.wagyourtail.jsmacros.client.api.sharedclasses.PositionCommon$Vec3D")
         def distance(pos1, pos2): return Vec3D(pos1, pos2).getMagnitude()
         def is_altoclef_finished(RecvMessage_event): return any(x in RecvMessage_event.text.getString() for x in ["§rUser task FINISHED","§rStopped"])
         def wait_for_altoclef(task: str):
             Chat.log("Waiting for Altoclef to finish task...")
-            Chat.toast("Waiting for Altoclef", task)
+            # Chat.toast("Waiting for Altoclef", task)
             JsMacros.waitForEvent("RecvMessage", JavaWrapper.methodToJava(is_altoclef_finished)).context.releaseLock()
             context.releaseLock()
             try: Client.waitTick()
@@ -38,17 +40,19 @@ match event_name:
                             range = int(args[0]) if len(args) > 0 else 0
                             playerPos = Player.getPlayer().getPos()
                             def simplePos(pos): return f"{int(pos.getX())} {int(pos.getY())} {int(pos.getZ())}"
-                            item_positions = []
+                            items = dict()
                             for entity in World.getEntities():
                                 if entity.getType() == "minecraft:item":
                                     pos = entity.getPos()
-                                    if not range or distance(playerPos, pos) < range: item_positions.append(pos)
-                            item_count = len(item_positions)
+                                    if not range or distance(playerPos, pos) < range: items[pos] = entity
+                            item_count = len(items)
                             if item_count > 0:
                                 Chat.log(f"Picking up {item_count} dropped items within {range if range else 'infinity'} blocks")
-                                for item_pos in item_positions:
-                                    Chat.say(f"@goto {simplePos(item_pos)}", True)
-                                    wait_for_altoclef(task)
+                                for pos, item in items.items():
+                                    if item.isAlive():
+                                        Chat.say(f"@goto {simplePos(pos)}", True)
+                                        wait_for_altoclef(task)
+                                Chat.toast("JsMacros", f"Finished picking up {item_count} dropped items")
                         case _: Chat.say(task, True)
             msg = f"Finished {len(tasks)} tasks"
             Chat.toast("JSMacros", msg)

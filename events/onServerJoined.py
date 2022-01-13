@@ -41,7 +41,7 @@ match event_name:
                 else:
                     sleep(5)
                     GlobalVars.putString("homedimension", "overworld")
-                    GlobalVars.putString("home", "9067 69 -12398") # (1148 63 -1525) (base:8957 71 -12439) (woodbase:9067 69 -12398)
+                    GlobalVars.putString("home", "9067 69 -12399") # (1148 63 -1525) (base:8957 71 -12439) (woodbase:9067 69 -12398)
                     homestr = f"{parsePos(GlobalVars.getString('home').split(' '))} {GlobalVars.getString('homedimension')}"
                     Chat.log(f"Set home to {homestr}")
                     
@@ -50,12 +50,12 @@ match event_name:
                     workstr = f"{parsePos(GlobalVars.getString('work').split(' '))} {GlobalVars.getString('workdimension')}"
                     Chat.log(f"Set work to {workstr}")
                     
-                    GlobalVars.putString("task_day", f"#set allowBreak false;#set allowPlace false;@goto {workstr};@@wait;#set allowBreak true;#set allowPlace true;@get log 256;@@wait;@@pickup")
+                    # GlobalVars.putString("task_day", f"#set allowBreak false;#set allowPlace false;@goto {workstr};@@wait;#set allowBreak true;#set allowPlace true;@get log 512;@@wait;@@pickup")
                     Chat.log(f"Set task_day to {GlobalVars.getString('task_day')}")
                     # GlobalVars.putString("task_bed_start", 
                     # Chat.log(f"Set task_bed_start to {GlobalVars.getString('task_bed_start')}")
                     # GlobalVars.putString("task_night", f"#set allowBreak false;#set allowPlace true;@test bed;wait;#set allowPlace false;@goto {homestr}")
-                    GlobalVars.putString("task_night", f"#set allowBreak false;#set allowPlace false;@goto {homestr}")
+                    # GlobalVars.putString("task_night", f"#set allowBreak false;#set allowPlace false;@goto {homestr}")
                     Chat.log(f"Set task_night to {GlobalVars.getString('task_night')}")
                     GlobalVars.putString("task_now", "")
                 pass

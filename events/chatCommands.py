@@ -172,13 +172,19 @@ match event_name:
                         Respond(f"last_baritone_task: {GlobalVars.getString('last_baritone_task')}")
                         Respond(f"last_altoclef_task: {GlobalVars.getString('last_altoclef_task')}")
                     case "gohome"|"home"|"night":
-                        if len(args) > 0: GlobalVars.putString("task_night", ' '.join(args))
+                        if len(args) > 0:
+                            if args[0] == "copy": copy2clip(GlobalVars.getString('task_night'))
+                            else: GlobalVars.putString("task_night", ' '.join(args))
                         else: GlobalVars.putString("task_now", GlobalVars.getString('task_night'))
-                    case "dotask"|"day":
-                        if len(args) > 0: GlobalVars.putString("task_day", ' '.join(args))
+                    case "dotask"|"day"|"work"|"dowork":
+                        if len(args) > 0:
+                            if args[0] == "copy": copy2clip(GlobalVars.getString('task_day'))
+                            else: GlobalVars.putString("task_day", ' '.join(args))
                         else: GlobalVars.putString("task_now", GlobalVars.getString('task_day'))
                     case "task":
-                        if len(args) > 0: GlobalVars.putString("task_now", ' '.join(args))
+                        if len(args) > 0:
+                            if args[0] == "copy": copy2clip(GlobalVars.getString('task_now'))
+                            else: GlobalVars.putString("task_now", ' '.join(args))
                         else: Chat.log(GlobalVars.getString('task_now'))
                     case "repeat":
                         times = int(args.pop(0))

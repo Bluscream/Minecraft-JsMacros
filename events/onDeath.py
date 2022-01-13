@@ -7,7 +7,9 @@ match event_name:
         from os import environ
         from datetime import datetime
         from urllib.parse import quote_plus
-        def AutoMagic(path: str, params = {}): Request.get(f"http://192.168.2.145:1122/{path}?{'&'.join([k+'='+quote_plus(v) for (k,v) in params.items()])}&password={environ.get('AMAPI_PW')}")
+        def AutoMagic(path: str, params = {}):
+            try: Request.get(f"http://{environ.get('IP_Timo-Tablet')}:1122/{path}?{'&'.join([k+'='+quote_plus(v) for (k,v) in params.items()])}&password={environ.get('AMAPI_PW')}")
+            except Exception as ex: Chat.getLogger().error(f"Could not send AutoMagic request: {ex}")
         Client.waitTick()
         Chat.toast("Death", "You died, looser")
         AutoMagic("screen/on")

@@ -3,6 +3,9 @@ if __name__ == "": from JsMacrosAC import *  # Autocomplete, not necessary
 def sleep(sec: int): Client.waitTick(sec * 20)
 sleep(2)
 
+meteorLoaded = Java.type("net.fabricmc.loader.api.FabricLoader").getInstance().isModLoaded("meteor-client")
+wurstLoaded = Java.type("net.fabricmc.loader.api.FabricLoader").getInstance().isModLoaded("wurst")
+
 cheat = True
 speed = 0
 
@@ -33,7 +36,7 @@ Chat.say(".t auto-eat on", True)
 Chat.say(".t criticals on", True)
 Chat.say(".t auto-armor on", True)
 Chat.say(".t fullbright on", True)
-Chat.say(".t auto-log on", True)
+# Chat.say(".t auto-log on", True)
 Chat.say(f'.t no-fall {"on" if cheat else "off"}')
 # if not cheat: Chat.toast(f"Cheat is off!", "!!! NOFALL DISABLED !!!")
 
