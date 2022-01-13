@@ -3,8 +3,9 @@ if __name__ == "": from JsMacrosAC import *  # Autocomplete, not necessary
 def sleep(sec: int): Client.waitTick(sec * 20)
 sleep(2)
 
-meteorLoaded = Java.type("net.fabricmc.loader.api.FabricLoader").getInstance().isModLoaded("meteor-client")
-wurstLoaded = Java.type("net.fabricmc.loader.api.FabricLoader").getInstance().isModLoaded("wurst")
+fabricInstance = Java.type("net.fabricmc.loader.api.FabricLoader").getInstance()
+meteorLoaded = fabricInstance.isModLoaded("meteor-client")
+wurstLoaded = fabricInstance.isModLoaded("wurst")
 
 cheat = True
 speed = 0
