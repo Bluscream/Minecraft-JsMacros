@@ -41,7 +41,7 @@ match event_name:
                 else:
                     sleep(5)
                     GlobalVars.putString("homedimension", "overworld")
-                    GlobalVars.putString("home", "9067 69 -12399") # (1148 63 -1525) (base:8957 71 -12439) (woodbase:9067 69 -12398)
+                    GlobalVars.putString("home", "9067 69 -12399") # (1148 63 -1525) (base:8957 71 -12439) (woodbase:9067 69 -12399)
                     homestr = f"{parsePos(GlobalVars.getString('home').split(' '))} {GlobalVars.getString('homedimension')}"
                     Chat.log(f"Set home to {homestr}")
                     
@@ -50,15 +50,21 @@ match event_name:
                     workstr = f"{parsePos(GlobalVars.getString('work').split(' '))} {GlobalVars.getString('workdimension')}"
                     Chat.log(f"Set work to {workstr}")
                     
-                    # GlobalVars.putString("task_day", f"#set allowBreak false;#set allowPlace false;@goto {workstr};@@wait;#set allowBreak true;#set allowPlace true;@get log 512;@@wait;@@pickup")
-                    Chat.log(f"Set task_day to {GlobalVars.getString('task_day')}")
-                    # GlobalVars.putString("task_bed_start", 
-                    # Chat.log(f"Set task_bed_start to {GlobalVars.getString('task_bed_start')}")
-                    # GlobalVars.putString("task_night", f"#set allowBreak false;#set allowPlace true;@test bed;wait;#set allowPlace false;@goto {homestr}")
-                    # GlobalVars.putString("task_night", f"#set allowBreak false;#set allowPlace false;@goto {homestr}")
+                    task_day = f"#set allowBreak false;#set allowPlace false;@goto {workstr};@@wait;#set allowBreak true;#set allowPlace true;@get log 1024;@@wait;@@pickup"
+                    # GlobalVars.putString("task_day", task_day)
+                    Chat.log(f"Set task_day to {task_day}")
+                    task_night = f"#set allowBreak false;#set allowPlace true;@test bed;sleep 5;#set allowPlace false;@goto {homestr}"
+                    # GlobalVars.putString("task_bed_start", task_night)
+                    Chat.log(f"Set task_bed_start to {GlobalVars.getString('task_bed_start')}")
+                    # GlobalVars.putString("task_night", task_night)
                     Chat.log(f"Set task_night to {GlobalVars.getString('task_night')}")
                     GlobalVars.putString("task_now", "")
                 pass
             case _:
                 pass # @get logs 512;@wait;@test bed
         GlobalVars.putBoolean("server_joining", False)
+
+# [21:07:56] [Render thread/INFO]: [CHAT] Set home to 9067 69 -12399 overworld
+# [21:07:56] [Render thread/INFO]: [CHAT] Set work to 9067 72 -12399 overworld
+# [21:07:56] [Render thread/INFO]: [CHAT] Set task_day to #set allowBreak false;#set allowPlace false;@goto 9067 72 -12399 overworld;@@wait;#set allowBreak true;#set allowPlace true;@get log 1024;@@wait;@@pickup
+# [21:07:56] [Render thread/INFO]: [CHAT] Set task_bed_start to #set allowBreak false;#set allowPlace true;@test bed;sleep 5;#set allowPlace false;@goto 9067 69 -12399 overworld
