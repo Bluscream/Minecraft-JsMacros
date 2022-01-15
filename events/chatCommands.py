@@ -135,8 +135,17 @@ match event_name:
                         Respond(f"Executing {' '.join(args)}")
                         Respond(Popen(args, stdout=PIPE).stdout.read().decode('utf-8'))
                     case "eval":
+                        t = file.getParent()
+                        from sys import path
+                        if t not in path: path.append(t)
+                        from libs import bluscream
+                        import jep
                         Respond(f"Evaluating {arg_str}")
-                        Chat.say(eval(arg_str))
+                        try: e = eval(arg_str)
+                        except Exception as ex:
+                            from traceback import format_exc
+                            e = format_exc()
+                        Chat.log(str(e))
                     case "echo" | "print":
                         Respond(f"{arg_str}")
                     case "get":
@@ -159,6 +168,10 @@ match event_name:
                         Hud.openScreen(arg_str)
                     case "fps": Respond(f"FPS: {Client.getFPS()}")
                     case "tps": Respond(f"TPS: {World.getServerTPS()}")
+                    case "clear":
+                        # from net.minecraft.client.gui.hud import ChatHud # 	method_1808() => clear()
+                        history = Chat.getHistory()
+                        history.clearRecv(False)
                     case "time":
                         Respond(f"getTime: {World.getTime()}")
                         tod = World.getTimeOfDay()
