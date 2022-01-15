@@ -1,3 +1,6 @@
+# Script by Hasenzahn1
+
+
 if __name__=="": 
     from JsMacrosAC import *
 
