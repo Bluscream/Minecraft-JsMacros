@@ -10,6 +10,35 @@ pz = int(Player.getPlayer().getZ())
 
 container = ["minecraft:chest"]
 
+container2 = [
+    "AbstractBannerBlock",
+    "AbstractChestBlock",
+    "AbstractFurnaceBlock",
+    "AbstractSignBlock",
+    "AbstractSkullBlock",
+    "BarrelBlock",
+    "BeaconBlock",
+    "BeehiveBlock",
+    "BellBlock",
+    "BrewingStandBlock",
+    "CampfireBlock",
+    "CommandBlock",
+    "ConduitBlock",
+    "DaylightDetectorBlock",
+    "DispenserBlock",
+    "EnchantingTableBlock",
+    "EndGatewayBlock",
+    "EndPortalBlock",
+    "HopperBlock",
+    "JukeboxBlock",
+    "LecternBlock",
+    "PistonExtensionBlock",
+    "SculkSensorBlock",
+    "ShulkerBoxBlock",
+    "SpawnerBlock",
+    "StructureBlock"
+]
+
 sides = [ChestType.field_12574]
 
 for x in range(px - radius, px + radius):
@@ -17,6 +46,7 @@ for x in range(px - radius, px + radius):
         for z in range(pz - radius, pz + radius):
             
             block = World.getBlock(x, y, z)
+            # if isinstance(block, ChestBlock.getClass()):
             if block != None and block.getId() in container:
                 blockState = block.getRawBlockState()
                 if blockState.method_11654(ChestBlock.field_10770) in sides:
