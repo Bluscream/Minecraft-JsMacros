@@ -10,6 +10,7 @@ match event_name:
         from subprocess import check_call, Popen, PIPE
         from copy import copy
         from re import search
+        from math import trunc
 
         prefix = ","
         regex = r".*<\d+:\d+> > ,(.*) [\[\d+x\]|\(\d+\)]*"
@@ -118,12 +119,16 @@ match event_name:
                         Respond(f"{player_count} players:")
                         num = 1
                         for player, playerEntity in playerDict.items():
-                            txt = f"#{num:02} {player.getName()} (§7{player.getUUID()}§r)"
+                            chat = f"#{num:02} {player.getName()}"
+                            log = f"#{num:02} \"{player.getName()}\" ({player.getUUID()})"
                             if playerEntity:
                                 health = playerEntity.getHealth()
-                                if health < 20: txt += f" §2{health}§r♥"
-                                txt += f" [§9{selfPos.toVector(playerEntity.getPos()).getMagnitude()}§rm]"
-                            Chat.log(txt)
+                                chat += f" §c{int(health)}♥§r" # if health < 20:
+                                distance = selfPos.toVector(playerEntity.getPos()).getMagnitude()
+                                if distance > 0: chat += f" [§9{distance}m§r]"
+                                log += f" [{health} hearts | {distance} m]"
+                            Chat.log(chat)
+                            logger.info(log)
                             num += 1
                     case "coords":
                         dim = World.getDimension().split(":")[-1]
