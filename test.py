@@ -1,26 +1,17 @@
-import sys
-
-if __name__ == "":
-    from JsMacrosAC import *  # Autocomplete, not necessary
-
-t = file.getParent()
-if t not in sys.path: sys.path.append(t)
-
-Chat.log(f"keys: {sys.modules.keys()}")
-
-from lib import *
-
-Chat.log(Utils.getEventName(event))
-# Utils.sleep(3)
-Chat.log(Server(World.getCurrentServerAddress()).hostname)
-Chat.log(Events.AirChange.name)
-
-
-# if __name__ == "": from JsMacrosAC import *  # Autocomplete, not necessary
-# logger = Chat.getLogger()
-# event_name = (event.eventName if hasattr(event, 'eventName') else event.getEventName()) if event else "Manual"
-# # logger.info(f"Executing {file.getName()} on event {event_name}")
-# match event_name:
+if __name__ == "": from JsMacrosAC import *  # Autocomplete, not necessary
+logger = Chat.getLogger()
+event_name = (event.eventName if hasattr(event, 'eventName') else event.getEventName()) if event else "Manual"
+logger.info(f"Executing {file.getName()} on event {event_name}")
+match event_name:
+    case "Key"|"Manual":
+        if __name__ == "": d2d: IDraw2D
+        d2d = Hud.createDraw2D()
+        Hud.registerDraw2D(d2d)
+        d2d.addText(f"{event_name}", 0, 0, 0xFFFFFF)
+        # scoreboards = World.getScoreboards()
+        # Chat.log(scoreboards)
+        # for scoreboard in scoreboards.getCurrentScoreboard():
+        #     Chat.log(scoreboard)
 #     case "BED_START":
 #         Chat.toast("Bed Start","Bed Start")
 #     case "BED_END":

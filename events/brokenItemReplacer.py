@@ -4,10 +4,10 @@ if __name__ == "":
 event_name = (event.eventName if hasattr(event, 'eventName') else event.getEventName()) if event else "Manual"
 match event_name:
     case "ItemDamage"|"Key"|"Manual":
-        def getPrivateField(sourceClass, source, field, name = ""):
-            field = Reflection.getDeclaredField(sourceClass, field, name)
-            field.setAccessible(True)
-            return field.get(source)
+        # def getPrivateField(sourceClass, source, field, name = ""):
+            # field = Reflection.getDeclaredField(sourceClass, field, name)
+            # field.setAccessible(True)
+            # return field.get(source)
         itemStack = event.item
         itemID = itemStack.getItemID()
         if itemStack.isDamageable():
@@ -18,21 +18,22 @@ match event_name:
             maxdamage = itemStack.getMaxDamage()
             damage_percent = int(percent(damage, maxdamage) * 100)
             Chat.log(f"ItemDamage: {itemStack.getName()} {damage}/{maxdamage} ({damage_percent}%)")
-            if maxdamage - damage <= 4:
+            life = maxdamage - damage
+            if life <= 4:
                 inv = Player.openInventory()
                 def pick(blockState):
                     best = 1
                     index = -1
                     optAirIndex = -1
                     for i in range(36, 44):
-                        stack = Player.openInventory().getSlot(i)
+                        stack = inv.getSlot(i)
                         if stack.getItemID() == "minecraft:air": optAirIndex = i
                         s = stack.getRaw().method_7924(blockState) # getMiningSpeedMultiplier
                         if s > best: best = s; index = i
                     if index != -1:
-                        Player.openInventory().setSelectedHotbarSlotIndex(index - 36)
+                        inv.setSelectedHotbarSlotIndex(index - 36)
                     elif optAirIndex != -1:
-                        Player.openInventory().setSelectedHotbarSlotIndex(optAirIndex - 36)
+                        inv.setSelectedHotbarSlotIndex(optAirIndex - 36)
                 # def get_from_hotbar():
                 #     for i in range(9):
                 #         stack = inv.getSlot(i)
@@ -45,7 +46,7 @@ match event_name:
                     for slot in range(0, slots):
                         stack = inv.getSlot(slot)
                         if itemID != "minecraft:air": Chat.log(f"[{slot}]  {stack} {stack.getNBT()}")
-                    
+                get_from_inventory() # get_from_hotbar()
+            elif life < 1:
                 Chat.log("Broken!")
-                # get_from_hotbar()
-                get_from_inventory()
+                

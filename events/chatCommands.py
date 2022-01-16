@@ -14,10 +14,10 @@ match event_name:
         prefix = ","
         regex = r".*<\d+:\d+> > ,(.*) [\[\d+x\]|\(\d+\)]*"
         c = "\u00A7"
-
+        logger = Chat.getLogger()
         def Respond(msg: str, log: bool = False):
             Chat.log(f"[{c}2JsMacros{c}r] {msg}")
-            if log: Chat.getLogger().info(f"[JsMacros] {msg}")
+            if log: logger.info(f"[JsMacros] {msg}")
 
         def sleep(sec: int):
             for i in range(sec * 20):
@@ -46,7 +46,6 @@ match event_name:
         # if message.startswith(prefix):
             event.message = ""
             if result: message = result.group(1)
-            Chat.log(message)
             history = Chat.getHistory()
             history.getSent().add(message)
             # history.insertRecvText(message)
@@ -102,10 +101,30 @@ match event_name:
                     case "quit" | "exit":
                         Client.shutdown() # exit()
                     case "players":
+                        self = Player.getPlayer()
+                        selfPos = self.getPos()
                         players = World.getPlayers()
-                        Respond(f"{len(players)} players:")
-                        for num, player in enumerate(players, start=1):
-                            Chat.log(f"#{num:02} {player.getName()} ({player.getUUID()})")
+                        nearPlayers = World.getLoadedPlayers()
+                        playerDict = dict()
+                        for player in players:
+                            playerDict[player] = None
+                            # player_name = player.getName()
+                            for nearPlayer in nearPlayers:
+                                # nearPlayer_name = nearPlayer.getName().getString()
+                                if player.getUUID() == nearPlayer.getUUID():
+                                    playerDict[player] = nearPlayer
+                                    break
+                        player_count = len(playerDict)
+                        Respond(f"{player_count} players:")
+                        num = 1
+                        for player, playerEntity in playerDict.items():
+                            txt = f"#{num:02} {player.getName()} (§7{player.getUUID()}§r)"
+                            if playerEntity:
+                                health = playerEntity.getHealth()
+                                if health < 20: txt += f" §2{health}§r♥"
+                                txt += f" [§9{selfPos.toVector(playerEntity.getPos()).getMagnitude()}§rm]"
+                            Chat.log(txt)
+                            num += 1
                     case "coords":
                         dim = World.getDimension().split(":")[-1]
                         pos = Player.getPlayer().getPos()
@@ -135,17 +154,18 @@ match event_name:
                         Respond(f"Executing {' '.join(args)}")
                         Respond(Popen(args, stdout=PIPE).stdout.read().decode('utf-8'))
                     case "eval":
-                        t = file.getParent()
                         from sys import path
+                        t = file.getParent()
                         if t not in path: path.append(t)
-                        from libs import bluscream
-                        import jep
+                        # from libs import *
+                        # import jep
                         Respond(f"Evaluating {arg_str}")
                         try: e = eval(arg_str)
                         except Exception as ex:
                             from traceback import format_exc
                             e = format_exc()
-                        Chat.log(str(e))
+                        Chat.log(e)
+                        logger.info(e)
                     case "echo" | "print":
                         Respond(f"{arg_str}")
                     case "get":
