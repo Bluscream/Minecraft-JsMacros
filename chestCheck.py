@@ -71,9 +71,9 @@ for x in range(px - radius, px + radius):
                         if blockState.method_11654(ChestBlock.field_10770) in sides:
                             continue
                     Player.getPlayer().lookAt(x + .5, y + .5, z + .5)
-                    Client.waitTick(2)
                     
                     if Player.rayTraceBlock(4, False) != None and Player.rayTraceBlock(4, False).getId() in container:
+                        Client.waitTick(2)
                         Chat.log(f"Interacting with {block.getName()} at [{x}, {y}, {z}]")
                         Player.getPlayer().interact()
                         Client.waitTick(8)
