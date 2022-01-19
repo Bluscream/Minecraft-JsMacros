@@ -123,8 +123,9 @@ def onTick(event, args):
                             # state = type(block.getBlockState())
                             # if not state: continue
                             # Chat.log(str(state))
-                            if "age" in block.getBlockState().keySet():
-                                if int(block.getBlockState()["age"]) == BREAK[blockID]:
+                            state = block.getBlockState()
+                            if "age" in state.keySet():
+                                if int(state["age"]) == BREAK[blockID]:
                                     if blockID != "minecraft:sweet_berry_bush":
                                         breakBlock(pX + x, pY + y, pZ + z)
                                         Client.waitTick(WAIT_AMOUNT)
