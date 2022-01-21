@@ -58,5 +58,5 @@ match event_name:
                     sleep(.25)
                 except Exception as e:
                     # Chat.log(f"day_night_event Error: {e}")
-                    Chat.getLogger().error(traceback.format_exc())
+                    # Chat.getLogger().error(traceback.format_exc())
                     sleep(5)

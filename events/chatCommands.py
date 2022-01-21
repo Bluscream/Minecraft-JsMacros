@@ -27,7 +27,7 @@ match event_name:
         from pyperclip import copy as clip_copy
         def copy2clip(txt):
             clip_copy(txt)
-            Chat.log(f"[{c}2JsMacros{c}r] Copied {txt} to clipboard")
+            Respond(f"Copied {txt} to clipboard")
 
         def var(name: str):
             type_ = GlobalVars.getType(name)
@@ -52,7 +52,7 @@ match event_name:
             # history.insertRecvText(message)
             # history.refreshVisible()
 
-            Chat.log(f"> {message}")
+            Respond(f"> {message}")
             try:
                 # copy2clip(message)
                 command = message[1:].split(" ")
@@ -127,7 +127,7 @@ match event_name:
                                 distance = selfPos.toVector(playerEntity.getPos()).getMagnitude()
                                 if distance > 0: chat += f" [§9{distance}m§r]"
                                 log += f" [{health} hearts | {distance} m]"
-                            Chat.log(chat)
+                            Respond(chat)
                             logger.info(log)
                             num += 1
                     case "coords":
@@ -169,7 +169,7 @@ match event_name:
                         except Exception as ex:
                             from traceback import format_exc
                             e = format_exc()
-                        Chat.log(e)
+                        Respond(e)
                         logger.info(e)
                     case "echo" | "print":
                         Respond(f"{arg_str}")
@@ -212,22 +212,25 @@ match event_name:
                     case "gohome"|"home"|"night":
                         if len(args) > 0:
                             if args[0] == "copy": copy2clip(GlobalVars.getString('task_night'))
+                            elif args[0] == "clear": GlobalVars.remove('task_night')
                             else: GlobalVars.putString("task_night", ' '.join(args))
                         else: GlobalVars.putString("task_now", GlobalVars.getString('task_night'))
                     case "dotask"|"day"|"work"|"dowork":
                         if len(args) > 0:
                             if args[0] == "copy": copy2clip(GlobalVars.getString('task_day'))
+                            elif args[0] == "clear": GlobalVars.remove('task_day')
                             else: GlobalVars.putString("task_day", ' '.join(args))
                         else: GlobalVars.putString("task_now", GlobalVars.getString('task_day'))
                     case "task":
                         if len(args) > 0:
                             if args[0] == "copy": copy2clip(GlobalVars.getString('task_now'))
+                            elif args[0] == "clear": GlobalVars.remove('task_now')
                             else: GlobalVars.putString("task_now", ' '.join(args))
-                        else: Chat.log(GlobalVars.getString('task_now'))
+                        else: Respond(GlobalVars.getString('task_now'))
                     case "repeat":
                         times = int(args.pop(0))
-                        Chat.log(f"Repeating task {times} times")
-                        Chat.log(' '.join(args))
+                        Respond(f"Repeating task {times} times")
+                        Respond(' '.join(args))
                         GlobalVars.putString("task_now", ' '.join(args) * times)
                     case "cleartasks"|"ct":
                         for t in ["task_now","task_day","task_night","task_now","task_bed_start","task_bed_end","task_monster_spawn_start","task_monster_spawn_end"]: GlobalVars.remove(t)

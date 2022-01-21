@@ -7,6 +7,12 @@ match event_name:
 
         def sleep(sec: int): Client.waitTick(sec * 20)
         def parsePos(i): return f"{i[0]} {i[1]} {i[2]}" if len(i) > 2 else f"{i[0]} {i[1]}"
+        def toggleHacks(hacks: list, state: bool = None):
+            if not isinstance(hacks, list): hacks = [ hacks ]
+            if state == True: state = " on"
+            elif state == False: state = " off"
+            elif state == None: state = ""
+            for hack in hacks: Chat.say(f".t {hack}{state}")
             
 
         server = event.address.split("/")
@@ -24,16 +30,21 @@ match event_name:
             greeting = choice(["Hello, %s", "Hi, %s", "Hey, %s", "Greetings, %s"])
             if player_count > 2: Chat.say(greeting.replace(", %s", ""))
             else: Chat.say(greeting % choice(players).getName())
-
-        Chat.say(".t SpeedNuker off", True)
-        Chat.say(".t Nuker off", True)
-        Chat.say(".t NukerLegit off", True)
-        Chat.say(".t AutoMine off", True)
-        Chat.say("#set renderCachedChunks false", True)
+            
+        fabricInstance = Reflection.getClass("net.fabricmc.loader.api.FabricLoader").getInstance()
+        meteorLoaded = fabricInstance.isModLoaded("meteor-client")
+        wurstLoaded = fabricInstance.isModLoaded("wurst")
+        bobbyLoaded = fabricInstance.isModLoaded("bobby")
+        
+        if bobbyLoaded: Chat.say("#set renderCachedChunks false")
+        else: Chat.say("#set renderCachedChunks true")
+        
+        if meteorLoaded or wurstLoaded:
+            toggleHacks("Nuker", False)
+            if wurstLoaded: toggleHacks(["SpeedNuker","NukerLegit","AutoMine"], False)
 
         match hostname.lower():
             case "play.tasmantismc.com":
-                JsMacros.runScript("meteor_altoclef.py")
                 Chat.say("#set censorCoordinates true", True)
                 if GlobalVars.getString("crashed"):
                     Chat.getLogger().warn(f"Was crashed: {GlobalVars.getString('crashed')}")
@@ -59,9 +70,11 @@ match event_name:
                     # GlobalVars.putString("task_night", task_night)
                     Chat.log(f"Set task_night to {GlobalVars.getString('task_night')}")
                     GlobalVars.putString("task_now", "")
+                    JsMacros.runScript("meteor_altoclef.py")
+            case "mc.hypixel.net":
                 pass
             case _:
-                pass # @get logs 512;@wait;@test bed
+                Chat.say("#set censorCoordinates false", True)
         GlobalVars.putBoolean("server_joining", False)
 
 # [21:07:56] [Render thread/INFO]: [CHAT] Set home to 9067 69 -12399 overworld

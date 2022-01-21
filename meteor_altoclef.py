@@ -1,11 +1,8 @@
 if __name__ == "": from JsMacrosAC import *  # Autocomplete, not necessary
 # Chat.getLogger().debug(f"Executing {file.getName()} on event {event_name}")
 def sleep(sec: int): Client.waitTick(sec * 20)
-sleep(2)
 
-fabricInstance = Reflection.getClass("net.fabricmc.loader.api.FabricLoader").getInstance()
-meteorLoaded = fabricInstance.isModLoaded("meteor-client")
-wurstLoaded = fabricInstance.isModLoaded("wurst")
+sleep(2)
 
 cheat = True
 speed = 0
