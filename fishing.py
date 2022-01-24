@@ -6,9 +6,16 @@ match event_name:
     case "ItemPickup"|"Key"|"Manual":
         inv = Player.openInventory()
         def percent(num, den): return int((num / den) * 100)
+        from os import environ
+        from datetime import datetime
+        from urllib.parse import quote_plus
+        def AutoMagic(path: str, params = {}):
+            try: Request.get(f"http://{environ.get('IP_Timo-Tablet')}:1122/{path}?{'&'.join([k+'='+quote_plus(v) for (k,v) in params.items()])}&password={environ.get('AMAPI_PW')}")
+            except Exception as ex: Chat.getLogger().error(f"Could not send AutoMagic request: {ex}")
         def get_first_free_slot():
             for slot in range(0, inv.getTotalSlots()):
                 if inv.getSlot(slot).isEmpty(): return slot
+            AutoMagic("toast/create", {"msg": f"Inventory is Full", "long": "1"})
         def get_worst_condition_item_slot(id, compare):
             slots = inv.getTotalSlots()
             highest= [compare, 0]
@@ -24,18 +31,18 @@ match event_name:
                                 enchantment = enchantments.get(enchantment)
                                 if enchantment.get("id").asString() == "minecraft:mending":
                                     damage_percent = percent(stack.getDamage(), stack.getMaxDamage())
-                                    Chat.log(f"Current Highest {highest[0]}% vs new {damage_percent}%")
+                                    # Chat.log(f"Current Highest {highest[0]}% vs new {damage_percent}%")
                                     if damage_percent > highest[0]:
-                                        Chat.log(f"Got new highest: {highest[0]}% -> {damage_percent}%")
+                                        # Chat.log(f"Got new highest: {highest[0]}% -> {damage_percent}%")
                                         highest = [damage_percent, slot]
                                     break
             return highest
         def swap_slots(slot1, slot2):
-            Chat.log(f"Slot {slot1} -> {slot2}")
+            # Chat.log(f"Slot {slot1} -> {slot2}")
             global inv
             held_item = inv.getHeld()
             # held_item_id = held_item.getItemID()
-            Chat.log(f"Held: {held_item}")
+            # Chat.log(f"Held: {held_item}")
             if held_item and not held_item.isEmpty():
                 if held_item.getItemID() == "minecraft:fishing_rod":
                     Chat.log(f"Already holding {held_item.getName()}, using that")
@@ -78,4 +85,7 @@ match event_name:
             if worst_rod[0] > held_item_damage_percent:
                 Chat.log(f"Switching to more broken fishing rod: #{worst_rod[1]} ({worst_rod[0]}% damage) to {held_item_index}")
                 swap_slots(worst_rod[1], held_item_index)
+            new_item_nbt = event.item.getNBT()
+            new_item_nbt = '\n'+str(new_item_nbt) if new_item_nbt else ""
+            AutoMagic("toast/create", {"msg": f"Fished {event.item.getName()}{new_item_nbt}", "long": "0"})
         else: pass
