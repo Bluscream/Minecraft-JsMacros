@@ -164,6 +164,8 @@ match event_name:
                         if t not in path: path.append(t)
                         # from libs import *
                         # import jep
+                        inv = Player.openInventory()
+                        plr = Player.getPlayer()
                         Respond(f"Evaluating {arg_str}")
                         try: e = eval(arg_str)
                         except Exception as ex:

@@ -70,7 +70,7 @@ match event_name:
                     # GlobalVars.putString("task_night", task_night)
                     Chat.log(f"Set task_night to {GlobalVars.getString('task_night')}")
                     GlobalVars.putString("task_now", "")
-                    JsMacros.runScript("meteor_altoclef.py")
+                    # JsMacros.runScript("meteor_altoclef.py")
             case "mc.hypixel.net":
                 pass
             case _:

@@ -12,7 +12,7 @@ match event_name:
         itemID = itemStack.getItemID()
         if itemStack.isDamageable():
             def percent(num: int, den: int) -> float: return num / den if den else 0
-            Chat.log(f"last_damaged_item: {GlobalVars.getString('last_damaged_item')}")
+            # Chat.log(f"last_damaged_item: {GlobalVars.getString('last_damaged_item')}")
             GlobalVars.putString("last_damaged_item", itemID)
             damage = event.damage
             maxdamage = itemStack.getMaxDamage()
@@ -45,7 +45,7 @@ match event_name:
                     Chat.log(f"Slots: {slots}")
                     for slot in range(0, slots):
                         stack = inv.getSlot(slot)
-                        if itemID != "minecraft:air": Chat.log(f"[{slot}]  {stack} {stack.getNBT()}")
+                        if stack.getItemID() != "minecraft:air": Chat.log(f"[{slot}]  {stack} {stack.getNBT()}")
                 get_from_inventory() # get_from_hotbar()
             elif life < 1:
                 Chat.log("Broken!")
