@@ -15,7 +15,6 @@ match event_name:
         def get_first_free_slot():
             for slot in range(0, inv.getTotalSlots()):
                 if inv.getSlot(slot).isEmpty(): return slot
-            AutoMagic("toast/create", {"msg": f"Inventory is Full", "long": "1"})
         def get_worst_condition_item_slot(id, compare):
             slots = inv.getTotalSlots()
             highest= [compare, 0]
@@ -87,5 +86,4 @@ match event_name:
                 swap_slots(worst_rod[1], held_item_index)
             new_item_nbt = event.item.getNBT()
             new_item_nbt = '\n'+str(new_item_nbt) if new_item_nbt else ""
-            AutoMagic("toast/create", {"msg": f"Fished {event.item.getName()}{new_item_nbt}", "long": "0"})
         else: pass
