@@ -21,7 +21,8 @@ match event_name:
             return [empty, total-10]
         
         empty, total = get_free_slots()
-        msg = f"Picked up Item ({total-empty}/{total})\n[{event.item.getName()}]"
+        msg = f"Picked up Item ({total-empty}/{total})\n{event.item.getName()}"
+        if event.item.isDamageable(): msg += f" ({percent(event.item.getDamage(), event.item.getMaxDamage())}% damaged)"
         nbt = event.item.getNBT()
         if nbt:
             if nbt.isCompound():
