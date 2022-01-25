@@ -46,7 +46,7 @@ match event_name:
                 enchantments = get_enchantment_strings(nbt)
                 toast +="\n"+"\n".join(enchantments); msg += " (" + ", ".join(enchantments)+")"
             else: toast += '\n'+nbt.toString(); msg += ' '+nbt.toString()
-        else: toast += "\n{nbt}"; msg += f" {nbt}"
+        else: toast += f"\n{nbt}"; msg += f" {nbt}"
         AutoMagic("toast/create", {"msg": toast, "long": "1"})
         if nbt and enchantments: AutoMagic("logger/log", {"message": msg})
         if empty < 1:
