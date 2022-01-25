@@ -1,10 +1,3 @@
-
-def test_path(Chat):
-    import sys
-    for path in sys.path:
-        Chat.log(path)
-
-
 # region enums
 from enum import Enum, auto
 class AutoName(Enum):
@@ -50,4 +43,18 @@ class Events(AutoName):
     Tick = auto()
     Title = auto()
 
+class InventorySlots(Enum):
+    Crafting_upper_left = 1
+    Crafting_upper_right = 2
+    Crafting_lower_left = 3
+    Crafting_lower_right = 4
+    Helmet = 5
+    Chestplate = 6
+    Leggings = 7
+    Shoes = 8
+    Inventory1 = 9
+    Inventory27 = 35
+    Hotbar1 = 36
+    Hotbar9 = 44
+    Offhand = 45
 # endregion
