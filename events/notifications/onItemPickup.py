@@ -21,6 +21,7 @@ match event_name:
             return [empty, total-10]
         
         empty, total = get_free_slots()
+        if total - empty == 2: AutoMagic("logger/clear")
         msg = f"Picked up Item ({total-empty}/{total})\n{event.item.getName()}"
         if event.item.isDamageable(): msg += f" ({percent(event.item.getDamage(), event.item.getMaxDamage())}% damaged)"
         nbt = event.item.getNBT()
@@ -42,8 +43,7 @@ match event_name:
                 else: msg += '\n'+nbt.toString()
             else: msg += '\n'+str(nbt)
         AutoMagic("toast/create", {"msg": msg, "long": "1"})
-        AutoMagic("logger/log", {"message": msg})
-
+        if nbt and enchantments: AutoMagic("logger/log", {"message": msg})
         if empty < 1:
             msg =  "Inventory is Full!"
             AutoMagic("toast/create", {"msg":msg, "long": "1"})
