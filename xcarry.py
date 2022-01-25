@@ -78,4 +78,6 @@ match event_name:
             if free_crafting_offhand_slot:
                 Chat.log(f"Picked up {event.item.getName()} in slot #{event_item_slot}, moving to #{free_crafting_offhand_slot}")
                 swap_slots(event_item_slot, free_crafting_offhand_slot)
-    
+            elif empty < 1:
+                Chat.log(f"Inventory full, holding onto {}")
+                inv.click(event_item_slot)
