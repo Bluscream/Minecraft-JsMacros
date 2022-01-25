@@ -59,14 +59,14 @@ match event_name:
                                 enchantment = enchantments.get(enchantment)
                                 if enchantment.get("id").asString() == "minecraft:mending":
                                     damage_percent = percent(stack.getDamage(), stack.getMaxDamage())
-                                    # Chat.log(f"Current Highest {highest[0]}% vs new {damage_percent}%")
                                     if damage_percent > worst_item[0]:
-                                        # Chat.log(f"Got new highest: {highest[0]}% -> {damage_percent}%")
+                                        # Chat.log(f"Got new worst: {worst_item[0]}% -> {damage_percent}% damage")
                                         worst_item = [damage_percent, slot]
                                     if damage_percent < best_item[0]:
+                                        # Chat.log(f"Got new best: {best_item[0]}% -> {damage_percent}% damage")
                                         best_item = [damage_percent, slot]
                                     break
-            return best_item if mode == "best" else best_item
+            return best_item if mode == "best" else worst_item
         def swap_slots(slot1, slot2):
             # Chat.log(f"Slot {slot1} -> {slot2}")
             global inv
@@ -112,11 +112,13 @@ match event_name:
             held_item_damage_percent = percent(held_item_damage, held_item_max_damage)
             fully_repaired = held_item_damage < 1
             worst_rod = get_best_worst_condition_item_slot("minecraft:fishing_rod", held_item_damage_percent, "worst")
+            Chat.log(f"Worst: {worst_rod[0]} Current: {held_item_damage_percent}")
             if worst_rod[0] > held_item_damage_percent:
-                msg = f"Switching to more broken fishing rod: #{worst_rod[1]} ({worst_rod[0]}% damage) to {held_item_index}"
-                Chat.log(msg)
-                AutoMagic("logger/log", {"message": msg})
-                swap_slots(worst_rod[1], held_item_index)
+                if held_item_damage_percent < 2:
+                    msg = f"Switching to more broken fishing rod: #{worst_rod[1]} ({worst_rod[0]}% damage) to {held_item_index}"
+                    Chat.log(msg)
+                    AutoMagic("logger/log", {"message": msg})
+                    swap_slots(worst_rod[1], held_item_index)
             else:
                 best_rod = get_best_rod()
                 if best_rod["slot"] != -1 and best_rod["slot"] != held_item_index:

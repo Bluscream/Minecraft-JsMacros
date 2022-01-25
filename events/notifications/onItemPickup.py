@@ -22,27 +22,32 @@ match event_name:
         
         empty, total = get_free_slots()
         if total - empty == 2: AutoMagic("logger/clear")
-        msg = f"Picked up Item ({total-empty}/{total})\n{event.item.getName()}"
-        if event.item.isDamageable(): msg += f" ({percent(event.item.getDamage(), event.item.getMaxDamage())}% damaged)"
+        toast = f"Picked up Item ({total-empty}/{total})\n{event.item.getName()}"
+        msg = f"Picked up {event.item.getName()}"
+        if event.item.isDamageable(): _msg = f" ({percent(event.item.getDamage(), event.item.getMaxDamage())}% damaged)"; toast += _msg;msg += _msg
         nbt = event.item.getNBT()
         if nbt:
             if nbt.isCompound():
                 nbt = nbt.asCompoundHelper()
-                enchantments = None
-                if nbt.has("Enchantments"): enchantments = nbt.get("Enchantments")
-                elif nbt.has("StoredEnchantments"): enchantments = nbt.get("StoredEnchantments")
-                if enchantments:
-                    enchantments_count = enchantments.length()
-                    if enchantments_count > 0:
-                        # msg += "\n"
-                        for enchantment in range(0, enchantments_count):
-                            enchantment = enchantments.get(enchantment)
-                            msg += "\n- "+enchantment.get("id").asString().split(":")[1].replace("_"," ").title()
-                            if enchantment.has("lvl"):
-                                msg += " " + enchantment.get("lvl").asString().split("s")[0]
-                else: msg += '\n'+nbt.toString()
-            else: msg += '\n'+str(nbt)
-        AutoMagic("toast/create", {"msg": msg, "long": "1"})
+                def get_enchantment_strings(nbt):
+                    enchantments = None
+                    _enchantments = list()
+                    if nbt.has("Enchantments"): enchantments = nbt.get("Enchantments")
+                    elif nbt.has("StoredEnchantments"): enchantments = nbt.get("StoredEnchantments")
+                    if enchantments:
+                        enchantments_count = enchantments.length()
+                        if enchantments_count > 0:
+                            for enchantment in range(0, enchantments_count):
+                                enchantment = enchantments.get(enchantment)
+                                _msg = enchantment.get("id").asString().split(":")[1].replace("_"," ").title()
+                                if enchantment.has("lvl"): _msg += " " + enchantment.get("lvl").asString().split("s")[0]
+                                _enchantments.append(_msg)
+                    return _enchantments
+                enchantments = get_enchantment_strings(nbt)
+                toast +="\n"+"\n".join(enchantments); msg += " (" + ", ".join(enchantments)+")"
+            else: toast += '\n'+nbt.toString(); msg += ' '+nbt.toString()
+        else: toast += "\n{nbt}"; msg += f" {nbt}"
+        AutoMagic("toast/create", {"msg": toast, "long": "1"})
         if nbt and enchantments: AutoMagic("logger/log", {"message": msg})
         if empty < 1:
             msg =  "Inventory is Full!"
