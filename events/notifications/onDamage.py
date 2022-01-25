@@ -25,5 +25,5 @@ match event_name:
         except: pass
         missing_hearts = int((max_health/2)-remaining_hearts)
         msg = f"{event.source.title()} damaged you!\n\n{remaining_hearts*'♥'}{missing_hearts*'🖤'}"
-        AutoMagic("toast/create", {"msg": msg, "long": "1"})
+        AutoMagic("toast/create", {"msg": msg, "long": "0"})
         AutoMagic("logger/log", {"message": msg})

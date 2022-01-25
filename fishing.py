@@ -6,12 +6,6 @@ match event_name:
     case "ItemPickup"|"Key"|"Manual":
         inv = Player.openInventory()
         def percent(num, den): return int((num / den) * 100)
-        from os import environ
-        from datetime import datetime
-        from urllib.parse import quote_plus
-        def AutoMagic(path: str, params = {}):
-            try: Request.get(f"http://{environ.get('IP_Timo-Tablet')}:1122/{path}?{'&'.join([k+'='+quote_plus(v) for (k,v) in params.items()])}&password={environ.get('AMAPI_PW')}")
-            except Exception as ex: Chat.getLogger().error(f"Could not send AutoMagic request: {ex}")
         def get_first_free_slot():
             for slot in range(0, inv.getTotalSlots()):
                 if inv.getSlot(slot).isEmpty(): return slot
