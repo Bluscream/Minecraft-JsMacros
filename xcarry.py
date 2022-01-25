@@ -22,9 +22,9 @@ match event_name:
             for slot in range(10, inv_slot_count):
                 if inv.getSlot(slot).isEmpty(): empty += 1
             return [empty, inv_slot_count-10]
-        def get_free_slots(min: int, max: int, first_only: bool = False):
+        def get_free_slots(range: List[int], first_only: bool = False):
             lst = list()
-            for slot in range(min, max):
+            for slot in range:
                 # Chat.log(f"Slot #{slot}: {inv.getSlot(slot)}")
                 if inv.getSlot(slot).isEmpty():
                     if first_only: return slot
@@ -38,7 +38,7 @@ match event_name:
                     Chat.log(f"Already holding {held_item.getName()}, using that")
                     inv = inv.click(slot2)
                 else:
-                    first_free_slot = get_free_slots(0, inv_slot_count, True)
+                    first_free_slot = get_free_slots(range(0, inv_slot_count), True)
                     Chat.log(f"Already holding {held_item.getName()}, dropping at #{first_free_slot}")
                     inv.click(first_free_slot)
                 return
@@ -48,22 +48,22 @@ match event_name:
             slot2IsEmpty = _slot2.isEmpty()
             if slot1IsEmpty:
                 inv = inv.click(slot2)
-                Client.waitTick(10)
+                Client.waitTick(5)
                 inv = inv.click(slot1)
-                Client.waitTick(10)
+                Client.waitTick(5)
             elif slot2IsEmpty:
                 inv = inv.click(slot1)
-                Client.waitTick(10)
+                Client.waitTick(5)
                 inv = inv.click(slot2)
-                Client.waitTick(10)
+                Client.waitTick(5)
             elif slot1IsEmpty and slot2IsEmpty: return
             else:
                 inv = inv.click(slot1)
-                Client.waitTick(10)
+                Client.waitTick(5)
                 inv = inv.click(slot2)
-                Client.waitTick(10)
+                Client.waitTick(5)
                 inv = inv.click(slot1)
-                Client.waitTick(10)
+                Client.waitTick(5)
         empty, total = get_free_slot_count()
         is_damagable = event.item.isDamageable()
         is_stackable = event.item.getMaxCount() > 1
@@ -74,8 +74,8 @@ match event_name:
                     if item.isEmpty(): continue
                     if item.isItemEqual(event.item): return slot
             event_item_slot = get_event_item_slot()
-            free_crafting_slot = get_free_slots(1, 5, True)
-            if free_crafting_slot:
-                Chat.log(f"Picked up #{event_item_slot} {event.item.getName()}, moving to #{free_crafting_slot}")
-                swap_slots(event_item_slot, free_crafting_slot)
-        
+            free_crafting_offhand_slot = get_free_slots([1,2,3,4,45], True)
+            if free_crafting_offhand_slot:
+                Chat.log(f"Picked up {event.item.getName()} in slot #{event_item_slot}, moving to #{free_crafting_offhand_slot}")
+                swap_slots(event_item_slot, free_crafting_offhand_slot)
+    
