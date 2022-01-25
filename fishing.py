@@ -5,13 +5,48 @@ event_name = (event.eventName if hasattr(event, 'eventName') else event.getEvent
 match event_name:
     case "ItemPickup"|"Key"|"Manual":
         inv = Player.openInventory()
+        from os import environ
+        from datetime import datetime
+        from urllib.parse import quote_plus
+        def AutoMagic(path: str, params = {}):
+            try: Request.get(f"http://{environ.get('IP_Timo-Tablet')}:1122/{path}?{'&'.join([k+'='+quote_plus(v) for (k,v) in params.items()])}&password={environ.get('AMAPI_PW')}")
+            except Exception as ex: Chat.getLogger().error(f"Could not send AutoMagic request: {ex}")
         def percent(num, den): return int((num / den) * 100)
         def get_first_free_slot():
             for slot in range(0, inv.getTotalSlots()):
                 if inv.getSlot(slot).isEmpty(): return slot
-        def get_worst_condition_item_slot(id, compare):
+        def get_best_rod():
             slots = inv.getTotalSlots()
-            highest= [compare, 0]
+            best_rod = { "slot": -1, "has_mending": False, "luck_of_the_sea": 0, "lure": 0, "unbreaking": 0}
+            for slot in range(-1, slots):
+                stack = inv.getHeld() if (slot == -1) else inv.getSlot(slot)
+                if stack.getItemID() == "minecraft:fishing_rod":
+                    nbt = stack.getNBT()
+                    if nbt.isCompound():
+                        nbt = nbt.asCompoundHelper()
+                        if nbt.has("Enchantments"):
+                            enchantments = nbt.get("Enchantments")
+                            current_rod = { "slot": slot, "has_mending": False, "luck_of_the_sea": 0, "lure": 0, "unbreaking": 0}
+                            is_better = False
+                            for enchantment in range(0, enchantments.length()):
+                                enchantment = enchantments.get(enchantment)
+                                enchantment_id = enchantment.get("id").asString()
+                                lvl = 0
+                                if enchantment.has("lvl"): lvl = int(enchantment.get("lvl").asString().split("s")[0])
+                                if enchantment_id == "minecraft:mending": current_rod["has_mending"] = True
+                                elif enchantment_id == "minecraft:luck_of_the_sea": current_rod["luck_of_the_sea"] = lvl
+                                elif enchantment_id == "minecraft:lure": current_rod["lure"] = lvl
+                                elif enchantment_id == "minecraft:unbreaking": current_rod["unbreaking"] = lvl
+                            if current_rod["has_mending"] and not best_rod["has_mending"]: is_better = True
+                            if current_rod["luck_of_the_sea"] > best_rod["luck_of_the_sea"]: is_better = True
+                            if current_rod["lure"] > best_rod["lure"]: is_better = True
+                            # if current_rod["unbreaking"] > best_rod["unbreaking"]: is_better = True
+                            if is_better: best_rod = current_rod
+            return best_rod
+        def get_best_worst_condition_item_slot(id, compare, mode: str):
+            slots = inv.getTotalSlots()
+            worst_item = [compare, 0]
+            best_item = [compare, 0]
             for slot in range(-1, slots):
                 stack = inv.getHeld() if (slot == -1) else inv.getSlot(slot)
                 if stack.getItemID() == id and stack.isDamageable():
@@ -25,11 +60,13 @@ match event_name:
                                 if enchantment.get("id").asString() == "minecraft:mending":
                                     damage_percent = percent(stack.getDamage(), stack.getMaxDamage())
                                     # Chat.log(f"Current Highest {highest[0]}% vs new {damage_percent}%")
-                                    if damage_percent > highest[0]:
+                                    if damage_percent > worst_item[0]:
                                         # Chat.log(f"Got new highest: {highest[0]}% -> {damage_percent}%")
-                                        highest = [damage_percent, slot]
+                                        worst_item = [damage_percent, slot]
+                                    if damage_percent < best_item[0]:
+                                        best_item = [damage_percent, slot]
                                     break
-            return highest
+            return best_item if mode == "best" else best_item
         def swap_slots(slot1, slot2):
             # Chat.log(f"Slot {slot1} -> {slot2}")
             global inv
@@ -74,10 +111,16 @@ match event_name:
             held_item_max_damage = held_item.getMaxDamage()
             held_item_damage_percent = percent(held_item_damage, held_item_max_damage)
             fully_repaired = held_item_damage < 1
-            worst_rod = get_worst_condition_item_slot("minecraft:fishing_rod", held_item_damage_percent)
+            worst_rod = get_best_worst_condition_item_slot("minecraft:fishing_rod", held_item_damage_percent, "worst")
             if worst_rod[0] > held_item_damage_percent:
-                Chat.log(f"Switching to more broken fishing rod: #{worst_rod[1]} ({worst_rod[0]}% damage) to {held_item_index}")
+                msg = f"Switching to more broken fishing rod: #{worst_rod[1]} ({worst_rod[0]}% damage) to {held_item_index}"
+                Chat.log(msg)
+                AutoMagic("logger/log", {"message": msg})
                 swap_slots(worst_rod[1], held_item_index)
-            new_item_nbt = event.item.getNBT()
-            new_item_nbt = '\n'+str(new_item_nbt) if new_item_nbt else ""
-        else: pass
+            else:
+                best_rod = get_best_rod()
+                if best_rod["slot"] != -1 and best_rod["slot"] != held_item_index:
+                    msg = f"Switching to better fishing rod in slot #{best_rod['slot']}\nMending: {best_rod['has_mending']} Luck of the Sea: {best_rod['luck_of_the_sea']} Lure: {best_rod['lure']} Unbreaking: {best_rod['unbreaking']}"
+                    Chat.log(msg)
+                    AutoMagic("logger/log", {"message": msg})
+                    swap_slots(best_rod["slot"], held_item_index)
