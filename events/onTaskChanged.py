@@ -34,7 +34,9 @@ match event_name:
                     args = command[1:]
                     arg_str = ' '.join(args)
                     match cmd.lower():
-                        case "/sleep": Client.waitTick(int(args[1]))
+                        case ",sleep": Client.waitTick(int(args[1]))
+                        case ",disconnect": Client.disconnect()
+                        case ",quit"|",exit": Client.shutdown()
                         case "@@wait": wait_for_altoclef(task)
                         case "@@pickup":
                             range = int(args[0]) if len(args) > 0 else 0

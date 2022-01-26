@@ -70,7 +70,7 @@ match event_name:
                         Respond(f"{prefix}exit|quit - Closes the client")
                         Respond(f"{prefix}players - Lists all players on the server")
                         Respond(f"{prefix}coords - Converts overworld coords to nether and vice versa")
-                        Respond(f"{prefix}exec - Executes a chain of commands (separated by ;). Use /sleep for delays")
+                        Respond(f"{prefix}exec - Executes a chain of commands (separated by ;). Use ,sleep for delays")
                         Respond(f"{prefix}os - Executes commands on the OS level")
                         Respond(f"{prefix}eval - Executes python code")
                         Respond(f"{prefix}echo|print - duh")
@@ -151,8 +151,8 @@ match event_name:
                     case "exec":
                         for command in arg_str.split(";"):
                             Respond(f"Executing {command}")
-                            if (command.startswith("/sleep ")):
-                                slp_time = command.replace("/sleep ", "")
+                            if (command.startswith(",sleep ")):
+                                slp_time = command.replace(",sleep ", "")
                                 sleep(int(slp_time))
                             else: Chat.say(command)
                     case "os":

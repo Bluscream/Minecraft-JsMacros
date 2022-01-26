@@ -14,8 +14,8 @@ match event_name:
             for cmd in _task.split(";"):
                 if cmd and cmd != "":
                     Chat.log(f"[{_task}] Executing {cmd}")
-                    if (cmd.startswith("/sleep ")):
-                        slp_time = cmd.replace("/sleep ", "")
+                    if (cmd.startswith(",sleep ")):
+                        slp_time = cmd.replace(",sleep ", "")
                         sleep(int(slp_time))
                     else: Chat.say(cmd)
         if GlobalVars.getBoolean('is_bed_time'):

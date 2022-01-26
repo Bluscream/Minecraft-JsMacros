@@ -20,17 +20,18 @@ match event_name:
             hostname = server[0]
             address = server[1].split(":")
 
-            Chat.log(f"[JsMacros] Joined server {hostname} ({':'.join(address)})")
+            player_name = Player.getPlayer().getName().getString()
+            Chat.log(f"[JsMacros] Joined server {hostname} ({':'.join(address)}) as {player_name}")
             sleep(1)
             players = World.getPlayers()
             player_count = len(players)
-            players = [i for i in players if i.getName()!=Player.getPlayer().getName()]
+            players = [i for i in players if i.getName() != player_name]
             Chat.log(f"[JsMacros] Online Players: \u00A7l{player_count}")
             if player_count > 1:
                 from random import choice
                 greeting = choice(["Hello, %s", "Hi, %s", "Hey, %s", "Greetings, %s"])
                 if player_count > 2: Chat.say(greeting.replace(", %s", ""))
-                else: Chat.say(greeting % choice(players).getName())
+                else: Chat.say(greeting % choice(players).getName().getString())
                 
             fabricInstance = Reflection.getClass("net.fabricmc.loader.api.FabricLoader").getInstance()
             meteorLoaded = fabricInstance.isModLoaded("meteor-client")
@@ -70,7 +71,11 @@ match event_name:
                         Chat.log(f"Set task_bed_start to {GlobalVars.getString('task_bed_start')}")
                         # GlobalVars.putString("task_night", task_night)
                         Chat.log(f"Set task_night to {GlobalVars.getString('task_night')}")
-                        GlobalVars.putString("task_now", "")
+                        
+                        match player_name:
+                            case "B1uscr34m": pass # GlobalVars.putString("task_now", ",task .t auto-reconnect on;@get iron_ore 256;@@wait;,quit") # .t auto-reconnect on;@get baked_potato 1;@@wait;.t auto-reconnect off;,disconnect
+                            case _: GlobalVars.putString("task_now", "")
+                        
                         # JsMacros.runScript("meteor_altoclef.py")
                 case "mc.hypixel.net":
                     pass

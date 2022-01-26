@@ -23,7 +23,8 @@ match event_name:
         empty, total = get_free_slots()
         if total - empty == 2: AutoMagic("logger/clear")
         toast = f"Picked up Item ({total-empty}/{total})\n{event.item.getName()}"
-        msg = f"{Player.getPlayer().getName().getString()} picked up {event.item.getName()}"
+        player = Player.getPlayer()
+        msg = f"{player.getName().getString()} picked up {event.item.getName()}"
         if event.item.isDamageable(): _msg = f" ({percent(event.item.getDamage(), event.item.getMaxDamage())}% damaged)"; toast += _msg;msg += _msg
         nbt = event.item.getNBT()
         if nbt:
@@ -47,10 +48,13 @@ match event_name:
                 toast +="\n"+"\n".join(enchantments); msg += " (" + ", ".join(enchantments)+")"
             else: toast += '\n'+nbt.toString(); msg += ' '+nbt.toString()
         else: toast += f"\n{nbt}"; msg += f" {nbt}"
-        AutoMagic("toast/create", {"msg": toast, "long": "1"})
-        if nbt and enchantments: AutoMagic("logger/log", {"message": msg})
-        if empty < 1:
-            msg =  "Inventory is Full!"
-            AutoMagic("toast/create", {"msg":msg, "long": "1"})
-            AutoMagic("notification/create", {"title": msg, "bigmessage": str(datetime.now()), "icon": "app.icon://com.mojang.minecraftpe"})
-            AutoMagic("logger/log", {"message": msg})
+        
+        holding_fishing_rod = player.getMainHand().getItemID() == "minecraft:fishing_rod"
+        if holding_fishing_rod:
+            AutoMagic("toast/create", {"msg": toast, "long": "1"})
+            if nbt and enchantments: AutoMagic("logger/log", {"message": msg})
+            if empty < 1:
+                msg =  "Inventory is Full!"
+                AutoMagic("toast/create", {"msg":msg, "long": "1"})
+                AutoMagic("notification/create", {"title": msg, "bigmessage": str(datetime.now()), "icon": "app.icon://com.mojang.minecraftpe"})
+                AutoMagic("logger/log", {"message": msg})
