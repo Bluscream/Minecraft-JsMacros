@@ -31,7 +31,7 @@ match event_name:
                 from random import choice
                 greeting = choice(["Hello, %s", "Hi, %s", "Hey, %s", "Greetings, %s"])
                 if player_count > 2: Chat.say(greeting.replace(", %s", ""))
-                else: Chat.say(greeting % choice(players).getName().getString())
+                else: Chat.say(greeting % choice(players).getName())
                 
             fabricInstance = Reflection.getClass("net.fabricmc.loader.api.FabricLoader").getInstance()
             meteorLoaded = fabricInstance.isModLoaded("meteor-client")
@@ -73,7 +73,7 @@ match event_name:
                         Chat.log(f"Set task_night to {GlobalVars.getString('task_night')}")
                         
                         match player_name:
-                            case "B1uscr34m": pass # GlobalVars.putString("task_now", ",task .t auto-reconnect on;@get iron_ore 256;@@wait;,quit") # .t auto-reconnect on;@get baked_potato 1;@@wait;.t auto-reconnect off;,disconnect
+                            case "B1uscr34m": GlobalVars.putString("task_now", ".t auto-reconnect on;@get raw_iron 256;@@wait;,quit") # .t auto-reconnect on;@get baked_potato 1;@@wait;.t auto-reconnect off;,disconnect
                             case _: GlobalVars.putString("task_now", "")
                         
                         # JsMacros.runScript("meteor_altoclef.py")
