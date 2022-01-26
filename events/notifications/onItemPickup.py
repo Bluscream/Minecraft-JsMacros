@@ -23,7 +23,7 @@ match event_name:
         empty, total = get_free_slots()
         if total - empty == 2: AutoMagic("logger/clear")
         toast = f"Picked up Item ({total-empty}/{total})\n{event.item.getName()}"
-        msg = f"Picked up {event.item.getName()}"
+        msg = f"{Player.getPlayer().getName().getString()} picked up {event.item.getName()}"
         if event.item.isDamageable(): _msg = f" ({percent(event.item.getDamage(), event.item.getMaxDamage())}% damaged)"; toast += _msg;msg += _msg
         nbt = event.item.getNBT()
         if nbt:
