@@ -17,7 +17,8 @@ match event_name:
         last_level = GlobalVars.getInt("last_level")
         if last_level != event.level:
             if last_level:
-                msg = f"⇪ {Player.getPlayer().getName().getString()} leveled up to {event.level} ({event.total} XP)"
+                is_level_up = last_level < event.level
+                msg = f"{'⇪' if is_level_up else ''} {Player.getPlayer().getName().getString()} leveled {'up' if is_level_up else 'down'} to {event.level} ({event.total} XP)"
                 AutoMagic("toast/create", {"msg": msg, "long": "0"})
                 AutoMagic("logger/log", {"message": msg})
                 Chat.log(msg)
