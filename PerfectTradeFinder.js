@@ -5,8 +5,8 @@ let isFirstVillager = true;
 const tressure = ["soul_speed", "mending", "binding_curse", "vanishing_curse"]; // "frost_walker", 
 
 // List containg the best level for each enchantment
-const bestEnchants = [{ id: "aqua_affinity", lvl: 1 }, { id: "channeling", lvl: 1 }, { id: "binding_curse", lvl: 1 },
-    { id: "vanishing_curse", lvl: 1 }, { id: "flame", lvl: 1 }, { id: "infinity", lvl: 1 },
+const bestEnchants = [{ id: "aqua_affinity", lvl: 1 }, { id: "channeling", lvl: 1 }, { id: "binding_curse", lvl: 2 },
+    { id: "vanishing_curse", lvl: 2 }, { id: "flame", lvl: 1 }, { id: "infinity", lvl: 1 },
     { id: "mending", lvl: 1 }, { id: "multishot", lvl: 1 }, { id: "silk_touch", lvl: 1 },
 
     { id: "fire_aspect", lvl: 2 }, { id: "frost_walker", lvl: 2 }, { id: "knockback", lvl: 2 },
@@ -49,7 +49,7 @@ if(toggledOff){
 
         
     // list of enchantments not found
-    let missingEnchants = "[smite, sharpness, power, impaling, efficiency, bane_of_arthropods, protection, projectile_protection, piercing, fire_protection, feather_falling, blast_protection, unbreaking, thorns, sweeping, soul_speed, respiration, quick_charge, lure, luck_of_the_sea, loyalty, looting, fortune, depth_strider, cleaving, punch, knockback, frost_walker, fire_aspect, silk_touch, multishot, mending, infinity, flame, vanishing_curse, binding_curse, channeling]"
+    let missingEnchants = "[smite, sharpness, power, impaling, efficiency, bane_of_arthropods, protection, projectile_protection, piercing, fire_protection, feather_falling, blast_protection, unbreaking, thorns, sweeping, soul_speed, respiration, quick_charge, lure, luck_of_the_sea, loyalty, looting, fortune, depth_strider, cleaving, punch, knockback, frost_walker, fire_aspect, silk_touch, multishot, mending, infinity, flame, channeling]"
      // GlobalVars.getString("VanillaScripts.PefectTradeFinder.Enchants");
 
     // Checks if we got a list
@@ -101,8 +101,8 @@ if(toggledOff){
 }
 
 function addEnchant(missingEnchants){
-    const bestEnchants = [{ id: "aqua_affinity", lvl: 1 }, { id: "channeling", lvl: 1 }, { id: "binding_curse", lvl: 1 },
-        { id: "vanishing_curse", lvl: 1 }, { id: "flame", lvl: 1 }, { id: "infinity", lvl: 1 },
+    const bestEnchants = [{ id: "aqua_affinity", lvl: 1 }, { id: "channeling", lvl: 1 }, { id: "binding_curse", lvl: 2 },
+        { id: "vanishing_curse", lvl: 2 }, { id: "flame", lvl: 1 }, { id: "infinity", lvl: 1 },
         { id: "mending", lvl: 1 }, { id: "multishot", lvl: 1 }, { id: "silk_touch", lvl: 1 },
 
         { id: "fire_aspect", lvl: 2 }, { id: "frost_walker", lvl: 2 }, { id: "knockback", lvl: 2 },
