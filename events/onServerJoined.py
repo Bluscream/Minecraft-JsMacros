@@ -73,7 +73,7 @@ match event_name:
                         Chat.log(f"Set task_night to {GlobalVars.getString('task_night')}")
                         
                         match player_name:
-                            case "B1uscr34m": GlobalVars.putString("task_now", ".t auto-reconnect on;@get raw_iron 256;@@wait;,quit") # .t auto-reconnect on;@get baked_potato 1;@@wait;.t auto-reconnect off;,disconnect
+                            # case "B1uscr34m": GlobalVars.putString("task_now", ".t auto-reconnect on;@get raw_iron 256;@@wait;,quit") # .t auto-reconnect on;@get baked_potato 1;@@wait;.t auto-reconnect off;,disconnect
                             case _: GlobalVars.putString("task_now", "")
                         
                         # JsMacros.runScript("meteor_altoclef.py")
