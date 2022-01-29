@@ -92,12 +92,12 @@ PLACE = {
     "minecraft:sugar_cane": ["minecraft:sand", "minecraft:dirt", "minecraft_grass_block", "minecraft:farmland"],
     "minecraft:melon_seeds": ["minecraft:farmland"],
     "minecraft:pumpkin_seeds": ["minecraft:farmland"],
-    # "minecraft:oak_sapling": ["minecraft:coarse_dirt", "minecraft:dirt", "minecraft_grass_block", "minecraft:podzol"], 
-    # "minecraft:birch_sapling": ["minecraft:coarse_dirt", "minecraft:dirt", "minecraft_grass_block", "minecraft:podzol"],
-    # "minecraft:jungle_sapling": ["minecraft:coarse_dirt", "minecraft:dirt", "minecraft_grass_block", "minecraft:podzol"],
-    # "minecraft:spruce_sapling": ["minecraft:coarse_dirt", "minecraft:dirt", "minecraft_grass_block", "minecraft:podzol"],
-    # "minecraft:acacia_sapling": ["minecraft:coarse_dirt", "minecraft:dirt", "minecraft_grass_block", "minecraft:podzol"],
-    # "minecraft:dark_oak_sapling": ["minecraft:coarse_dirt", "minecraft:dirt", "minecraft_grass_block", "minecraft:podzol"],
+    "minecraft:oak_sapling": ["minecraft:coarse_dirt", "minecraft:dirt", "minecraft_grass_block", "minecraft:podzol"], 
+    "minecraft:birch_sapling": ["minecraft:coarse_dirt", "minecraft:dirt", "minecraft_grass_block", "minecraft:podzol"],
+    "minecraft:jungle_sapling": ["minecraft:coarse_dirt", "minecraft:dirt", "minecraft_grass_block", "minecraft:podzol"],
+    "minecraft:spruce_sapling": ["minecraft:coarse_dirt", "minecraft:dirt", "minecraft_grass_block", "minecraft:podzol"],
+    "minecraft:acacia_sapling": ["minecraft:coarse_dirt", "minecraft:dirt", "minecraft_grass_block", "minecraft:podzol"],
+    "minecraft:dark_oak_sapling": ["minecraft:coarse_dirt", "minecraft:dirt", "minecraft_grass_block", "minecraft:podzol"],
     "minecraft:kelp": [],
     "minecraft:bamboo": ["minecraft:coarse_dirt", "minecraft:dirt", "minecraft_grass_block", "minecraft:podzol", "minecraft:gravel", "minecraft:mycelium", "minecraft:red_sand"], # grass blocks, dirt, coarse dirt, gravel, mycelium, podzol, sand, or red sand.
     "minecraft:sweet_berries": ["minecraft:coarse_dirt", "minecraft:dirt", "minecraft_grass_block", "minecraft:podzol", "minecraft:farmland"]

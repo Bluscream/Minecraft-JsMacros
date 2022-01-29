@@ -3,4 +3,9 @@ event_name = (event.eventName if hasattr(event, 'eventName') else event.getEvent
 # Chat.getLogger().debug(f"Executing {file.getName()} on event {event_name}")
 match event_name:
     case "Key":
-        Chat.say("@stop")
+        if (GlobalVars.getBoolean("baritone_paused")):
+            Chat.say("#resume")
+            GlobalVars.putBoolean("baritone_paused", False)
+        else:
+            Chat.say("#pause")
+            GlobalVars.putBoolean("baritone_paused", True)
