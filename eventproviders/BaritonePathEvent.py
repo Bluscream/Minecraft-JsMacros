@@ -8,6 +8,8 @@ if __name__ == "": from JsMacrosAC import *  # Autocomplete, not necessary
 
 def onPathEvent(self, args):
     Chat.log(f"[Baritone] onPathEvent: {args[0]}")
+    
+def onBlockInteractEvent
 
 AbstractGameEventListener = Reflection.getClass("baritone.api.event.listener.AbstractGameEventListener")
 

@@ -20,7 +20,7 @@ def breakBlock(x, y, z):
             Client.waitTick()
 
 RADIUS = 4
-WAIT_AMOUNT = 1
+WAIT_AMOUNT = 2
 ENABLE_FLOWERS = True
 
 BREAK = {
@@ -45,13 +45,16 @@ BREAK = {
     "minecraft:red_tulip": 0,
     "minecraft:fern": 0,
     "minecraft:large_fern": 0,
-     "minecraft:cocoa": 2
+     "minecraft:cocoa": 2,
+    "minecraft:sugar_cane": 0,
+    "minecraft:kelp": 0,
+    "minecraft:kelp_plant": 0,
+    "minecraft:bamboo": 0
 }
 
 BREAKABLE_BLOCKS = [
     "minecraft:pumpkin",
     "minecraft:melon"
-   
 ]
 
 BREAK_NO_FIRST = [
@@ -62,23 +65,23 @@ BREAK_NO_FIRST = [
 ]
 
 BONEMEALABLE = [
-    "minecraft:wheat",
-    "minecraft:beetroots",
-    "minecraft:carrots",
-    "minecraft:potatoes",
-    "minecraft:melon_stem",
-    "minecraft:pumpkin_stem",
-    "minecraft:oak_sapling", 
-    "minecraft:birch_sapling",
-    "minecraft:jungle_sapling",
-    "minecraft:spruce_sapling",
-    "minecraft:acacia_sapling",
-    "minecraft:dark_oak_sapling" ,
-    "minecraft:kelp",
-    "minecraft:kelp_plant",
-    "minecraft:bamboo",
-    "minecraft:bamboo_sapling",
-    "minecraft:sweet_berry_bush"
+    # "minecraft:wheat",
+    # "minecraft:beetroots",
+    # "minecraft:carrots",
+    # "minecraft:potatoes",
+    # "minecraft:melon_stem",
+    # "minecraft:pumpkin_stem",
+    # "minecraft:oak_sapling", 
+    # "minecraft:birch_sapling",
+    # "minecraft:jungle_sapling",
+    # "minecraft:spruce_sapling",
+    # "minecraft:acacia_sapling",
+    # "minecraft:dark_oak_sapling" ,
+    # "minecraft:kelp",
+    # "minecraft:kelp_plant",
+    # "minecraft:bamboo",
+    # "minecraft:bamboo_sapling",
+    # "minecraft:sweet_berry_bush"
 ]
 
 
@@ -89,18 +92,18 @@ PLACE = {
     "minecraft:carrot": ["minecraft:farmland"],
     "minecraft:potato": ["minecraft:farmland"],
     "minecraft:nether_wart": ["minecraft:soul_sand"],
-    "minecraft:sugar_cane": ["minecraft:sand", "minecraft:dirt", "minecraft_grass_block", "minecraft:farmland"],
+    "minecraft:sugar_cane": ["minecraft:sand", "minecraft:dirt", "minecraft:grass_block", "minecraft:farmland"],
     "minecraft:melon_seeds": ["minecraft:farmland"],
     "minecraft:pumpkin_seeds": ["minecraft:farmland"],
-    "minecraft:oak_sapling": ["minecraft:coarse_dirt", "minecraft:dirt", "minecraft_grass_block", "minecraft:podzol"], 
-    "minecraft:birch_sapling": ["minecraft:coarse_dirt", "minecraft:dirt", "minecraft_grass_block", "minecraft:podzol"],
-    "minecraft:jungle_sapling": ["minecraft:coarse_dirt", "minecraft:dirt", "minecraft_grass_block", "minecraft:podzol"],
-    "minecraft:spruce_sapling": ["minecraft:coarse_dirt", "minecraft:dirt", "minecraft_grass_block", "minecraft:podzol"],
-    "minecraft:acacia_sapling": ["minecraft:coarse_dirt", "minecraft:dirt", "minecraft_grass_block", "minecraft:podzol"],
-    "minecraft:dark_oak_sapling": ["minecraft:coarse_dirt", "minecraft:dirt", "minecraft_grass_block", "minecraft:podzol"],
+    "minecraft:oak_sapling": ["minecraft:coarse_dirt", "minecraft:dirt", "minecraft:grass_block", "minecraft:podzol"], 
+    "minecraft:birch_sapling": ["minecraft:coarse_dirt", "minecraft:dirt", "minecraft:grass_block", "minecraft:podzol"],
+    "minecraft:jungle_sapling": ["minecraft:coarse_dirt", "minecraft:dirt", "minecraft:grass_block", "minecraft:podzol"],
+    "minecraft:spruce_sapling": ["minecraft:coarse_dirt", "minecraft:dirt", "minecraft:grass_block", "minecraft:podzol"],
+    "minecraft:acacia_sapling": ["minecraft:coarse_dirt", "minecraft:dirt", "minecraft:grass_block", "minecraft:podzol"],
+    "minecraft:dark_oak_sapling": ["minecraft:coarse_dirt", "minecraft:dirt", "minecraft:grass_block", "minecraft:podzol"],
     "minecraft:kelp": [],
-    "minecraft:bamboo": ["minecraft:coarse_dirt", "minecraft:dirt", "minecraft_grass_block", "minecraft:podzol", "minecraft:gravel", "minecraft:mycelium", "minecraft:red_sand"], # grass blocks, dirt, coarse dirt, gravel, mycelium, podzol, sand, or red sand.
-    "minecraft:sweet_berries": ["minecraft:coarse_dirt", "minecraft:dirt", "minecraft_grass_block", "minecraft:podzol", "minecraft:farmland"]
+    "minecraft:bamboo": ["minecraft:coarse_dirt", "minecraft:dirt", "minecraft:grass_block", "minecraft:podzol", "minecraft:gravel", "minecraft:mycelium", "minecraft:red_sand"], # grass blocks, dirt, coarse dirt, gravel, mycelium, podzol, sand, or red sand.
+    "minecraft:sweet_berries": ["minecraft:coarse_dirt", "minecraft:dirt", "minecraft:grass_block", "minecraft:podzol", "minecraft:farmland"]
 }
 
 def onTick(event, args):
@@ -115,42 +118,30 @@ def onTick(event, args):
                     if GlobalVars.getObject("FARMER_RUNNING") != None:
                         block = World.getBlock(pX + x, pY + y, pZ + z)
                         blockID = block.getId()
-                        #Chat.log(blockID)
                         blockUnderID = World.getBlock(pX + x, pY + y - 1, pZ + z).getId()
                         selectedSlotID = Player.openInventory().getSlot(Player.openInventory().getSelectedHotbarSlotIndex() + 36).getItemID()
-                        #Break
                         if blockID in BREAK.keys() or blockID in BREAKABLE_BLOCKS:
-                            # state = type(block.getBlockState())
-                            # if not state: continue
-                            # Chat.log(str(state))
-                            state = block.getBlockState()
-                            if "age" in state.keySet():
-                                if int(state["age"]) == BREAK[blockID]:
-                                    if blockID != "minecraft:sweet_berry_bush":
+                            if blockID in BREAK_NO_FIRST:
+                                if blockUnderID in BREAK_NO_FIRST:
+                                    if blockID == "minecraft:bamboo":
                                         breakBlock(pX + x, pY + y, pZ + z)
                                         Client.waitTick(WAIT_AMOUNT)
                                     else:
-                                        Player.getPlayer().interact(pX + x, pY + y, pZ + z, 0, False)
+                                        breakBlock(pX + x, pY + y, pZ + z)
                                         Client.waitTick(WAIT_AMOUNT)
-                            elif blockID in BREAKABLE_BLOCKS:
-                                breakBlock(pX + x, pY + y, pZ + z)
-                                Client.waitTick(WAIT_AMOUNT)
-                            elif ENABLE_FLOWERS:
-                                breakBlock(pX + x, pY + y, pZ + z)
-                                Client.waitTick(WAIT_AMOUNT)
-                            
-
-
-                        
-                        #Break Not lowest Block
-                        elif blockID in BREAK_NO_FIRST and blockUnderID in BREAK_NO_FIRST:
-                            if blockID == "minecraft:bamboo":
-                                #if "sword" in selectedSlotID:
-                                breakBlock(pX + x, pY + y, pZ + z)
-                                Client.waitTick(WAIT_AMOUNT)
                             else:
-                                breakBlock(pX + x, pY + y, pZ + z)
-                                Client.waitTick(WAIT_AMOUNT)
+                                state = block.getBlockState()
+                                if "age" in state.keySet():
+                                    if int(state["age"]) == BREAK[blockID]:
+                                        if blockID == "minecraft:sweet_berry_bush": Player.getPlayer().interact(pX + x, pY + y, pZ + z, 0, False)
+                                        else: breakBlock(pX + x, pY + y, pZ + z)
+                                        Client.waitTick(WAIT_AMOUNT)
+                                elif blockID in BREAKABLE_BLOCKS:
+                                    breakBlock(pX + x, pY + y, pZ + z)
+                                    Client.waitTick(WAIT_AMOUNT)
+                                elif ENABLE_FLOWERS:
+                                    breakBlock(pX + x, pY + y, pZ + z)
+                                    Client.waitTick(WAIT_AMOUNT)
 
 
                         #Bonemeal
@@ -166,7 +157,7 @@ def onTick(event, args):
                                 #Chat.log("is air")
                                 if blockUnderID in PLACE[selectedSlotID]:
                                     Player.getPlayer().interactBlock(pX + x, pY + y, pZ + z, 0, False)       
-                                    Client.waitTick(WAIT_AMOUNT)
+                                    Client.waitTick(WAIT_AMOUNT * 2)
                             elif selectedSlotID == "minecraft:kelp":
                                 if blockID in ["minecraft:water", "minecraft:flowing_water"] and blockUnderID not in ["minecraft:kelp", "minecraft:kelp_plant"]:
                                     Player.getPlayer().interactBlock(pX + x, pY + y, pZ + z, 0, False)       

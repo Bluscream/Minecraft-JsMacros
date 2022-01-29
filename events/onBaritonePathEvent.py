@@ -10,5 +10,14 @@ match event_name:
                 if paused: GlobalVars.putBoolean("baritone_paused", False)
             case "CANCELED":
                 if not paused: GlobalVars.putBoolean("baritone_paused", True)
-            case _:
-                Chat.log(f"BaritonePathEvent: {status}")
+            case "AT_GOAL": pass
+            case "CALC_FAILED": pass
+            case "CONTINUING_ONTO_PLANNED_NEXT": pass
+            case "DISCARD_NEXT": pass
+            case "NEXT_CALC_FAILED": pass
+            case "NEXT_SEGMENT_CALC_FINISHED": pass
+            case "NEXT_SEGMENT_CALC_STARTED": pass
+            case "PATH_FINISHED_NEXT_STILL_CALCULATING": pass
+            case "SPLICING_ONTO_NEXT_EARLY": pass
+            case _: pass
+        Chat.log(f"BaritonePathEvent: {status}")
