@@ -16,7 +16,7 @@ def breakBlock(x, y, z):
     if World.getBlock(x, y, z).getId() != "minecraft:air" and World.getBlock(x, y, z).getId() != "minecraft:bedrock":
         pos = BlockPos(x, y, z)
         while Client.getMinecraft().field_1761.method_2902(pos, DOWN): #Break Block
-            Player.getPlayer().getRaw().method_6104(Player.getPlayer().getRaw().field_6266) # Swing Hand
+            player.getRaw().method_6104(player.getRaw().field_6266) # Swing Hand
             Client.waitTick()
 
 RADIUS = 4
@@ -45,7 +45,7 @@ BREAK = {
     "minecraft:red_tulip": 0,
     "minecraft:fern": 0,
     "minecraft:large_fern": 0,
-     "minecraft:cocoa": 2,
+    "minecraft:cocoa": 2,
     "minecraft:sugar_cane": 0,
     "minecraft:kelp": 0,
     "minecraft:kelp_plant": 0,
@@ -84,7 +84,26 @@ BONEMEALABLE = [
     # "minecraft:sweet_berry_bush"
 ]
 
-
+LOG_TYPES = [
+    "minecraft:oak_log",
+    "minecraft:spruce_log",
+    "minecraft:birch_log",
+    "minecraft:jungle_log",
+    "minecraft:acacia_log",
+    "minecraft:dark_oak_log",
+    "minecraft:stripped_oak_log",
+    "minecraft:stripped_spruce_log",
+    "minecraft:stripped_birch_log",
+    "minecraft:stripped_jungle_log",
+    "minecraft:stripped_acacia_log",
+    "minecraft:stripped_dark_oak_log",
+    "minecraft:oak_wood",
+    "minecraft:spruce_wood",
+    "minecraft:birch_wood",
+    "minecraft:jungle_wood",
+    "minecraft:acacia_wood",
+    "minecraft:dark_oak_wood"
+]
 
 PLACE = {
     "minecraft:wheat_seeds": ["minecraft:farmland"], 
@@ -103,66 +122,82 @@ PLACE = {
     "minecraft:dark_oak_sapling": ["minecraft:coarse_dirt", "minecraft:dirt", "minecraft:grass_block", "minecraft:podzol"],
     "minecraft:kelp": [],
     "minecraft:bamboo": ["minecraft:coarse_dirt", "minecraft:dirt", "minecraft:grass_block", "minecraft:podzol", "minecraft:gravel", "minecraft:mycelium", "minecraft:red_sand"], # grass blocks, dirt, coarse dirt, gravel, mycelium, podzol, sand, or red sand.
-    "minecraft:sweet_berries": ["minecraft:coarse_dirt", "minecraft:dirt", "minecraft:grass_block", "minecraft:podzol", "minecraft:farmland"]
+    "minecraft:sweet_berries": ["minecraft:coarse_dirt", "minecraft:dirt", "minecraft:grass_block", "minecraft:podzol", "minecraft:farmland"],
+    "minecraft:cocoa_beans": []
 }
+
+player = Player.getPlayer()
 
 def onTick(event, args):
     if GlobalVars.getBoolean("NEXT_TICK"):
         GlobalVars.putBoolean("NEXT_TICK", False)
-        pX = int(Player.getPlayer().getX())
-        pY = int(Player.getPlayer().getY())
-        pZ = int(Player.getPlayer().getZ())
+        pX = int(player.getX())
+        pY = int(player.getY())
+        pZ = int(player.getZ())
         for x in range(-RADIUS, RADIUS + 1):
             for y in range(-RADIUS, RADIUS + 1):
                 for z in range(-RADIUS, RADIUS + 1):
+                    xyz = [pX + x, pY + y + 1, pZ + z]
                     if GlobalVars.getObject("FARMER_RUNNING") != None:
-                        block = World.getBlock(pX + x, pY + y, pZ + z)
+                        block = World.getBlock(xyz[0],xyz[1],xyz[2])
                         blockID = block.getId()
-                        blockUnderID = World.getBlock(pX + x, pY + y - 1, pZ + z).getId()
+                        blockUnderID = World.getBlock(xyz[0],xyz[1]- 1, xyz[2]).getId()
                         selectedSlotID = Player.openInventory().getSlot(Player.openInventory().getSelectedHotbarSlotIndex() + 36).getItemID()
                         if blockID in BREAK.keys() or blockID in BREAKABLE_BLOCKS:
                             if blockID in BREAK_NO_FIRST:
                                 if blockUnderID in BREAK_NO_FIRST:
                                     if blockID == "minecraft:bamboo":
-                                        breakBlock(pX + x, pY + y, pZ + z)
+                                        breakBlock(xyz[0],xyz[1],xyz[2])
                                         Client.waitTick(WAIT_AMOUNT)
                                     else:
-                                        breakBlock(pX + x, pY + y, pZ + z)
+                                        breakBlock(xyz[0],xyz[1],xyz[2])
                                         Client.waitTick(WAIT_AMOUNT)
                             else:
                                 state = block.getBlockState()
                                 if "age" in state.keySet():
                                     if int(state["age"]) == BREAK[blockID]:
-                                        if blockID == "minecraft:sweet_berry_bush": Player.getPlayer().interact(pX + x, pY + y, pZ + z, 0, False)
-                                        else: breakBlock(pX + x, pY + y, pZ + z)
+                                        if blockID == "minecraft:sweet_berry_bush": player.interact(xyz[0],xyz[1],xyz[2], 0, False)
+                                        else: breakBlock(xyz[0],xyz[1],xyz[2])
                                         Client.waitTick(WAIT_AMOUNT)
                                 elif blockID in BREAKABLE_BLOCKS:
-                                    breakBlock(pX + x, pY + y, pZ + z)
+                                    breakBlock(xyz[0],xyz[1],xyz[2])
                                     Client.waitTick(WAIT_AMOUNT)
                                 elif ENABLE_FLOWERS:
-                                    breakBlock(pX + x, pY + y, pZ + z)
+                                    breakBlock(xyz[0],xyz[1],xyz[2])
                                     Client.waitTick(WAIT_AMOUNT)
 
 
                         #Bonemeal
                         if blockID in BONEMEALABLE:
                             if Player.openInventory().getSlot(45).getItemID() == "minecraft:bone_meal":
-                                Player.getPlayer().interact(pX + x, pY + y, pZ + z, 0, True)  
-
-                        
+                                player.interact(xyz[0],xyz[1],xyz[2], 0, True)  
 
                         #Place
                         if selectedSlotID in PLACE.keys():
-                            if blockID == "minecraft:air":
-                                #Chat.log("is air")
-                                if blockUnderID in PLACE[selectedSlotID]:
-                                    Player.getPlayer().interactBlock(pX + x, pY + y, pZ + z, 0, False)       
-                                    Client.waitTick(WAIT_AMOUNT * 2)
-                            elif selectedSlotID == "minecraft:kelp":
+                            if selectedSlotID == "minecraft:kelp":
                                 if blockID in ["minecraft:water", "minecraft:flowing_water"] and blockUnderID not in ["minecraft:kelp", "minecraft:kelp_plant"]:
-                                    Player.getPlayer().interactBlock(pX + x, pY + y, pZ + z, 0, False)       
+                                    player.interactBlock(xyz[0],xyz[1],xyz[2], 0, False)       
                                     Client.waitTick(WAIT_AMOUNT)
-
+                            elif selectedSlotID == "minecraft:cocoa_beans":
+                                if blockID in LOG_TYPES:
+                                    surrounding = [
+                                        # [xyz[0], xyz[1] + 1, xyz[2]], # above
+                                        # [xyz[0], xyz[1] - 1, xyz[2]], # below
+                                        [xyz[0],xyz[1],xyz[2] + 1], # north
+                                        [xyz[0],xyz[1],xyz[2] - 1], # south
+                                        [xyz[0] - 1, xyz[1], xyz[2]], # west
+                                        [xyz[0] + 1, xyz[1], xyz[2]] # east
+                                    ]
+                                    for pos in surrounding:
+                                        block = World.getBlock(pos[0],pos[1],pos[2])
+                                        if block.getId() == "minecraft:air":
+                                            player.interactBlock(pos[0],pos[1],pos[2], 0, False)
+                                            Client.waitTick(WAIT_AMOUNT * 2)
+                            elif blockID == "minecraft:air":
+                                if blockUnderID in PLACE[selectedSlotID]:
+                                    player.interactBlock(xyz[0],xyz[1],xyz[2], 0, False)
+                                    Client.waitTick(WAIT_AMOUNT * 2)
+                            continue
                     else:
                         return
                             
@@ -174,12 +209,12 @@ def onTick(event, args):
 if __name__ == "__main__":
     ON_PROGRAM_RUN = GlobalVars.getObject("FARMER_RUNNING")
     if ON_PROGRAM_RUN == None:
-        Chat.log("on")
+        Chat.log("[JSMacros] AutoFarm enabled")
         GlobalVars.putBoolean("NEXT_TICK", True)
         ON_PROGRAM_RUN = JsMacros.on("Tick", JavaWrapper.methodToJava(onTick))
         GlobalVars.putObject("FARMER_RUNNING", ON_PROGRAM_RUN)
     else:
-        Chat.log("off")
+        Chat.log("[JSMacros] AutoFarm disabled")
         JsMacros.off("Tick", ON_PROGRAM_RUN)
         GlobalVars.remove("FARMER_RUNNING")
 
