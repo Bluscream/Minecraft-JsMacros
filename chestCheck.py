@@ -69,39 +69,43 @@ match event_name:
         for x in range(px - radius, px + radius):
             for y in range(py - radius, py + radius):
                 for z in range(pz - radius, pz + radius):
-                        block = World.getBlock(x, y, z)
-                        # if isinstance(block, ChestBlock.getClass()):
-                        if block != None:
-                            block_id = block.getId()
-                            if block_id in container:
-                                    if block_id in chests:
-                                        blockState = block.getRawBlockState()
-                                        if blockState.method_11654(ChestBlock.field_10770) in sides:
-                                            continue
-                                    player.lookAt(x + .5, y + .5, z + .5)
-                                    Client.waitTick()
-                                    looking_at = Player.rayTraceBlock(4, False)
-                                    if looking_at and looking_at.getId() == block_id:
-                                        pos = [x,y,z]
-                                        if not alreadyChecked.contains(pos):
-                                            Chat.log(f"Interacting with {block.getName()} at {pos}")
-                                            Player.getPlayer().interact()
-                                            i = 0
-                                            while not Hud.isContainer():
-                                                if i > 4: break
-                                                Client.waitTick()
-                                                i += 1
-                                            # for direction in directions:
-                                            #     Chat.log(f"Trying direction {direction}")
-                                            #     player.interactBlock(x, y, z, direction, False, False)
-                                            #     Client.waitTick(20)
-                                            # Client.waitTick(8)
-                                            Player.openInventory().close()
-                                            i = 0
-                                            while Hud.isContainer():
-                                                if i > 4: break
-                                                Client.waitTick()
-                                                i += 1
-                                            alreadyChecked.add([x,y,z])
+                        pos = [x,y,z]
+                        if not alreadyChecked.contains(pos):
+                            block = World.getBlock(x, y, z)
+                            # if isinstance(block, ChestBlock.getClass()):
+                            if block != None:
+                                block_id = block.getId()
+                                if block_id in container:
+                                        if block_id in chests:
+                                            blockState = block.getRawBlockState()
+                                            if blockState.method_11654(ChestBlock.field_10770) in sides:
+                                                continue
+                                        player.lookAt(x + .5, y + .5, z + .5)
+                                        Client.waitTick()
+                                        looking_at = Player.rayTraceBlock(4, False)
+                                        if looking_at and looking_at.getId() == block_id:
+                                                Chat.log(f"Interacting with {block.getName()} at {pos}")
+                                                i = 0
+                                                while not Hud.isContainer():
+                                                    if i > 4: break
+                                                    Player.getPlayer().interact()
+                                                    Client.waitTick(2)
+                                                    i += 1
+                                                # for direction in directions:
+                                                #     Chat.log(f"Trying direction {direction}")
+                                                #     player.interactBlock(x, y, z, direction, False, False)
+                                                #     Client.waitTick(20)
+                                                # Client.waitTick(8)
+                                                
+                                                # 
+                                                # i = 0
+                                                # while Hud.isContainer():
+                                                #     if i > 4: break
+                                                #     Player.openInventory().close()
+                                                #     Client.waitTick()
+                                                #     i += 1
+                                                alreadyChecked.add([x,y,z])
         if len(alreadyChecked): GlobalVars.putObject("chestCheck:alreadyChecked", alreadyChecked)
         Chat.log(f"Finished chest check: {len(alreadyChecked)}")
+        Client.waitTick(5)
+        Player.openInventory().close()
