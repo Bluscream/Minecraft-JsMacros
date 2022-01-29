@@ -181,7 +181,8 @@ match event_name:
                         else: Respond(f"{c}4Variable {c}r{arg_str} {c}4does not exist{c}r")
                     case "set":
                         old = var(args[0])
-                        GlobalVars.putString(args[0], ' '.join(args[1:]))
+                        if len(args) > 1: GlobalVars.putString(args[0], ' '.join(args[1:]))
+                        else: GlobalVars.remove(args[0])
                         Respond(f"{args[0]}: {old} -> {var(args[0])}")
                     case "gamemode"|"gm":
                         if len(args) == 0: Respond(f"Current Gamemode: {Player.getGameMode()}")

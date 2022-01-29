@@ -1,5 +1,7 @@
 if __name__ == "": from JsMacrosAC import *
 
+from multiprocessing.dummy import Array
+from java.util import ArrayList
 from net.minecraft import class_2745 as ChestType
 from net.minecraft import class_2281 as ChestBlock
 
@@ -24,6 +26,7 @@ container = chests + [
     "minecraft:campfire",
     "minecraft:lit_campfire",
     "minecraft:chest_minecart",
+    "minecraft:brewing_stand"
 ]
 
 container2 = [
@@ -57,26 +60,31 @@ container2 = [
 
 sides = [ChestType.field_12574]
 
+alreadyChecked = GlobalVars.getObject("chestCheck:alreadyChecked")
+if not alreadyChecked: alreadyChecked = ArrayList()
+Chat.log(f"Already checked {len(alreadyChecked)} chests")
 for x in range(px - radius, px + radius):
     for y in range(py - radius, py + radius):
         for z in range(pz - radius, pz + radius):
-            
-            block = World.getBlock(x, y, z)
-            # if isinstance(block, ChestBlock.getClass()):
-            if block != None:
-                block_id = block.getId()
-                if block_id in container:
-                    if block_id in chests:
-                        blockState = block.getRawBlockState()
-                        if blockState.method_11654(ChestBlock.field_10770) in sides:
-                            continue
-                    Player.getPlayer().lookAt(x + .5, y + .5, z + .5)
-                    
-                    if Player.rayTraceBlock(4, False) != None and Player.rayTraceBlock(4, False).getId() in container:
-                        Client.waitTick(2)
-                        Chat.log(f"Interacting with {block.getName()} at [{x}, {y}, {z}]")
-                        Player.getPlayer().interact()
-                        Client.waitTick(8)
-                        Player.openInventory().close()
-                        #Player.getPlayer().interactBlock(x, y, z, 0, False)
-                        #Client.waitTick(2)
+                block = World.getBlock(x, y, z)
+                # if isinstance(block, ChestBlock.getClass()):
+                if block != None:
+                    block_id = block.getId()
+                    if block_id in container:
+                            if block_id in chests:
+                                blockState = block.getRawBlockState()
+                                if blockState.method_11654(ChestBlock.field_10770) in sides:
+                                    continue
+                            Player.getPlayer().lookAt(x + .5, y + .5, z + .5)
+                            
+                            if Player.rayTraceBlock(4, False) != None and Player.rayTraceBlock(4, False).getId() in container:
+                                pos = [x,y,z]
+                                if not alreadyChecked.contains(pos):
+                                    Client.waitTick(2)
+                                    Chat.log(f"Interacting with {block.getName()} at {pos}")
+                                    Player.getPlayer().interact()
+                                    # Player.getPlayer().interactBlock(x, y, z, 0, False)
+                                    Client.waitTick(8)
+                                    Player.openInventory().close()
+                                    alreadyChecked.add([x,y,z])
+if len(alreadyChecked): GlobalVars.putObject("chestCheck:alreadyChecked", alreadyChecked)
