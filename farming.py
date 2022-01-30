@@ -1,27 +1,10 @@
-# Script by Hasenzahn1
-
-
-if __name__=="": 
-    from JsMacrosAC import *
-
-
-from net.minecraft import class_2338 as BlockPos
-from net.minecraft import class_2350 as Direction
-from net.minecraft import class_1268 as Hand
-
-DOWN = Direction.field_11033
-MAIN_HAND = Hand.field_5808
-
-def breakBlock(x, y, z):
-    if World.getBlock(x, y, z).getId() != "minecraft:air" and World.getBlock(x, y, z).getId() != "minecraft:bedrock":
-        pos = BlockPos(x, y, z)
-        while Client.getMinecraft().field_1761.method_2902(pos, DOWN): #Break Block
-            player.getRaw().method_6104(player.getRaw().field_6266) # Swing Hand
-            Client.waitTick()
+if __name__=="": from JsMacrosAC import * # Script by Hasenzahn1
 
 RADIUS = 4
 WAIT_AMOUNT = 2
 ENABLE_FLOWERS = True
+AUTO_SWITCH = True
+USE_INVENTORY = True
 
 BREAK = {
     "minecraft:wheat": 7,
@@ -128,83 +111,104 @@ PLACE = {
 
 player = Player.getPlayer()
 
+from net.minecraft import class_2350 as Direction
+from net.minecraft import class_1268 as Hand
+DOWN = Direction.field_11033
+MAIN_HAND = Hand.field_5808
+
+from net.minecraft import class_2338 as BlockPos
+def breakBlock(x, y, z):
+    blockId = World.getBlock(x, y, z).getId()
+    if blockId not in ["minecraft:air", "minecraft:bedrock"]:
+        pos = BlockPos(x, y, z)
+        while Client.getMinecraft().field_1761.method_2902(pos, DOWN): #Break Block
+            player.getRaw().method_6104(player.getRaw().field_6266) # Swing Hand
+            Client.waitTick()
+
+def getPlaceSide(x,y,z):
+    #[DOWN, UP, NORTH, SOUTH, WEST, EAST] 0-5
+    for i in [(0, -1, 0, 0), (0, 1, 0, 1), (0, 0, 1, 3), (0, 0, -1, 2), (-1, 0, 0, 4), (1, 0, 0, 5)]:
+        if World.getBlock(x+i[0], y+i[1], z+i[2]).getId() != "minecraft:air":
+            return i[3]
+
+def place(x,y,z, block=True):
+    side = getPlaceSide(x,y,z)
+    if block: player.interactBlock(x,y,z, side, False)
+    else: player.interactItem(x, y, z, side, False)
+
 def onTick(event, args):
     if GlobalVars.getBoolean("NEXT_TICK"):
         GlobalVars.putBoolean("NEXT_TICK", False)
         pX = int(player.getX())
         pY = int(player.getY())
         pZ = int(player.getZ())
+        ignore = []
         for x in range(-RADIUS, RADIUS + 1):
             for y in range(-RADIUS, RADIUS + 1):
                 for z in range(-RADIUS, RADIUS + 1):
                     xyz = [pX + x, pY + y + 1, pZ + z]
-                    if GlobalVars.getObject("FARMER_RUNNING") != None:
-                        block = World.getBlock(xyz[0],xyz[1],xyz[2])
-                        blockID = block.getId()
-                        blockUnderID = World.getBlock(xyz[0],xyz[1]- 1, xyz[2]).getId()
-                        selectedSlotID = Player.openInventory().getSlot(Player.openInventory().getSelectedHotbarSlotIndex() + 36).getItemID()
-                        if blockID in BREAK.keys() or blockID in BREAKABLE_BLOCKS:
-                            if blockID in BREAK_NO_FIRST:
-                                if blockUnderID in BREAK_NO_FIRST:
-                                    if blockID == "minecraft:bamboo":
+                    if xyz not in ignore:
+                        if GlobalVars.getObject("FARMER_RUNNING") != None:
+                            block = World.getBlock(xyz[0],xyz[1],xyz[2])
+                            blockID = block.getId()
+                            mainHandItemId = player.getMainHand().getItemID() # Player.openInventory().getSlot(Player.openInventory().getSelectedHotbarSlotIndex() + 36).getItemID()
+                            blockUnderID = World.getBlock(xyz[0],xyz[1]- 1, xyz[2]).getId()
+                            if blockID in BREAK.keys() or blockID in BREAKABLE_BLOCKS:
+                                if blockID in BREAK_NO_FIRST:
+                                    if blockUnderID in BREAK_NO_FIRST:
+                                        if blockID == "minecraft:bamboo":
+                                            breakBlock(xyz[0],xyz[1],xyz[2])
+                                            Client.waitTick(WAIT_AMOUNT)
+                                        else:
+                                            breakBlock(xyz[0],xyz[1],xyz[2])
+                                            Client.waitTick(WAIT_AMOUNT)
+                                else:
+                                    state = block.getBlockState()
+                                    if "age" in state.keySet():
+                                        if int(state["age"]) == BREAK[blockID]:
+                                            if blockID == "minecraft:sweet_berry_bush": place(xyz[0],xyz[1],xyz[2], False)
+                                            else: breakBlock(xyz[0],xyz[1],xyz[2])
+                                            Client.waitTick(WAIT_AMOUNT)
+                                    elif blockID in BREAKABLE_BLOCKS:
                                         breakBlock(xyz[0],xyz[1],xyz[2])
                                         Client.waitTick(WAIT_AMOUNT)
-                                    else:
+                                    elif ENABLE_FLOWERS:
                                         breakBlock(xyz[0],xyz[1],xyz[2])
                                         Client.waitTick(WAIT_AMOUNT)
-                            else:
-                                state = block.getBlockState()
-                                if "age" in state.keySet():
-                                    if int(state["age"]) == BREAK[blockID]:
-                                        if blockID == "minecraft:sweet_berry_bush": player.interact(xyz[0],xyz[1],xyz[2], 0, False)
-                                        else: breakBlock(xyz[0],xyz[1],xyz[2])
+
+                            #Bonemeal
+                            if blockID in BONEMEALABLE:
+                                if Player.openInventory().getSlot(45).getItemID() == "minecraft:bone_meal":
+                                    place(xyz[0],xyz[1],xyz[2], False)
+
+                            #Place
+                            if mainHandItemId in PLACE.keys():
+                                if mainHandItemId == "minecraft:kelp":
+                                    if blockID in ["minecraft:water", "minecraft:flowing_water"] and blockUnderID not in ["minecraft:kelp", "minecraft:kelp_plant"]:
+                                        place(xyz[0],xyz[1],xyz[2])
                                         Client.waitTick(WAIT_AMOUNT)
-                                elif blockID in BREAKABLE_BLOCKS:
-                                    breakBlock(xyz[0],xyz[1],xyz[2])
-                                    Client.waitTick(WAIT_AMOUNT)
-                                elif ENABLE_FLOWERS:
-                                    breakBlock(xyz[0],xyz[1],xyz[2])
-                                    Client.waitTick(WAIT_AMOUNT)
-
-
-                        #Bonemeal
-                        if blockID in BONEMEALABLE:
-                            if Player.openInventory().getSlot(45).getItemID() == "minecraft:bone_meal":
-                                player.interact(xyz[0],xyz[1],xyz[2], 0, True)  
-
-                        #Place
-                        if selectedSlotID in PLACE.keys():
-                            if selectedSlotID == "minecraft:kelp":
-                                if blockID in ["minecraft:water", "minecraft:flowing_water"] and blockUnderID not in ["minecraft:kelp", "minecraft:kelp_plant"]:
-                                    player.interactBlock(xyz[0],xyz[1],xyz[2], 0, False)       
-                                    Client.waitTick(WAIT_AMOUNT)
-                            elif selectedSlotID == "minecraft:cocoa_beans":
-                                if blockID in LOG_TYPES:
-                                    surrounding = [
-                                        # [xyz[0], xyz[1] + 1, xyz[2]], # above
-                                        # [xyz[0], xyz[1] - 1, xyz[2]], # below
-                                        [xyz[0],xyz[1],xyz[2] + 1], # north
-                                        [xyz[0],xyz[1],xyz[2] - 1], # south
-                                        [xyz[0] - 1, xyz[1], xyz[2]], # west
-                                        [xyz[0] + 1, xyz[1], xyz[2]] # east
-                                    ]
-                                    for pos in surrounding:
-                                        block = World.getBlock(pos[0],pos[1],pos[2])
-                                        if block.getId() == "minecraft:air":
-                                            player.interactBlock(pos[0],pos[1],pos[2], 0, False)
-                                            Client.waitTick(WAIT_AMOUNT * 2)
-                            elif blockID == "minecraft:air":
-                                if blockUnderID in PLACE[selectedSlotID]:
-                                    player.interactBlock(xyz[0],xyz[1],xyz[2], 0, False)
-                                    Client.waitTick(WAIT_AMOUNT * 2)
-                            continue
-                    else:
-                        return
-                            
-
-        GlobalVars.putBoolean("NEXT_TICK", True)
-
-
+                                elif mainHandItemId == "minecraft:cocoa_beans":
+                                    if blockID in LOG_TYPES:
+                                        surrounding = [
+                                            # [xyz[0], xyz[1] + 1, xyz[2]], # above
+                                            # [xyz[0], xyz[1] - 1, xyz[2]], # below
+                                            [xyz[0],xyz[1],xyz[2] + 1], # north
+                                            [xyz[0],xyz[1],xyz[2] - 1], # south
+                                            [xyz[0] - 1, xyz[1], xyz[2]], # west
+                                            [xyz[0] + 1, xyz[1], xyz[2]] # east
+                                        ]
+                                        for pos in surrounding:
+                                            block = World.getBlock(pos[0],pos[1],pos[2])
+                                            if block.getId() == "minecraft:air":
+                                                ignore.append(pos)
+                                                place(pos[0],pos[1],pos[2])
+                                                Client.waitTick(WAIT_AMOUNT * 2)
+                                elif blockID == "minecraft:air":
+                                    if blockUnderID in PLACE[mainHandItemId]:
+                                        place(xyz[0],xyz[1],xyz[2])
+                                        Client.waitTick(WAIT_AMOUNT * 2)
+                                continue
+                            GlobalVars.putBoolean("NEXT_TICK", True)
 
 if __name__ == "__main__":
     ON_PROGRAM_RUN = GlobalVars.getObject("FARMER_RUNNING")

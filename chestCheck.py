@@ -84,27 +84,27 @@ match event_name:
                                         Client.waitTick()
                                         looking_at = Player.rayTraceBlock(4, False)
                                         if looking_at and looking_at.getId() == block_id:
-                                                Chat.log(f"Interacting with {block.getName()} at {pos}")
-                                                i = 0
-                                                while not Hud.isContainer():
-                                                    if i > 4: break
-                                                    Player.getPlayer().interact()
-                                                    Client.waitTick(2)
-                                                    i += 1
-                                                # for direction in directions:
-                                                #     Chat.log(f"Trying direction {direction}")
-                                                #     player.interactBlock(x, y, z, direction, False, False)
-                                                #     Client.waitTick(20)
-                                                # Client.waitTick(8)
-                                                
-                                                # 
-                                                # i = 0
-                                                # while Hud.isContainer():
-                                                #     if i > 4: break
-                                                #     Player.openInventory().close()
-                                                #     Client.waitTick()
-                                                #     i += 1
-                                                alreadyChecked.add([x,y,z])
+                                            Chat.log(f"Interacting with {block.getName()} at {pos}")
+                                            i = 0
+                                            while not Hud.isContainer():
+                                                if i > 4: break
+                                                Player.getPlayer().interact()
+                                                Client.waitTick(2)
+                                                i += 1
+                                            # for direction in directions:
+                                            #     Chat.log(f"Trying direction {direction}")
+                                            #     player.interactBlock(x, y, z, direction, False, False)
+                                            #     Client.waitTick(20)
+                                            # Client.waitTick(8)
+                                            
+                                            # 
+                                            # i = 0
+                                            # while Hud.isContainer():
+                                            #     if i > 4: break
+                                            #     Player.openInventory().close()
+                                            #     Client.waitTick()
+                                            #     i += 1
+                                            alreadyChecked.add([x,y,z])
         if len(alreadyChecked): GlobalVars.putObject("chestCheck:alreadyChecked", alreadyChecked)
         Chat.log(f"Finished chest check: {len(alreadyChecked)}")
         Client.waitTick(5)
