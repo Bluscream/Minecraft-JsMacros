@@ -119,8 +119,8 @@ match event_name:
                         Respond(f"{player_count} players:")
                         num = 1
                         for player, playerEntity in playerDict.items():
-                            chat = f"#{num:02} {player.getName()}"
-                            log = f"#{num:02} \"{player.getName()}\" ({player.getUUID()})"
+                            chat = f"#{num:02} {player.getName()} ({player.getPing()}ms)"
+                            log = chat + f" ({player.getUUID()})"
                             if playerEntity:
                                 health = playerEntity.getHealth()
                                 chat += f" §c{int(health)}♥§r" # if health < 20:

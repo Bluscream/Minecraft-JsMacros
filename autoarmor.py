@@ -10,7 +10,7 @@ match event_name:
         armors = [
             "minecraft:leather"
         ]
-        event.item.getItemID() in armors:
+        if event.item.getItemID() in armors:
             inv = Player.openInventory()
             inv_slot_count = inv.getTotalSlots()
             def percent(num, den): return int((num / den) * 100)
