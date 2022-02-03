@@ -23,7 +23,7 @@ match event_name:
             except Exception as e: Chat.log("§2Could not wait for altoclef to finish task!")
         def task(tasks: str):
             if not tasks: return
-            tasks = tasks.strip().strip(";").split(";")
+            tasks = tasks.strip().strip(";").split(";;")
             for task in tasks:
                 if task and task != "":
                     Chat.log(f"[TASK] Executing {task}")

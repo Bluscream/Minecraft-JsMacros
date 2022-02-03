@@ -20,12 +20,13 @@ match event_name:
         def get_free_slots(range: List[int], first_only: bool = False):
             lst = list()
             for slot in range:
-                if inv.getSlot(slot).isEmpty():
+                if slot < inv_slot_count and inv.getSlot(slot).isEmpty():
                     if first_only: return slot
                     lst.append(slot)
             return lst
         # empty = len(get_free_slots(range(10, inv_slot_count)))
-        empty_all = len(get_free_slots(list(range(1,4))+list(range(9,45))))
+        empty_all = len(get_free_slots(list(range(1,5))+list(range(9,46))))
+        # Chat.log(f"Empty slots: {empty_all} {empty}")
         if empty_all < 2:
             def swap_slots(slot1, slot2):
                 global inv
