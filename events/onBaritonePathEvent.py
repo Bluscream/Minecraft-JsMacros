@@ -2,7 +2,7 @@
 if __name__ == "": from JsMacrosAC import *  # Autocomplete, not necessary
 event_name = (event.eventName if hasattr(event, 'eventName') else event.getEventName()) if event else "Manual"
 match event_name:
-    case "BaritonePathEvent"|"Key"|"Manual":
+    case "BaritonePathEvent"|"PathEvent"|"Key"|"Manual":
         status = event.getString("status")
         paused = GlobalVars.getBoolean("baritone_paused")
         match status:

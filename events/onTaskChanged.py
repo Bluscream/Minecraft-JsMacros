@@ -17,14 +17,23 @@ match event_name:
         Baritone = Reflection.getClass("baritone.api.BaritoneAPI").getProvider().getPrimaryBaritone()
         # except Exception as e: Chat.log("Baritone not installed: "+str(e))
         def distance(pos1, pos2): return Vec3D(pos1, pos2).getMagnitude()
-        def is_altoclef_finished(RecvMessage_event): return any(x in RecvMessage_event.text.getString() for x in ["§rUser task FINISHED","§rStopped"])
+        def is_altoclef_finished(RecvMessageEvent): return any(x in RecvMessageEvent.text.getString() for x in ["§rUser task FINISHED","§rStopped"])
         def wait_for_altoclef(task: str):
             Chat.log("Waiting for Altoclef to finish task...")
-            # Chat.log("Waiting for Altoclef"+": "+task)
             JsMacros.waitForEvent("RecvMessage", JavaWrapper.methodToJava(is_altoclef_finished)).context.releaseLock()
             context.releaseLock()
             try: Client.waitTick()
             except Exception as e: Chat.log("§2Could not wait for altoclef to finish task!")
+        def is_baritone_finished(BaritonePathEvent):
+            match BaritonePathEvent.getString("status"):
+                case "CANCELED"|"AT_GOAL": return True
+            return False
+        def wait_for_baritone(task: str):
+            Chat.log("Waiting for Baritone to finish pathing...")
+            JsMacros.waitForEvent("BaritonePathEvent", JavaWrapper.methodToJava(is_baritone_finished)).context.releaseLock()
+            context.releaseLock()
+            try: Client.waitTick()
+            except Exception as e: Chat.log("§2Could not wait for baritone to finish pathing!")
         def exec(cmd: str):
             if cmd.startswith("#"): Baritone.getCommandManager().execute(cmd[1:])
             else: Chat.say(cmd, True)
@@ -53,16 +62,16 @@ match event_name:
                             def simplePos(pos): return f"{int(pos.getX())} {int(pos.getY())} {int(pos.getZ())}"
                             items = dict()
                             for entity in World.getEntities():
-                                if entity.getType() == "minecraft:item":
+                                if entity.getType() == "minecraft:item" and (target_id is None or item.asItem().getContainedItemStack().getItemID()==target_id):
                                     pos = entity.getPos()
                                     if not range or distance(playerPos, pos) < range: items[pos] = entity
                             item_count = len(items)
                             if item_count > 0:
                                 Chat.log(f"Picking up {item_count} dropped items within {range if range else 'infinity'} blocks")
                                 for pos, item in items.items():
-                                    if item.isAlive() and (target_id is None or item.asItem().getItemID()==target_id):
+                                    if item.isAlive():
                                         exec(f"{cmd[0]}goto {simplePos(pos)}")
-                                        wait_for_altoclef(task)
+                                        wait_for_altoclef(task) if cmd[0]=="@" else wait_for_baritone(task)
                                 Chat.log("JsMacros"+": "+f"Finished picking up {item_count} dropped items")
                         case _: exec(task)
             msg = f"Finished {len(tasks)} tasks"
