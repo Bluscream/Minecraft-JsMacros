@@ -4,7 +4,6 @@ event_name = (event.eventName if hasattr(event, 'eventName') else event.getEvent
 # Chat.getLogger().debug(f"Executing {file.getName()} on event {event_name}")
 match event_name:
     case "OpenScreen":
-
         if __name__ == "":
             button: ButtonWidgetHelper
             screen: IScreen

@@ -5,8 +5,8 @@ match event_name:
         done = GlobalVars.getBoolean("startup_done")
         if not done:
             GlobalVars.putBoolean("startup_done", True)
-            Client.waitTick(20)
+            # Client.waitTick(20)
             evt = JsMacros.createCustomEvent("Startup")
             evt.registerEvent()
             evt.trigger()
-            Chat.toast("Startup done","")
+            # Chat.toast("Startup done","")

@@ -24,7 +24,9 @@ match event_name:
             for i in range(sec * 20):
                 Client.waitTick()
 
-        from pyperclip import copy as clip_copy
+        try: from pyperclip import copy as clip_copy
+        except:
+            def clip_copy(txt): Respond("pyperclip not found, clipboard copy disabled")
         def copy2clip(txt):
             clip_copy(txt)
             Respond(f"Copied {txt} to clipboard")

@@ -5,5 +5,6 @@ event_name = (event.eventName if hasattr(event, 'eventName') else event.getEvent
 match event_name:
     case "Disconnect"|"Key"|"Manual":
         Client.waitTick()
+        server = ""
         if (GlobalVars.getString("server")): server = GlobalVars.getString("server").split("/")[0]
         Chat.toast("Disconnected", server)
