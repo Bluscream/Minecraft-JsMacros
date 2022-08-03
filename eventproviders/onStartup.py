@@ -9,4 +9,4 @@ match event_name:
             evt = JsMacros.createCustomEvent("Startup")
             evt.registerEvent()
             evt.trigger()
-            # Chat.toast("Startup done","")
+            # Chat.log("Startup done")

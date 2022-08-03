@@ -40,6 +40,7 @@ match event_name:
                         case "@@wait": wait_for_altoclef(task)
                         case "@@pickup"|"##pickup":
                             range = int(args[0]) if len(args) > 0 else 0
+                            target_id = args[1] if len(args) > 1 else None
                             playerPos = Player.getPlayer().getPos()
                             def simplePos(pos): return f"{int(pos.getX())} {int(pos.getY())} {int(pos.getZ())}"
                             items = dict()
@@ -51,7 +52,7 @@ match event_name:
                             if item_count > 0:
                                 Chat.log(f"Picking up {item_count} dropped items within {range if range else 'infinity'} blocks")
                                 for pos, item in items.items():
-                                    if item.isAlive():
+                                    if item.isAlive() and (target_id is None or item.asItem().getItemID()==target_id):
                                         Chat.say(f"{cmd[0]}goto {simplePos(pos)}", True)
                                         wait_for_altoclef(task)
                                 Chat.log("JsMacros"+": "+f"Finished picking up {item_count} dropped items")

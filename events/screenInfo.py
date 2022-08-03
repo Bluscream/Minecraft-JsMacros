@@ -5,6 +5,6 @@ event_name = (event.eventName if hasattr(event, 'eventName') else event.getEvent
 match event_name:
     case "Key":
         screen = Hud.getOpenScreen()
-        Chat.toast(f"{Hud.getOpenScreenName()}","")
+        Chat.log(f"{Hud.getOpenScreenName()}")
         for button in screen.getButtonWidgets():
             Chat.getLogger().warn(f"{button.getText()}","")

@@ -3,7 +3,7 @@ if __name__ == "": from JsMacrosAC import *  # Autocomplete, not necessary
 event_name = (event.eventName if hasattr(event, 'eventName') else event.getEventName()) if event else "Manual"
 match event_name:
     case "NIGHT_START":
-        Chat.toast("NIGHT_START","")
+        Chat.log("NIGHT_START")
     case "JoinServer"|"Key":# "DAY_START"|"":
         if event.action == 1:
             def sleep(sec: int): Client.waitTick(sec * 20)
@@ -18,7 +18,7 @@ match event_name:
                 # Chat.say(cmd, True)
                 # RecvMessage_event = JsMacros.waitForEvent("RecvMessage", JavaWrapper.methodToJava(is_finished)).context.releaseLock()
                 # Client.waitTick(2)
-                # Chat.toast("Altoclef Finished",cmd)
+                # Chat.log(f"Altoclef Finished "+cmd)
                 # Chat.say("#set allowBreak true", True)
                 # Chat.say("#set allowPlace true", True)
                 # cmd = "@get log 512"
@@ -32,5 +32,5 @@ match event_name:
                 JsMacros.waitForEvent("RecvMessage", JavaWrapper.methodToJava(is_finished)).context.releaseLock()
                 context.releaseLock()
                 Client.waitTick()
-                Chat.toast("Altoclef Finished",cmd)
+                Chat.log(f"Altoclef Finished "+cmd)
                 Chat.say("@test bed", True)
