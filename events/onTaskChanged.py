@@ -32,7 +32,7 @@ match event_name:
                     command = task.split(" ")
                     cmd = command[0]
                     args = command[1:]
-                    arg_str = ' '.join(args)
+                    # arg_str = ' '.join(args)
                     match cmd.lower():
                         case ",sleep": Client.waitTick(int(args[1]))
                         case ",disconnect": Client.disconnect()
@@ -40,7 +40,7 @@ match event_name:
                         case "@@wait": wait_for_altoclef(task)
                         case "@@pickup"|"##pickup":
                             range = int(args[0]) if len(args) > 0 else 0
-                            target_id = args[1] if len(args) > 1 else None
+                            target_id = args[1].lower() if len(args) > 1 else None
                             playerPos = Player.getPlayer().getPos()
                             def simplePos(pos): return f"{int(pos.getX())} {int(pos.getY())} {int(pos.getZ())}"
                             items = dict()
