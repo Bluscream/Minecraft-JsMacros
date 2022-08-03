@@ -2,6 +2,7 @@ from urllib.parse import quote
 
 
 if __name__ == "": from JsMacrosAC import *  # Autocomplete, not necessary
+if not event: event = {}
 event_name = (event.eventName if hasattr(event, 'eventName') else event.getEventName()) if event else "Manual"
 match event_name:
     case "TASK_CHANGED"|"Manual":
@@ -12,6 +13,9 @@ match event_name:
             try: Request.get(f"http://{environ.get('IP_Timo-Tablet')}:1122/{path}?{'&'.join([k+'='+quote_plus(v) for (k,v) in params.items()])}&password={environ.get('AMAPI_PW')}")
             except Exception as ex: Chat.getLogger().error(f"Could not send AutoMagic request: {ex}")
         Vec3D = Reflection.getClass("xyz.wagyourtail.jsmacros.client.api.sharedclasses.PositionCommon$Vec3D")
+        # try:
+        Baritone = Reflection.getClass("baritone.api.BaritoneAPI").getProvider().getPrimaryBaritone()
+        # except Exception as e: Chat.log("Baritone not installed: "+str(e))
         def distance(pos1, pos2): return Vec3D(pos1, pos2).getMagnitude()
         def is_altoclef_finished(RecvMessage_event): return any(x in RecvMessage_event.text.getString() for x in ["§rUser task FINISHED","§rStopped"])
         def wait_for_altoclef(task: str):
@@ -21,6 +25,9 @@ match event_name:
             context.releaseLock()
             try: Client.waitTick()
             except Exception as e: Chat.log("§2Could not wait for altoclef to finish task!")
+        def exec(cmd: str):
+            if cmd.startswith("#"): Baritone.getCommandManager().execute(cmd[1:])
+            else: Chat.say(cmd, True)
         def task(tasks: str):
             if not tasks: return
             tasks = tasks.strip().strip(";").split(";;")
@@ -34,7 +41,8 @@ match event_name:
                     args = command[1:]
                     # arg_str = ' '.join(args)
                     match cmd.lower():
-                        case ",sleep": Client.waitTick(int(args[1]))
+                        case ",sleep": Client.waitTick(int(args[0]))
+                        case ",sleeps": Client.waitTick(int(args[0])*20)
                         case ",disconnect": Client.disconnect()
                         case ",quit"|",exit": Client.shutdown()
                         case "@@wait": wait_for_altoclef(task)
@@ -53,10 +61,10 @@ match event_name:
                                 Chat.log(f"Picking up {item_count} dropped items within {range if range else 'infinity'} blocks")
                                 for pos, item in items.items():
                                     if item.isAlive() and (target_id is None or item.asItem().getItemID()==target_id):
-                                        Chat.say(f"{cmd[0]}goto {simplePos(pos)}", True)
+                                        exec(f"{cmd[0]}goto {simplePos(pos)}")
                                         wait_for_altoclef(task)
                                 Chat.log("JsMacros"+": "+f"Finished picking up {item_count} dropped items")
-                        case _: Chat.say(task, True)
+                        case _: exec(task)
             msg = f"Finished {len(tasks)} tasks"
             Chat.log("JSMacros"+": "+msg)
             Client.waitTick()
