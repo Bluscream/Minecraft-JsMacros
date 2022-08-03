@@ -3,24 +3,32 @@ from typing import List
 if __name__ == "": from JsMacrosAC import *  # Autocomplete, not necessary
 event_name = (event.eventName if hasattr(event, 'eventName') else event.getEventName()) if event else "Manual"
 # Chat.getLogger().debug(f"Executing {file.getName()} on event {event_name}")
+saved = {
+    'item.getItemID().lower().endswith("_sword")': { "type": "hotbar", "slot": 1 },
+    'item.getItemID().lower().endswith("_pickaxe")': { "type": "hotbar", "slot": 2 },
+    'item.getItemID().lower().endswith("_axe")': { "type": "hotbar", "slot": 3 },
+    'item.getItemID().lower().endswith("_shovel")': { "type": "hotbar", "slot": 4 },
+    'item.getItemID().lower().endswith("bow")': { "type": "hotbar", "slot": 5 },
+    'item.getItemID().lower().endswith("spyglass")': { "type": "hotbar", "slot": 6 },
+    'item.getItemID().lower().endswith("torch")': { "type": "hotbar", "slot": 7 },
+    'item.getRaw().method_19267()': { "type": "hotbar", "slot": 8 }, # isFood() -> bool
+    'item.getCreativeTab()=="building_blocks"': { "type": "hotbar", "slot": 9 },
+    'item.getItemID().lower().endswith("shield")': { "type": "offhand", "slot": 1 },
+}
 def checkItem(slot: int):
     inv = Player.openInventory()
     item = inv.getSlot(slot)
     map = inv.getMap()
     # def getSlot(type: str, slot): return map[type][slot]
     def getItemSlot(item):
-        id = item.getItemID().lower()
-        tab = item.getCreativeTab()
-        if id.endswith("sword"): return map["hotbar"][0]
-        elif id.endswith("pickaxe"): return map["hotbar"][1]
-        elif id.endswith("axe"): return map["hotbar"][2]
-        elif id.endswith("shovel"): return map["hotbar"][3]
-        elif id.endswith("bow"): return map["hotbar"][4]
-        elif id.endswith("spyglass"): return map["hotbar"][5]
-        elif id.endswith("torch"): return map["hotbar"][6]
-        elif tab == "food": return map["hotbar"][7]
-        elif tab == "building_blocks": return map["hotbar"][8]
-        elif id.endswith("shield"): return map["offhand"][0]
+        for condition, data in saved.items():
+            if eval(condition, globals(), locals()):
+                slot = map[data["type"]][data["slot"]-1]
+                item = inv.getSlot(slot)
+                if eval(condition, globals(), locals()):
+                    Chat.log(f"{item.getName().getString()} in slot {slot} already satisfies condition {condition}")
+                    return None
+                return slot
     correct_slot = getItemSlot(item)
     if correct_slot:
         inslot = inv.getSlot(correct_slot)
