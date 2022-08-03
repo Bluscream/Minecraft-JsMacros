@@ -4,5 +4,5 @@ event_name = (event.eventName if hasattr(event, 'eventName') else event.getEvent
 # Chat.getLogger().debug(f"Executing {file.getName()} on event {event_name}")
 match event_name:
     case _:
-        Chat.toast("Connecting", "play.tasmantismc.com")
+        Chat.log("Connecting: play.tasmantismc.com"")
         Client.connect("play.tasmantismc.com")

@@ -4,4 +4,4 @@ event_name = (event.eventName if hasattr(event, 'eventName') else event.getEvent
 match event_name:
     case "Death"|"Key"|"Manual":
         Client.waitTick()
-        Chat.toast("Death", "You died, looser")
+        Chat.log("Death: You died, looser"")

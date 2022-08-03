@@ -36,7 +36,7 @@ Chat.say(".t auto-armor on", True)
 Chat.say(".t fullbright on", True)
 # Chat.say(".t auto-log on", True)
 Chat.say(f'.t no-fall {"on" if cheat else "off"}')
-# if not cheat: Chat.toast(f"Cheat is off!", "!!! NOFALL DISABLED !!!")
+# if not cheat: Chat.log(f"Cheat is off!"+": "+!!! NOFALL DISABLED !!!")
 
 Chat.say("#set antiCheatCompatibility false", True)
 Chat.say(f"#set allowOnlyExposedOres {not cheat}")

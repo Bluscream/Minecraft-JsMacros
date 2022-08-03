@@ -5,9 +5,10 @@ event_name = (event.eventName if hasattr(event, 'eventName') else event.getEvent
 match event_name:
     case "Key"|"Manual":
         if Hud.isContainer():
-            def big(msg):
+            def big(msg, msg2 = None):
                 Chat.log("==============================")
                 Chat.log(msg)
+                if msg2: Chat.log(msg2)
                 Chat.log("==============================")
             inv = Player.openInventory()
             big(f"Inventory Debug: {inv.getType()}")
@@ -15,4 +16,7 @@ match event_name:
             inv_slot_count = inv.getTotalSlots()
             for slot in range(0, inv_slot_count):
                 Chat.log(f"Slot #{slot}: {inv.getSlot(slot).getName()}")
-            big(f"Inventory Debug: {inv.getContainerTitle()}")
+            map = inv.getMap()
+            local_containers = ["craft_out","crafting_in","helmet","chestplate","leggings","boots","hotbar","main","offhand"]
+            # local_slots = [map[container] for container in map if container in local_containers]
+            big(f"Inventory Debug: {inv.getContainerTitle()} {inv_slot_count-len(map['container']) if 'container' in map else 0} slots ({inv_slot_count} total)",', '.join(map))

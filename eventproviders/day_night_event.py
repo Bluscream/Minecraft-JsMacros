@@ -32,29 +32,29 @@ match event_name:
                     if 12542 <= todt <= 12642 and not wasBedTime:
                         GlobalVars.putBoolean("is_bed_time", True)
                         events["BED_START"].trigger()
-                        Chat.toast("BED_START", f"is_bed_time: {GlobalVars.getBoolean('is_bed_time')}")
+                        Chat.log("BED_START"+": "+f"is_bed_time: {GlobalVars.getBoolean('is_bed_time')}")
                     elif 23460 <= todt <= 23500 and wasBedTime: # 5:30
                         GlobalVars.putBoolean("is_bed_time", False)
                         events["BED_END"].trigger()
-                        Chat.toast("BED_END", f"is_bed_time: {GlobalVars.getBoolean('is_bed_time')}")
+                        Chat.log("BED_END"+": "+f"is_bed_time: {GlobalVars.getBoolean('is_bed_time')}")
                     wasMonsterSpawnTime = GlobalVars.getBoolean("is_monster_spawn_time")
                     if 12869 <= todt <= 13069 and not wasMonsterSpawnTime:
                         GlobalVars.putBoolean('is_monster_spawn_time', True)
                         events["MONSTER_SPAWN_START"].trigger()
-                        Chat.toast("MONSTER_SPAWN_START", f"is_monster_spawn_time: {GlobalVars.getBoolean('is_monster_spawn_time')}")
+                        Chat.log("MONSTER_SPAWN_START"+": "+f"is_monster_spawn_time: {GlobalVars.getBoolean('is_monster_spawn_time')}")
                     elif 22931 <= todt <= 23131 and wasMonsterSpawnTime:
                         GlobalVars.putBoolean('is_monster_spawn_time', False)
                         events["MONSTER_SPAWN_END"].trigger()
-                        Chat.toast("MONSTER_SPAWN_END", f"is_monster_spawn_time: {GlobalVars.getBoolean('is_monster_spawn_time')}")
+                        Chat.log("MONSTER_SPAWN_END"+": "+f"is_monster_spawn_time: {GlobalVars.getBoolean('is_monster_spawn_time')}")
                     wasNight = GlobalVars.getBoolean('is_night')
                     if todt >= 13000 and not wasNight:
                         GlobalVars.putBoolean('is_night', True)
                         events["NIGHT_START"].trigger()
-                        Chat.toast("NIGHT_START", f"is_night: {GlobalVars.getBoolean('is_night')}")
+                        Chat.log("NIGHT_START"+": "+f"is_night: {GlobalVars.getBoolean('is_night')}")
                     elif todt < 13000 and wasNight:
                         GlobalVars.putBoolean('is_night', False)
                         events["DAY_START"].trigger()
-                        Chat.toast("DAY_START", f"is_night: {GlobalVars.getBoolean('is_night')}")
+                        Chat.log("DAY_START"+": "+f"is_night: {GlobalVars.getBoolean('is_night')}")
                     sleep(.25)
                 except Exception as e:
                     # Chat.log(f"day_night_event Error: {e}")

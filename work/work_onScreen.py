@@ -22,7 +22,7 @@ match event_name:
 
         def sleep(sec: float=0): Client.waitTick(sec * 20)
         if screen_name is not None and screen_name != "unknown":
-            # Chat.toast("EventOpenScreen", screen_name)
+            # Chat.log("EventOpenScreen"+": "+screen_name)
             # day_task = GlobalVars.getString("task_day")
             # if day_task and day_task != "#set allowBreak true;#set allowPlace true":
             match screen_name:

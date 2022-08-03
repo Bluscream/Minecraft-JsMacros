@@ -5,7 +5,7 @@ event_name = (event.eventName if hasattr(event, 'eventName') else event.getEvent
 match event_name:
     case "Death":
         Client.waitTick()
-        Chat.toast("EventDeath", event.toString())
+        Chat.log("EventDeath"+": "+event.toString())
 
         def sleep(sec: int): Client.waitTick(sec * 20)
         def task(task: str):

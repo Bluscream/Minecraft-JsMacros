@@ -70,7 +70,7 @@ match event_name:
             for y in range(py - radius, py + radius):
                 for z in range(pz - radius, pz + radius):
                         pos = [x,y,z]
-                        if not alreadyChecked.contains(pos):
+                        if not False: # alreadyChecked.contains(pos):
                             block = World.getBlock(x, y, z)
                             # if isinstance(block, ChestBlock.getClass()):
                             if block != None:
@@ -81,30 +81,35 @@ match event_name:
                                             if blockState.method_11654(ChestBlock.field_10770) in sides:
                                                 continue
                                         player.lookAt(x + .5, y + .5, z + .5)
-                                        Client.waitTick()
+                                        Client.waitTick(2)
                                         looking_at = Player.rayTraceBlock(4, False)
-                                        if looking_at and looking_at.getId() == block_id:
-                                            Chat.log(f"Interacting with {block.getName()} at {pos}")
-                                            i = 0
-                                            while not Hud.isContainer():
-                                                if i > 4: break
-                                                Player.getPlayer().interact()
-                                                Client.waitTick(2)
-                                                i += 1
+                                        if True: # looking_at and looking_at.getId() == block_id:
+                                            # Chat.log(f"Interacting with {block.getName()} at {pos}")
                                             # for direction in directions:
                                             #     Chat.log(f"Trying direction {direction}")
                                             #     player.interactBlock(x, y, z, direction, False, False)
                                             #     Client.waitTick(20)
-                                            # Client.waitTick(8)
+                                            # Chat.log(f"Interacting with {block.getName().getString()} at {x} {y} {z}")
                                             
-                                            # 
-                                            # i = 0
-                                            # while Hud.isContainer():
-                                            #     if i > 4: break
-                                            #     Player.openInventory().close()
-                                            #     Client.waitTick()
-                                            #     i += 1
+                                            i = 0
+                                            while not Hud.isContainer():
+                                                if i > 4: break
+                                                player.interactBlock(x, y, z, 0, False, False)
+                                                Client.waitTick()
+                                                i += 1
+                                            
+                                            inv = Player.openInventory()
+                                            map = inv.getMap()
+                                            slots = inv.getTotalSlots()
+                                            Chat.log(f"{block.getName().getString()} at {pos}\n{inv.getContainerTitle()}: {slots-len(map['container']) if 'container' in map else 0} slots ({slots} total)")
+                                            
                                             alreadyChecked.add([x,y,z])
+                                            i = 0
+                                            while Hud.isContainer():
+                                                if i > 4: break
+                                                Player.openInventory().close()
+                                                Client.waitTick()
+                                                i += 1
         if len(alreadyChecked): GlobalVars.putObject("chestCheck:alreadyChecked", alreadyChecked)
         Chat.log(f"Finished chest check: {len(alreadyChecked)}")
         Client.waitTick(5)

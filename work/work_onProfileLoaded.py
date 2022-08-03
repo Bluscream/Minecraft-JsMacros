@@ -5,5 +5,5 @@ event_name = (event.eventName if hasattr(event, 'eventName') else event.getEvent
 match event_name:
     case "ProfileLoad":
         Client.waitTick()
-        Chat.toast("EventProfileLoad", event.profileName)
+        Chat.log("EventProfileLoad"+": "+event.profileName)
         # Client.connect("play.tasmantismc.com")

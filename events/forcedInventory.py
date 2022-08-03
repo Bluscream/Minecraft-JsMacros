@@ -26,14 +26,14 @@ def checkItem(slot: int):
                 slot = map[data["type"]][data["slot"]-1]
                 item = inv.getSlot(slot)
                 if eval(condition, globals(), locals()):
-                    Chat.log(f"{item.getName().getString()} in slot {slot} already satisfies condition {condition}")
+                    # Chat.log(f"{item.getName().getString()} in slot {slot} already satisfies condition {condition}")
                     return None
                 return slot
     correct_slot = getItemSlot(item)
     if correct_slot:
         inslot = inv.getSlot(correct_slot)
         if inslot.isEmpty() or inslot.getItemID() != item.getItemID(): 
-            Chat.log(f"{item.getItemID()} belongs into slot {correct_slot} (contained {inslot.getName().getString()})")
+            # Chat.log(f"{item.getItemID()} belongs into slot {correct_slot} (contained {inslot.getName().getString()})")
             inv.swap(slot, correct_slot)
 
 match event_name:

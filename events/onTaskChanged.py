@@ -16,7 +16,7 @@ match event_name:
         def is_altoclef_finished(RecvMessage_event): return any(x in RecvMessage_event.text.getString() for x in ["§rUser task FINISHED","§rStopped"])
         def wait_for_altoclef(task: str):
             Chat.log("Waiting for Altoclef to finish task...")
-            # Chat.toast("Waiting for Altoclef", task)
+            # Chat.log("Waiting for Altoclef"+": "+task)
             JsMacros.waitForEvent("RecvMessage", JavaWrapper.methodToJava(is_altoclef_finished)).context.releaseLock()
             context.releaseLock()
             try: Client.waitTick()
@@ -38,7 +38,7 @@ match event_name:
                         case ",disconnect": Client.disconnect()
                         case ",quit"|",exit": Client.shutdown()
                         case "@@wait": wait_for_altoclef(task)
-                        case "@@pickup":
+                        case "@@pickup"|"##pickup":
                             range = int(args[0]) if len(args) > 0 else 0
                             playerPos = Player.getPlayer().getPos()
                             def simplePos(pos): return f"{int(pos.getX())} {int(pos.getY())} {int(pos.getZ())}"
@@ -52,12 +52,12 @@ match event_name:
                                 Chat.log(f"Picking up {item_count} dropped items within {range if range else 'infinity'} blocks")
                                 for pos, item in items.items():
                                     if item.isAlive():
-                                        Chat.say(f"@goto {simplePos(pos)}", True)
+                                        Chat.say(f"{cmd[0]}goto {simplePos(pos)}", True)
                                         wait_for_altoclef(task)
-                                Chat.toast("JsMacros", f"Finished picking up {item_count} dropped items")
+                                Chat.log("JsMacros"+": "+f"Finished picking up {item_count} dropped items")
                         case _: Chat.say(task, True)
             msg = f"Finished {len(tasks)} tasks"
-            Chat.toast("JSMacros", msg)
+            Chat.log("JSMacros"+": "+msg)
             Client.waitTick()
             AutoMagic("screen/on")
             Client.waitTick(10)
