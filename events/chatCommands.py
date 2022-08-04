@@ -235,8 +235,9 @@ match event_name:
                     case "repeat":
                         times = int(args.pop(0))
                         Respond(f"Repeating task {times} times")
-                        Respond(' '.join(args))
-                        GlobalVars.putString("task_now", ' '.join(args) * times)
+                        task = ';;'.join(args* times)
+                        Respond(task)
+                        GlobalVars.putString("task_now", task)
                     case "cleartasks"|"ct":
                         for t in ["task_now","task_day","task_night","task_now","task_bed_start","task_bed_end","task_monster_spawn_start","task_monster_spawn_end"]: GlobalVars.remove(t)
                         Respond("Cleared tasks")

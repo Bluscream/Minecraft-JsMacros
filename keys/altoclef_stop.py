@@ -3,5 +3,8 @@ event_name = (event.eventName if hasattr(event, 'eventName') else event.getEvent
 # Chat.getLogger().debug(f"Executing {file.getName()} on event {event_name}")
 match event_name:
     case "Key":
-        Chat.say("@stop", True)
-        Chat.say("#stop")
+        # Chat.say("@stop", True) # TODO: Detect Altoclef
+        try:
+            Baritone = Reflection.getClass("baritone.api.BaritoneAPI").getProvider().getPrimaryBaritone()
+            Baritone.getCommandManager().execute("cancel")
+        except Exception as e: Chat.log("Baritone not installed: "+str(e))

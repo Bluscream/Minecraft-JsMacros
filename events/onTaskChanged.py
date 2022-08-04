@@ -13,9 +13,8 @@ match event_name:
             try: Request.get(f"http://{environ.get('IP_Timo-Tablet')}:1122/{path}?{'&'.join([k+'='+quote_plus(v) for (k,v) in params.items()])}&password={environ.get('AMAPI_PW')}")
             except Exception as ex: Chat.getLogger().error(f"Could not send AutoMagic request: {ex}")
         Vec3D = Reflection.getClass("xyz.wagyourtail.jsmacros.client.api.sharedclasses.PositionCommon$Vec3D")
-        # try:
-        Baritone = Reflection.getClass("baritone.api.BaritoneAPI").getProvider().getPrimaryBaritone()
-        # except Exception as e: Chat.log("Baritone not installed: "+str(e))
+        try: Baritone = Reflection.getClass("baritone.api.BaritoneAPI").getProvider().getPrimaryBaritone()
+        except Exception as e: Chat.log("Baritone not installed: "+str(e))
         def distance(pos1, pos2): return Vec3D(pos1, pos2).getMagnitude()
         def is_altoclef_finished(RecvMessageEvent): return any(x in RecvMessageEvent.text.getString() for x in ["§rUser task FINISHED","§rStopped"])
         def wait_for_altoclef(task: str):
@@ -62,7 +61,7 @@ match event_name:
                             def simplePos(pos): return f"{int(pos.getX())} {int(pos.getY())} {int(pos.getZ())}"
                             items = dict()
                             for entity in World.getEntities():
-                                if entity.getType() == "minecraft:item" and (target_id is None or item.asItem().getContainedItemStack().getItemID()==target_id):
+                                if entity.getType() == "minecraft:item" and (target_id is None or entity.asItem().getContainedItemStack().getItemID()==target_id):
                                     pos = entity.getPos()
                                     if not range or distance(playerPos, pos) < range: items[pos] = entity
                             item_count = len(items)
