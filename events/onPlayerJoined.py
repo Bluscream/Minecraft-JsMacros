@@ -18,3 +18,6 @@ match event_name:
                     case "play.tasmantismc.com":
                         from random import choice
                         Chat.say(choice(["Hello, %s", "Hi, %s", "Hey, %s", "Greetings, %s"]) % player_name)
+                    case "golitron.aternos.me":
+                        from random import choice
+                        Chat.say(choice(["Hallo, %s", "Hi, %s", "Hey, %s", "Wie gehts, %s?"]) % player_name)
