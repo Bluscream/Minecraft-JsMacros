@@ -1,4 +1,5 @@
 
+from json import dumps
 if __name__ == "": from JsMacrosAC import *  # Autocomplete, not necessary
 event_name = (event.eventName if hasattr(event, 'eventName') else event.getEventName()) if event else "Manual"
 # Chat.getLogger().debug(f"Executing {file.getName()} on event {event_name}")
@@ -9,6 +10,9 @@ match event_name:
             screen: IScreen
         screen = event.screen
         screen_name = event.screenName
+        screen_title = ""
+        try: screen_title = screen.getTitleText()
+        except: pass
         screen_class = ""
         try: screen_class = screen.getScreenClassName()
         except: pass
@@ -26,17 +30,12 @@ match event_name:
             # day_task = GlobalVars.getString("task_day")
             # if day_task and day_task != "#set allowBreak true;#set allowPlace true":
             match screen_name:
-                case "Title Screen": # Title Screen # class: t.minecraft.class_442 # button: Multiplayer ID: 400310
-                    sleep(10)
-                    event.screen.getButtonWidgets()[1].click(True) # click Multiplayer
-                case "Play Multiplayer": # Play Multiplayer # class: net.minecraft.class_500 # button: Join Server ID: 348948
-                    sleep(1)
-                    event.screen.getButtonWidgets()[1].click(True)  # click Direct connect
-                case "Direct Connection": # Direct Connection # class: net.minecraft.class_ # button: Connect ID:
-                    sleep(1)
-                    event.screen.getTextFields()[0].setText("play.tasmantismc.com") # set address
-                    sleep(1)
-                    event.screen.getButtonWidgets()[0].click(True)  # click connect
+                # case "Title Screen": # Title Screen # class: t.minecraft.class_442 # button: Multiplayer ID: 400310
+                #     sleep(10)
+                #     event.screen.getButtonWidgets()[1].click(True) # click Multiplayer
+                # case "Play Multiplayer": # Play Multiplayer # class: net.minecraft.class_500 # button: Join Server ID: 348948
+                #     sleep(1)
+                #     event.screen.getButtonWidgets()[1].click(True)  # click Direct connect
                 case "Saving World":
                     sleep(0)
                     Chat.getLogger().info(f">>> Saving World")
@@ -49,6 +48,14 @@ match event_name:
                     sleep(0)
                     Chat.getLogger().info(f">>> Failed to connect to the server")
                     # event.screen.getButtonWidgets()[1].click(True)  # click Reconnect
+                case "Disconnected":
+                    sleep(0)
+                    Chat.getLogger().info(f">>> Disconnected")
+                case "Connection Lost":
+                    sleep(0)
+                    Chat.getLogger().info(f">>> Connection Lost: {screen_title}")
+                    # text = screen.getComponent("reason").getText()
+                    # Chat.getLogger().info(f">>> Connection Lost: {text}")
 
         elif screen:
             if screen_class == "fudge.notenoughcrashes.gui.CrashScreen":

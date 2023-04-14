@@ -7,4 +7,5 @@ match event_name:
         Client.waitTick()
         server = ""
         if (GlobalVars.getString("server")): server = GlobalVars.getString("server").split("/")[0]
+        Chat.getLogger().info(f">>> Disconnected: {event.message.toString()}")
         Chat.log("Disconnected"+": "+server)
