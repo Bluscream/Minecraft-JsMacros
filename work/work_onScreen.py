@@ -58,6 +58,9 @@ match event_name:
                     case "Connection Lost":
                         sleep(0)
                         Chat.getLogger().info(f">>> Connection Lost: {screen_title}")
+                        reasonF = Reflection.getDeclaredField(screen, 'field_2457')
+                        reasonF.setAccessible(True)
+                        Chat.getLogger().info(reasonF.get(event.screen).getString())
                         # text = screen.getComponent("reason").getText()
                         # Chat.getLogger().info(f">>> Connection Lost: {text}")
 

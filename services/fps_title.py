@@ -1,5 +1,4 @@
 if __name__ == "": from JsMacrosAC import *  # Autocomplete, not necessary
-window = Client.getMinecraft().method_22683()
 title = f"MC | FPS: {{fps}} | TPS: {{tps}} | {Client.mcVersion()} | {{address}} | {{dimension}} | {{biome}} | {{time}}"
 def fps(): return Client.getFPS().split(' fps')[0]
 def tps(): return round(World.getServerInstantTPS())
@@ -21,4 +20,5 @@ def onTick(_1,_2):
         biome=str(World.getBiome()),
         time=time()
     ))
+window = Client.getMinecraft().method_22683()
 JsMacros.on("Tick", JavaWrapper.methodToJavaAsync(onTick))

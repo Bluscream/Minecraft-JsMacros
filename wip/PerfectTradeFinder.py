@@ -192,7 +192,7 @@ def nearestVillager():
 
     # Custom sort function
     # lowest distance first
-    villagers.sort( function(a,b): return a[0] - b[0])
+    villagers.sort(function(a,b): return a[0] - b[0])
 
     if villagers[0][0]<=5 :
         # return the closest villager
