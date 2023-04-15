@@ -4,10 +4,10 @@ if __name__ == "": from JsMacrosAC import *  # Autocomplete, not necessary
 event_name = (event.eventName if hasattr(event, 'eventName') else event.getEventName()) if event else "Manual"
 # Chat.getLogger().debug(f"Executing {file.getName()} on event {event_name}")
 from os import environ
-from base64 import b64decode
-aternos_username = environ.get("aternos_username", "bluscream")
+from aternos_config import *
+aternos_username = environ.get("aternos_username", aternos_username)
 if not aternos_username: Chat.getLogger().warn(f"aternos_username not found in environment variables!")
-aternos_password = environ.get("aternos_password", str(b64decode("")))
+aternos_password = environ.get("aternos_password", aternos_password)
 if not aternos_password: Chat.getLogger().warn(f"aternos_password not found in environment variables!")
 
 match event_name:

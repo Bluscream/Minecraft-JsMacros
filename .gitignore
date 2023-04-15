@@ -13,3 +13,4 @@ db/data.sqlite
 
 */**/altoclef_settings.json
 */**/sodium-extra-options.json
+wip/aternos_config.py
