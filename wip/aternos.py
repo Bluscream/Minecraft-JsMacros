@@ -67,12 +67,12 @@ match event_name:
                                                Chat.getLogger().warn(f"Attaching aternos button to {x} {y}")
                                                screen.addButton(x, y, button.getWidth(), 20, "START ATERNOS SERVER", JavaWrapper.methodToJavaAsync(callback))
                                                break
-                                elif "different address" in reason:
-                                    pattern = r"Â§([\w|.]+)Â§6:(\d+)"
-                                    matches = list(finditer(pattern, reason, MULTILINE))
-                                    Chat.getLogger().warn(f"{matches}")
-                                    if len(matches) == 1:
-                                        ip = match.group(1)
-                                        port = match.group(2)
-                                        Chat.getLogger().warn(f"Aternos server redirect to {ip}:{port}")
-                                        Client.connect(ip, port)
+                                    elif "different address" in reason:
+                                        pattern = r"Â§([\w|.]+)Â§6:(\d+)"
+                                        matches = list(finditer(pattern, reason, MULTILINE))
+                                        Chat.getLogger().warn(f"{matches}")
+                                        if len(matches) == 1:
+                                            ip = match.group(1)
+                                            port = match.group(2)
+                                            Chat.getLogger().warn(f"Aternos server redirect to {ip}:{port}")
+                                            Client.connect(ip, port)
