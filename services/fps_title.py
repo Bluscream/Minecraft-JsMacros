@@ -12,13 +12,13 @@ def time(): return ""
 def str(a): return a.split(":")[1].title()
 def onTick(_1,_2):
     address = World.getCurrentServerAddress()
-    if address: window.method_24286(title.format(
-        fps=fps(),
-        tps=tps(),
-        address=World.getCurrentServerAddress().split(".")[0],
-        dimension=str(World.getDimension()),
-        biome=str(World.getBiome()),
-        time=time()
-    ))
-window = Client.getMinecraft().method_22683()
+    if address:
+        Client.getMinecraft().method_22683().method_24286(title.format(
+            fps=fps(),
+            tps=tps(),
+            address=address.split(".")[0],
+            dimension=str(World.getDimension()),
+            biome=str(World.getBiome()),
+            time=time()
+        ))
 JsMacros.on("Tick", JavaWrapper.methodToJavaAsync(onTick))
