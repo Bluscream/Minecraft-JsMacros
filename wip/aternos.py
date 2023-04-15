@@ -18,11 +18,12 @@ match event_name:
         screen = event.screen
         if screen is not None:
             screen_name = event.screenName
-            def sleep(sec: float=0): Client.waitTick(sec * 20)
             if screen_name is not None and screen_name != "unknown":
                 match screen_name:
                     case "Connection Lost":
-                        sleep(0)
+                        def sleep(ticks=0):
+                            if hasattr(Client, "waitTick"): Client.waitTick(ticks)
+                        sleep(1)
                         from net.minecraft import class_419 as DisconnectScreen
                         reasonF = Reflection.getDeclaredField(DisconnectScreen, 'field_2457')
                         reasonF.setAccessible(True)
@@ -42,7 +43,6 @@ match event_name:
                                             Chat.getLogger().warn(f"Starting aternos server {ip or None}")
                                             from python_aternos import Client
                                             aternos = None
-                                            from base64 import b64decode
                                             try: aternos = Client.restore_session()
                                             except: aternos = Client.from_credentials(aternos_username, aternos_password)
                                             if aternos is None:
@@ -58,7 +58,10 @@ match event_name:
                                                 return
                                             else:
                                                 Chat.getLogger().warn(f"Starting Aternos Server {server.software}, {server.version}")
-                                                server.start()
+                                                sleep(1)
+                                                from threading import Thread
+                                                Thread(target=(lambda: server.start())).start()
+                                                sleep(1)
                                                 Hud.getOpenScreen().close()
                                         def callback(self, args): start_server(ip)
                                         for button in screen.getButtonWidgets():
@@ -69,6 +72,7 @@ match event_name:
                                                break
                                     elif "different address" in reason:
                                         pattern = r"Â§([\w|.]+)Â§6:(\d+)"
+                                        Chat.getLogger().warn(f"{pattern}")
                                         matches = list(finditer(pattern, reason, MULTILINE))
                                         Chat.getLogger().warn(f"{matches}")
                                         if len(matches) == 1:
