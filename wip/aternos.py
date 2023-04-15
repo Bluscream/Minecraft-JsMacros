@@ -4,8 +4,11 @@ if __name__ == "": from JsMacrosAC import *  # Autocomplete, not necessary
 event_name = (event.eventName if hasattr(event, 'eventName') else event.getEventName()) if event else "Manual"
 # Chat.getLogger().debug(f"Executing {file.getName()} on event {event_name}")
 from os import environ
-aternos_username = environ.get("aternos_username")
-aternos_password = environ.get("aternos_password")
+from base64 import b64decode
+aternos_username = environ.get("aternos_username", "bluscream")
+if not aternos_username: Chat.getLogger().warn(f"aternos_username not found in environment variables!")
+aternos_password = environ.get("aternos_password", str(b64decode("")))
+if not aternos_password: Chat.getLogger().warn(f"aternos_password not found in environment variables!")
 
 match event_name:
     case "OpenScreen":
@@ -41,7 +44,7 @@ match event_name:
                                             aternos = None
                                             from base64 import b64decode
                                             try: aternos = Client.restore_session()
-                                            except: aternos = Client.from_credentials(aternos_username, str(b64decode(aternos_password)))
+                                            except: aternos = Client.from_credentials(aternos_username, aternos_password)
                                             if aternos is None:
                                                 Chat.getLogger().warn(f"Could not connect to aternos, login incorrect?")
                                                 return
@@ -67,6 +70,7 @@ match event_name:
                                 elif "different address" in reason:
                                     pattern = r"Â§([\w|.]+)Â§6:(\d+)"
                                     matches = list(finditer(pattern, reason, MULTILINE))
+                                    Chat.getLogger().warn(f"{matches}")
                                     if len(matches) == 1:
                                         ip = match.group(1)
                                         port = match.group(2)
