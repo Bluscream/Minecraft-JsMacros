@@ -16,6 +16,7 @@ saved = {
     'item.getItemID().lower().endswith("shield")': { "type": "offhand", "slot": 1 },
 }
 def checkItem(slot: int):
+    if slot is None: return
     inv = Player.openInventory()
     item = inv.getSlot(slot)
     map = inv.getMap()
@@ -61,6 +62,7 @@ match event_name:
                 #     first_free_slot = get_free_slots(range(0, inv.getTotalSlots()), True)
                 #     inv.click(first_free_slot)
                 #     slot = first_free_slot
+                if slot is None: Chat.log(f"event.slot is None")
                 checkItem(slot)
     case "ItemPickup":
         # event.item	ItemStack
@@ -70,4 +72,6 @@ match event_name:
                 item = inv.getSlot(slot)
                 if item.isEmpty(): continue
                 if item.isItemEqual(event.item): return slot
-        checkItem(get_event_item_slot())
+        event_item_slot = get_event_item_slot()
+        if event_item_slot is None: Chat.log(f"event_item_slot is None")
+        checkItem(event_item_slot)

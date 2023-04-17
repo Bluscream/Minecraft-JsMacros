@@ -80,3 +80,4 @@ match event_name:
                                             port = match.group(2)
                                             Chat.getLogger().warn(f"Aternos server redirect to {ip}:{port}")
                                             Client.connect(ip, port)
+                                        Chat.getLogger().warn(f"{reason}")
