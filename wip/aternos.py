@@ -39,8 +39,9 @@ match event_name:
                                     if "server is offline" in reason:
                                         ip = match.group(1)
                                         Chat.getLogger().info(f"Aternos server {ip} is offline")
-                                        def start_server(ip):
-                                            Chat.getLogger().warn(f"Starting aternos server {ip or None}")
+                                        def start_server(_ip):
+                                            ip = _ip or None
+                                            Chat.getLogger().warn(f"Starting aternos server {ip}")
                                             from python_aternos import Client
                                             aternos = None
                                             try: aternos = Client.restore_session()

@@ -4,13 +4,15 @@ event_name = (event.eventName if hasattr(event, 'eventName') else event.getEvent
 # Chat.getLogger().debug(f"Executing {file.getName()} on event {event_name}")
 match event_name:
     case "SendMessage":
-        import platform
-        from sys import exit
-        from os import name as os_name
-        from subprocess import check_call, Popen, PIPE
-        from copy import copy
-        from re import search
-        from math import trunc
+        try:
+            import platform
+            from sys import exit
+            from os import name as os_name
+            from subprocess import check_call, Popen, PIPE
+            from copy import copy
+            from re import search
+            from math import trunc
+        except: pass
 
         prefix = ","
         regex = r".*<\d+:\d+> > ,(.*) [\[\d+x\]|\(\d+\)]*"
@@ -241,6 +243,34 @@ match event_name:
                     case "cleartasks"|"ct":
                         for t in ["task_now","task_day","task_night","task_now","task_bed_start","task_bed_end","task_monster_spawn_start","task_monster_spawn_end"]: GlobalVars.remove(t)
                         Respond("Cleared tasks")
+                    case "opitems":
+                        opItems = {
+                            "netherite_sword": "{Enchantments:[{id:sharpness,lvl:10},{id:unbreaking,lvl:10},{id:mending,lvl:1},{id:fire_aspect,lvl:2},{id:knockback,lvl:2},{id:looting,lvl:3},{id:sweeping,lvl:3}]} 1",
+                            "netherite_pickaxe": "{Enchantments:[{id:efficiency,lvl:10},{id:unbreaking,lvl:10},{id:mending,lvl:1},{id:fortune,lvl:3},{id:silk_touch,lvl:1}]} 1",
+                            "netherite_axe": "{Enchantments:[{id:efficiency,lvl:10},{id:unbreaking,lvl:10},{id:mending,lvl:1},{id:sharpness,lvl:10},{id:fortune,lvl:3},{id:silk_touch,lvl:1}]} 1",
+                            "netherite_shovel": "{Enchantments:[{id:efficiency,lvl:10},{id:unbreaking,lvl:10},{id:mending,lvl:1},{id:silk_touch,lvl:1}]} 1",
+                            "netherite_hoe": "{Enchantments:[{id:unbreaking,lvl:10},{id:mending,lvl:1}]} 1",
+                            "shield": "{Enchantments:[{id:protection,lvl:4},{id:fire_protection,lvl:4},{id:blast_protection,lvl:4},{id:projectile_protection,lvl:4},{id:unbreaking,lvl:3},{id:mending,lvl:1},{id:thorns,lvl:3}]} 1",
+                            "bow": "{Enchantments:[{id:power,lvl:5},{id:punch,lvl:2},{id:flame,lvl:1},{id:infinity,lvl:1},{id:mending,lvl:1},{id:unbreaking,lvl:3}]} 1",
+                            "netherite_helmet": "{Enchantments:[{id:protection,lvl:10},{id:unbreaking,lvl:10},{id:mending,lvl:1},{id:respiration,lvl:3},{id:aqua_affinity,lvl:1},{id:thorns,lvl:3}]} 1",
+                            "netherite_chestplate": "{Enchantments:[{id:protection,lvl:10},{id:unbreaking,lvl:10},{id:mending,lvl:1},{id:thorns,lvl:3}]} 1",
+                            "netherite_leggings": "{Enchantments:[{id:protection,lvl:10},{id:unbreaking,lvl:10},{id:mending,lvl:1},{id:thorns,lvl:3}]} 1",
+                            "netherite_boots": "{Enchantments:[{id:protection,lvl:10},{id:unbreaking,lvl:10},{id:mending,lvl:1},{id:feather_falling,lvl:4},{id:depth_strider,lvl:3},{id:frost_walker,lvl:2},{id:thorns,lvl:3}]} 1"
+                        }
+                        def getItemsByName(name:str):
+                            ret = {}
+                            for item, nbt in opItems.items():
+                                if name in item: ret[item] = nbt
+                            return ret
+                        def giveItems(items):
+                            Respond(f"giving {len(items)} op items")
+                            for item, nbt in items.items():
+                                Chat.say(f"/give @p {item}{nbt}")
+                                # Client.waitTick(5)
+                        if len(args) > 0: giveItems(getItemsByName(args.pop(0)))
+                        else: giveItems(opItems)
+                        # from threading import Thread
+                        # Thread(target=giveItems).start()
                     case _:
                         Respond("Unknown command")
             except Exception as e:
