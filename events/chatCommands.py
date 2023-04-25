@@ -245,22 +245,22 @@ match event_name:
                         Respond("Cleared tasks")
                     case "opitems":
                         opItems = {
-                            "netherite_sword": "{Enchantments:[{id:sharpness,lvl:10},{id:unbreaking,lvl:10},{id:mending,lvl:1},{id:fire_aspect,lvl:2},{id:knockback,lvl:2},{id:looting,lvl:3},{id:sweeping,lvl:3}]} 1",
-                            "netherite_pickaxe": "{Enchantments:[{id:efficiency,lvl:10},{id:unbreaking,lvl:10},{id:mending,lvl:1},{id:fortune,lvl:3},{id:silk_touch,lvl:1}]} 1",
-                            "netherite_axe": "{Enchantments:[{id:efficiency,lvl:10},{id:unbreaking,lvl:10},{id:mending,lvl:1},{id:sharpness,lvl:10},{id:fortune,lvl:3},{id:silk_touch,lvl:1}]} 1",
-                            "netherite_shovel": "{Enchantments:[{id:efficiency,lvl:10},{id:unbreaking,lvl:10},{id:mending,lvl:1},{id:silk_touch,lvl:1}]} 1",
-                            "netherite_hoe": "{Enchantments:[{id:unbreaking,lvl:10},{id:mending,lvl:1}]} 1",
+                            "netherite_sword": "{Enchantments:[{id:sharpness,lvl:5},{id:unbreaking,lvl:3},{id:mending,lvl:1},{id:fire_aspect,lvl:2},{id:knockback,lvl:2},{id:looting,lvl:3},{id:sweeping,lvl:3}]} 1",
+                            "netherite_pickaxe": "{Enchantments:[{id:efficiency,lvl:5},{id:unbreaking,lvl:3},{id:mending,lvl:1},{id:fortune,lvl:3},{id:silk_touch,lvl:1}]} 1",
+                            "netherite_axe": "{Enchantments:[{id:efficiency,lvl:5},{id:unbreaking,lvl:3},{id:mending,lvl:1},{id:sharpness,lvl:5},{id:fortune,lvl:3},{id:silk_touch,lvl:1}]} 1",
+                            "netherite_shovel": "{Enchantments:[{id:efficiency,lvl:5},{id:unbreaking,lvl:3},{id:mending,lvl:1},{id:silk_touch,lvl:1}]} 1",
+                            "netherite_hoe": "{Enchantments:[{id:unbreaking,lvl:3},{id:mending,lvl:1}]} 1",
                             "shield": "{Enchantments:[{id:protection,lvl:4},{id:fire_protection,lvl:4},{id:blast_protection,lvl:4},{id:projectile_protection,lvl:4},{id:unbreaking,lvl:3},{id:mending,lvl:1},{id:thorns,lvl:3}]} 1",
                             "bow": "{Enchantments:[{id:power,lvl:5},{id:punch,lvl:2},{id:flame,lvl:1},{id:infinity,lvl:1},{id:mending,lvl:1},{id:unbreaking,lvl:3}]} 1",
-                            "netherite_helmet": "{Enchantments:[{id:protection,lvl:10},{id:unbreaking,lvl:10},{id:mending,lvl:1},{id:respiration,lvl:3},{id:aqua_affinity,lvl:1},{id:thorns,lvl:3}]} 1",
-                            "netherite_chestplate": "{Enchantments:[{id:protection,lvl:10},{id:unbreaking,lvl:10},{id:mending,lvl:1},{id:thorns,lvl:3}]} 1",
-                            "netherite_leggings": "{Enchantments:[{id:protection,lvl:10},{id:unbreaking,lvl:10},{id:mending,lvl:1},{id:thorns,lvl:3}]} 1",
-                            "netherite_boots": "{Enchantments:[{id:protection,lvl:10},{id:unbreaking,lvl:10},{id:mending,lvl:1},{id:feather_falling,lvl:4},{id:depth_strider,lvl:3},{id:frost_walker,lvl:2},{id:thorns,lvl:3}]} 1"
+                            "netherite_helmet": "{Enchantments:[{id:protection,lvl:4},{id:unbreaking,lvl:3},{id:mending,lvl:1},{id:respiration,lvl:3},{id:aqua_affinity,lvl:1},{id:thorns,lvl:3}]} 1",
+                            "netherite_chestplate": "{Enchantments:[{id:protection,lvl:4},{id:unbreaking,lvl:3},{id:mending,lvl:1},{id:thorns,lvl:3}]} 1",
+                            "netherite_leggings": "{Enchantments:[{id:protection,lvl:4},{id:unbreaking,lvl:3},{id:mending,lvl:1},{id:thorns,lvl:3}]} 1",
+                            "netherite_boots": "{Enchantments:[{id:protection,lvl:4},{id:unbreaking,lvl:3},{id:mending,lvl:1},{id:feather_falling,lvl:4},{id:depth_strider,lvl:3},{id:frost_walker,lvl:2},{id:thorns,lvl:3}]} 1"
                         }
                         def getItemsByName(name:str):
                             ret = {}
                             for item, nbt in opItems.items():
-                                if name in item: ret[item] = nbt
+                                if name.lower() in item.lower(): ret[item] = nbt
                             return ret
                         def giveItems(items):
                             Respond(f"giving {len(items)} op items")
